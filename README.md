@@ -500,7 +500,7 @@ Interactive OpenAPI Swagger documentation is available locally at: `http://127.0
 - **`POST /v1/runs/replay`**: Validates bundle hash and re-scores recorded traces with zero LLM invocations.
 - **`POST /v1/power`**: Returns statistical power advisory and sample-size calculations.
 - **`POST /v1/drift`**: Inspects model weight SHA-256 digests and reports drift status.
-- **`GET /v1/health`**: Real-time status check for local Ollama connectivity, MySQL/SQLite database engine, and active baseline.
+- **`GET /health`**: Real-time status check for local Ollama connectivity, MySQL/SQLite database engine, disk capacity, and active baseline.
 
 ### 3. Native Python Client Adapter (`core/client.py`)
 ```python
