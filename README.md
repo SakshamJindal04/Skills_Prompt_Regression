@@ -1,4 +1,15 @@
-# Skill & Prompt Regression Manager for Local Agents
+# Skill & Prompt Regression Manager for Local Agents (`regguard`)
+
+[![GitHub Repo](https://img.shields.io/badge/GitHub-SakshamJindal04%2FSkills__Prompt__Regression-181717?logo=github)](https://github.com/SakshamJindal04/Skills_Prompt_Regression)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit 1.66](https://img.shields.io/badge/streamlit-1.66.1-FF4B4B.svg?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Ollama Local](https://img.shields.io/badge/ollama-local--first-black.svg?logo=ollama&logoColor=white)](https://ollama.com/)
+[![Test Suite](https://img.shields.io/badge/tests-160%2F160%20passed%20(3x%20verified)-success.svg)](tests/)
+[![Axe A11y](https://img.shields.io/badge/axe%20a11y-34%2F34%20passed%20(0%20violations)-brightgreen.svg)](scripts/audit_accessibility_axe.py)
+[![WCAG Contrast](https://img.shields.io/badge/contrast-WCAG%20AAA%20%2F%20AA-success.svg)](scripts/check_contrast.py)
+[![Architecture](https://img.shields.io/badge/architecture-local--first%20%7C%20zero--cloud-informational.svg)](docs/ARCHITECTURE.md)
+[![Database](https://img.shields.io/badge/database-MySQL%208%20%2B%20SQLite%20fallback-00758F.svg?logo=mysql&logoColor=white)](alembic/)
+[![Compliance](https://img.shields.io/badge/compliance-NIST%20AI%20RMF%20%7C%20EU%20AI%20Act-purple.svg)](docs/COMPLIANCE_MAPPING.md)
 
 We built a local regression testing, statistical comparison, and change attribution system for system prompts and reusable agent skills (`SKILL.md` folders).
 
@@ -346,7 +357,12 @@ The table below presents a configurable framework for estimating avoided product
 
 ## Setup Instructions
 
-### 1. Requirements
+### 1. Clone & Requirements
+
+```bash
+git clone https://github.com/SakshamJindal04/Skills_Prompt_Regression.git
+cd Skills_Prompt_Regression
+```
 
 - Python 3.11+
 - [Ollama](https://ollama.com) running locally.
@@ -447,6 +463,80 @@ And set `DB_URL` in `.env`:
 DB_URL=mysql+pymysql://regression_user:regression_pass@localhost:3306/regression_db
 ```
 If MySQL is not available, the application automatically falls back to SQLite.
+
+---
+
+## CLI Command Reference (`regguard` / `cli.py`)
+
+The platform installs the unified CLI executable `regguard` (or can be invoked directly as `python cli.py`):
+
+| Command | Subcommand / Flags | Description |
+| :--- | :--- | :--- |
+| **Regression Gate** | `python cli.py --base <SHA> --cand <SHA> [--suite golden] [-k 5]` | Evaluates candidate commit against baseline with McNemar significance test, bootstrap CI, and critical gates. Exits with code `0` on `PROMOTE` and code `1` on `BLOCK`. |
+| **Model Gate** | `python cli.py --base-model <M1> --cand-model <M2>` | Cross-model drop-in replacement evaluation holding prompts and skills constant. |
+| **Replay Bundles** | `python cli.py bundle <run_id> [--output <zip>]` | Packages run manifest, model digest, test suite hash, seeds, traces, and verdicts into a sealed zip bundle. |
+| **Bundle Replay** | `python cli.py replay <bundle.zip>` | Cryptographically verifies bundle SHA-256 integrity and re-scores traces with zero model calls. |
+| **Power Advisory** | `python cli.py power --n <N> [--k 5] [--alpha 0.05]` | Computes minimum detectable regression drops and sample-size recommendations for test suites. |
+| **Interactive Lab** | `python cli.py lab --prompt <path> [--prompt2 <path>] [--k 3]` | Executes end-to-end prompt engineering pipeline with synthetic test generation and profiling. |
+| **Skill Linter** | `python cli.py skill-lint [workspace/skills]` | Audits `SKILL.md` frontmatter, schema definitions, and detects semantic collision risks across skills. |
+| **Drift Checker** | `python cli.py drift [--model <model_id>]` | Queries Ollama model weight digests, checks against baseline digests, and triggers test suites upon weight drift. |
+| **Audit Verifier** | `python cli.py audit-verify` | Verifies append-only SHA-256 cryptographic hash-chain integrity of governance log records. |
+
+---
+
+## REST API & Microservice Integration
+
+For headless CI/CD pipelines, agent orchestration frameworks, or external developer tooling, RegGuard exposes a local-first FastAPI microservice:
+
+### 1. Launch REST Daemon
+```bash
+uvicorn core.api:app --host 127.0.0.1 --port 8000
+```
+Interactive OpenAPI Swagger documentation is available locally at: `http://127.0.0.1:8000/docs`.
+
+### 2. Available Endpoints
+- **`POST /v1/compare`**: Runs comparison between baseline and candidate commits or models, returning flip counts, McNemar p-value, and gate verdict.
+- **`POST /v1/runs/bundle`**: Creates a signed, reproducible replay archive for a completed comparison run.
+- **`POST /v1/runs/replay`**: Validates bundle hash and re-scores recorded traces with zero LLM invocations.
+- **`POST /v1/power`**: Returns statistical power advisory and sample-size calculations.
+- **`POST /v1/drift`**: Inspects model weight SHA-256 digests and reports drift status.
+- **`GET /v1/health`**: Real-time status check for local Ollama connectivity, MySQL/SQLite database engine, and active baseline.
+
+### 3. Native Python Client Adapter (`core/client.py`)
+```python
+from core.client import RegGuardClient
+
+client = RegGuardClient(base_url="http://127.0.0.1:8000")
+health = client.get_health()
+print(f"Service status: {health['status']}, Active Baseline: {health['active_baseline']}")
+
+# Trigger automated regression comparison
+verdict = client.compare_artifacts(base_commit="7c255ba", cand_commit="3e80cae", k=5)
+print(f"Gate Verdict: {verdict['verdict']} (p={verdict['p_value']}, b={verdict['b']}, c={verdict['c']})")
+```
+
+---
+
+## Verification & Test Suite Matrix
+
+The entire platform is backed by an automated verification suite executed and validated locally:
+
+```bash
+# 1. Full Pytest test suite (160 tests across unit, integration, and statistical modules)
+pytest -v
+
+# 2. Automated Axe accessibility audit (34/34 passing, 0 critical / serious violations)
+python scripts/audit_accessibility_axe.py
+
+# 3. WCAG contrast audit across tokens and charts (25/25 token pairs passing)
+python scripts/check_contrast.py
+
+# 4. Multi-viewport automated screenshot capture (102 PNGs across 17 pages x 3 viewports)
+python scripts/capture_screenshots.py
+
+# 5. Database engine verification & migration test
+python scripts/verify_mysql.py
+```
 
 ---
 
@@ -576,3 +666,46 @@ We provide a complete demonstration path showing all four core lifecycle states:
    Our 26 evaluation mutations test realistic prompt drift patterns (dropping rules, relaxing constraints, breaking JSON schemas, weakening skill descriptions), but cannot represent all possible domain-specific agent interactions.
 5. **Ablation Workspace Locking**:
    Single-file ablation temporarily checks out previous file states in `workspace/`. In a multi-user environment, separate Git worktrees would be preferred over a shared working directory.
+
+---
+
+## Architectural Decision Records & Documentation Index
+
+Comprehensive engineering specifications, operational guides, and audit reports are maintained in `docs/`:
+
+### 1. Architecture Decision Records (ADRs)
+- [`ADR-001: Sealed Replay Bundles`](docs/ADR/ADR-001-replay-bundles.md) — Self-contained, portable evaluation archives with cryptographic integrity verification.
+- [`ADR-002: Statistical Decision Rules`](docs/ADR/ADR-002-statistical-decision-rules.md) — Multi-rule gate policy incorporating McNemar, bootstrap non-inferiority margins, Holm-Bonferroni corrections, and odds ratios.
+- [`ADR-003: Human Review Queue & Adjudication`](docs/ADR/ADR-003-human-review-queue.md) — Two-stage human-in-the-loop adjudication for contested traces and LLM judge calibration.
+- [`ADR-004: Multi-Stage Promotion Pipeline`](docs/ADR/ADR-004-stage-environments.md) — Multi-stage environment promotion (Dev -> Staging -> Prod) with strict threshold gates.
+- [`ADR-005: REST-First Headless Architecture`](docs/ADR/ADR-005-rest-api-first.md) — Decoupled FastAPI daemon enabling headless CI/CD automation and multi-client workflows.
+- [`ADR-006: Headless PDF & HTML Release Reports`](docs/ADR/ADR-006-enterprise-reporting.md) — Deterministic release report generation via Playwright without external rendering dependencies.
+
+### 2. Engineering & Hardening Reports
+- [`Tier 1 Hardening Report`](docs/TIER_1_REPORT.md) — Decision quality, replay bundles, statistical power, and drift telemetry.
+- [`Tier 2 Hardening Report`](docs/TIER_2_REPORT.md) — Production database migration, REST API service, headless PDF reporting, and review queue.
+- [`Tier 3 Hardening Report`](docs/TIER_3_REPORT.md) — Stage environments, security hardening, compliance mappings, and benchmark scaling.
+
+### 3. Governance, Security & Compliance
+- [`NIST AI RMF & EU AI Act Compliance Mapping`](docs/COMPLIANCE_MAPPING.md) — Regulatory controls cross-referenced against system modules.
+- [`Security Audit Report`](docs/SECURITY_AUDIT.md) — Bandit static analysis, pip-audit dependency scans, cryptographic hash-chains, and access controls.
+- [`Empirical Benchmarks & Scaling`](docs/BENCHMARKS.md) — Execution latency, memory usage, baseline caching efficiency, and throughput scaling.
+- [`Quality Assurance Log`](docs/QA_LOG.md) — Record of tools, linters, accessibility engines, and testing runs.
+- [`Known Issues & Non-Blocking Notes`](docs/KNOWN_ISSUES.md) — Documented constraints, edge cases, and architectural notes.
+
+### 4. UI & Design System Documentation
+- [`Operational UI Guide`](docs/UI_GUIDE.md) — Page-by-page operational guide for all 17 Streamlit dashboard views.
+- [`Design System & Style Guide`](docs/UI_STYLE_GUIDE.md) — Color palette tokens, typography stacks, component APIs, and accessibility criteria.
+- [`UI Audit & Widget Map`](docs/UI_AUDIT.md) — Exhaustive catalog of every page, widget, and interactive action.
+- [`UI Verification & Axe Compliance Report`](docs/UI_VERIFICATION.md) — Contrast verification, automated Axe a11y results, and interaction performance logs.
+
+---
+
+## Repository Branches & Lifecycle
+
+The repository follows a clean, documented branch hierarchy:
+
+- **`main`**: Production-ready, fully hardened release containing all Tier 1-3 capabilities, REST microservice, light-only modern UI, and documentation.
+- **`ui-light`**: Light-Only Modern restyle pass with WCAG AAA/AA compliance and zero dark-mode dependencies.
+- **`ui-refine`**: Natural palette refinement milestone.
+- **`industry`**: Enterprise hardening pass (Tiers 1-3).
