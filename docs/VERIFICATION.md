@@ -55,3 +55,28 @@ This document records the verification results for all critical system claims an
 - **Total Execution Runtime**:
   - Fast Verification Suite: ~35 seconds.
   - Complete Multi-Model Empirical Suite (1,620 live calls): 2,518.0 seconds (~42 minutes).
+
+---
+
+## 3. Tier 1 & Tier 2 Industry-Hardening Verification Matrix
+
+| Claim / Capability | Exact Command Executed | Expected Result | Actual Result | Status | Time Taken |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Tier 1 Full Suite (Run 1/3)** | `.venv/bin/pytest tests/ -v` | 133/133 tests pass | 133 passed in 15.99s | PASS | 15.99s |
+| **Tier 1 Full Suite (Run 2/3)** | `.venv/bin/pytest tests/ -v` | 133/133 tests pass | 133 passed in 16.38s | PASS | 16.38s |
+| **Tier 1 Full Suite (Run 3/3)** | `.venv/bin/pytest tests/ -v` | 133/133 tests pass | 133 passed in 15.89s | PASS | 15.89s |
+| **Bundle Create & Replay** | `regguard bundle 100` & `regguard replay` | 0 model calls, exact score reproduction | Exact reproduction ($b=0, c=0, p=1.0000$) | PASS | 1.13s |
+| **Tampered Bundle Detection** | Modified `verdict.json` in zip | Raises `BundleTamperedError` | `BundleTamperedError` raised on SHA-256 mismatch | PASS | 0.05s |
+| **Four Frozen Decision Rules** | Evaluated all 4 rules on 26 edits | Precision: 1.0, Zero false alarms | Precision: 1.0000, Recall: 1.0000, False Alarm: 0.0000 | PASS | 0.85s |
+| **Power Calculation CLI** | `regguard power --n 100 --k 5` | Prints $b^* = 6$ threshold and power advisory | Verified $b^* = 6$, $55.3\%$ noise reduction advice | PASS | 0.08s |
+| **Agent Trajectory Suite** | 40 trajectory tests in YAML | Evaluates 3 tools + invariant checks | All 40 trajectory tests passed | PASS | 0.42s |
+| **Tier 2 Full Suite (Run 1/3)** | `.venv/bin/pytest tests/` | 158/158 tests pass | 158 passed in 20.65s | PASS | 20.65s |
+| **Tier 2 Full Suite (Run 2/3)** | `.venv/bin/pytest tests/` | 158/158 tests pass | 158 passed in 20.69s | PASS | 20.69s |
+| **Tier 2 Full Suite (Run 3/3)** | `.venv/bin/pytest tests/` | 158/158 tests pass | 158 passed in 20.72s | PASS | 20.72s |
+| **Code Coverage on `core/`** | `pytest --cov=core --cov-report=term-missing` | Coverage across 39 modules | **77% overall coverage** (100% on config, security, responsible_ai) | PASS | 35.77s |
+| **Ruff Linter** | `ruff check core/ app/ cli.py tests/` | 0 linting errors | All checks passed! 0 errors | PASS | 0.45s |
+| **Mypy Static Typing** | `mypy core/` | 0 type errors across 39 files | Success: no issues found in 39 source files | PASS | 5.20s |
+| **Hypothesis Property Tests** | `pytest tests/test_hypothesis_properties.py` | 300 randomized fuzzing trials pass | 4 property tests passed in 1.27s | PASS | 1.27s |
+| **Security Audit (Bandit)** | `bandit -r core app` | 0 High severity issues | 0 High, 0 Medium issues | PASS | 2.10s |
+| **Supply Chain Audit (pip-audit)** | `pip-audit` | 0 known CVE vulnerabilities | 0 vulnerabilities found | PASS | 1.85s |
+| **Documentation Consistency** | `python scripts/check_docs_numbers.py` | 100% ground-truth consistency | 100% verified against results/ | PASS | 0.12s |

@@ -73,3 +73,47 @@ This matrix maps every functional requirement, core metric, project deliverable,
 | **Statistics** | `scipy.stats.binomtest`, `numpy` | `core/comparator.py`: McNemar exact, bootstrap CIs, Wilson score intervals | `pytest tests/test_comparator.py -v` | Complete |
 | **Visualizations** | Plotly charts and heatmaps | `plotly.graph_objects`, `plotly.express` across pages 3, 4, 9, 10 | `pytest tests/test_streamlit_pages.py` | Complete |
 | **Tests** | pytest test suite with coverage | `pytest` test harness with 117 tests and `pytest-cov` | `pytest --cov=core --cov-report=term-missing` | Complete (81% coverage) |
+
+---
+
+## 5. Tier 1 Industry Hardening Modules (Decision Quality & Evidence)
+
+| Capability / Requirement | Implementation File & Function | Verification Command | Status |
+| :--- | :--- | :--- | :--- |
+| **1.1 Replay Verification & Bundles** | `core/bundle.py`: `create_run_bundle()`, `replay_run_bundle()` | `pytest tests/test_tier1.py::test_bundle_create_and_exact_replay -v` | Complete |
+| **1.2 Four Frozen Decision Rules** | `core/decision_rules.py`: `evaluate_all_decision_rules()` | `pytest tests/test_tier1.py::test_four_decision_rules_precision_recall -v` | Complete |
+| **1.2 Statistical Power Analysis** | `core/power.py`: `compute_mcnemar_power()` | `regguard power --n 108 --k 5` | Complete |
+| **1.3 Multi-Dimensional Drift** | `core/drift_analysis.py`: `analyze_beyond_pass_fail()` | `pytest tests/test_tier1.py::test_multi_dimensional_drift_analysis -v` | Complete |
+| **1.4 Agent Trajectory Testing** | `core/agent.py`: `run_agent_trajectory()`, `tests_data/agent_trajectory_tests.yaml` | `pytest tests/test_tier1.py::test_agent_trajectory_tools_and_checkers -v` | Complete |
+| **1.5 Human Review Queue & Kappa** | `core/review_queue.py`: `submit_human_review()`, `compute_cohens_kappa()` | `pytest tests/test_tier1.py::test_human_review_queue_and_score_override -v` | Complete |
+| **1.6 Environments, Stage Gates & SemVer** | `core/environments.py`: `promote_baseline()`, `suggest_semver()` | `pytest tests/test_tier1.py::test_environment_stage_gates_and_semver -v` | Complete |
+| **1.7 Automated Release Reports (HTML/PDF)** | `core/release_report.py`: `generate_release_report_html()`, `verify_report_numbers()` | `pytest tests/test_tier1.py::test_release_report_generation_and_number_verification -v` | Complete |
+
+---
+
+## 6. Tier 2 Engineering Modules (Architecture & Scalability)
+
+| Capability / Requirement | Implementation File & Function | Verification Command | Status |
+| :--- | :--- | :--- | :--- |
+| **2.1 Package & Standard Makefile** | `pyproject.toml`, `Makefile`, console command `regguard` | `regguard --help`, `make test` | Complete |
+| **2.2 Pydantic v2 Config & Alembic** | `core/config.py`: `AppSettings`, `alembic/versions/*` | `pytest tests/test_tier2.py::test_app_settings_validation_errors -v` | Complete |
+| **2.3 Local-First REST API** | `core/api.py`: FastAPI endpoints, `core/api_client.py`: `RegGuardClient` | `pytest tests/test_tier2.py::test_api_health_endpoint -v` | Complete |
+| **2.4 Extension Points & Plugins** | `core/plugins.py`: `@register_model_provider`, `@register_check` | `pytest tests/test_tier2.py::test_model_provider_plugin_registration -v` | Complete |
+| **2.5 Observability & Structured Logs** | `core/observability.py`: `StructuredJSONFormatter`, `MetricsRegistry` | `pytest tests/test_tier2.py::test_structured_logger_emission -v` | Complete |
+| **2.6 Security & Supply Chain Audit** | `core/security.py`: `safe_resolve_path()`, `docs/SECURITY_SCAN.md` | `pytest tests/test_tier2.py::test_safe_resolve_path_traversal_rejection -v` | Complete |
+| **2.7 Local Role-Based Access Control** | `core/auth.py`: `authenticate_user()`, `check_action_permitted()` | `pytest tests/test_tier2.py::test_rbac_permission_enforcement -v` | Complete |
+| **2.8 Containerization** | `Dockerfile` (multi-stage build), `docker-compose.yml` | `docker compose config` | Complete |
+| **2.9 Hypothesis Property Testing** | `tests/test_hypothesis_properties.py` (300+ randomized trials) | `pytest tests/test_hypothesis_properties.py -v` | Complete |
+| **2.9 Benchmark Scaling Curves** | `scripts/benchmark_scaling.py`, `results/scaling.md` | `python scripts/benchmark_scaling.py` | Complete |
+
+---
+
+## 7. Tier 3 Governance & Documentation Modules
+
+| Capability / Requirement | Implementation File & Artifact | Verification Command | Status |
+| :--- | :--- | :--- | :--- |
+| **3.1 Architecture Decision Records** | 8 ADRs in `docs/adr/` (`ADR-001` through `ADR-008`) | Inspection of `docs/adr/*.md` | Complete |
+| **3.2 Compliance Mapping** | `docs/COMPLIANCE_MAPPING.md` (NIST AI RMF, EU AI Act, ISO 42001) | Inspection of `docs/COMPLIANCE_MAPPING.md` | Complete |
+| **3.3 Operational Runbook & Community** | `docs/RUNBOOK.md`, `CONTRIBUTING.md`, `LICENSE`, `CHANGELOG.md` | Inspection of runbook & community docs | Complete |
+| **3.4 Business Case & Economic Value** | `docs/BUSINESS_CASE.md` (Measured costs, editable assumptions) | Inspection of `docs/BUSINESS_CASE.md` | Complete |
+| **3.5 Documentation Numbers Verification** | `scripts/check_docs_numbers.py` asserting zero discrepancy | `python scripts/check_docs_numbers.py` | Complete (100% Match) |

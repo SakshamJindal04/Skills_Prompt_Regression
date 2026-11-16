@@ -92,3 +92,23 @@ During this project, the agent environment made available the following speciali
 4. **Benchmarking & Scaling**: `python scripts/benchmark_scaling.py` executed for $N=10, 50, 100$ on SQLite and MySQL, confirming sub-millisecond per-test scaling.
 5. **Static Analysis & Linting**: `ruff check core/ app/ cli.py tests/` (0 errors), `mypy core/` (0 errors across 39 files).
 6. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **158/158 passed** on every run (Run 1: 20.65s, Run 2: 20.69s, Run 3: 20.72s).
+
+---
+
+## 6. Tier 3 Industry-Hardening QA Pass
+
+### Tool & Skill Applications
+| Skill / Tool | Domain Area | Specific Action | Deliverable / Result |
+| :--- | :--- | :--- | :--- |
+| **`writing-guidelines`** | Governance & Architecture Documentation | Authored 8 ADRs in `docs/adr/`, `docs/RUNBOOK.md`, `docs/BUSINESS_CASE.md`, and `docs/TIER_3_REPORT.md` adhering to factual technical guidelines without marketing hyperbole. | Comprehensive ADR and operational documentation suite. |
+| **Regulatory & Governance Standards** | Standards Mapping | Authored `docs/COMPLIANCE_MAPPING.md` mapping controls to NIST AI RMF 1.0, EU AI Act, and ISO/IEC 42001, strictly using "supports" and "aligns with". | Audit-ready regulatory alignment mapping. |
+| **`webapp-testing`** | Multi-Page Dashboard Testing | Expanded `tests/test_streamlit_pages.py` to cover all 18 views (including `15_Human_Review.py` and `16_Environments.py`), verified `AppTest` rendering with 10s timeouts. | 18/18 Streamlit views passing automated test harness. |
+| **Empirical Verification Standards** | Automated Documentation Auditing | Executed `scripts/check_docs_numbers.py` verifying that all quantitative claims in README and documentation match `results/` ground truth. | 100% numerical consistency verified. |
+
+### Tier 3 Execution Verification
+1. **8 Architecture Decision Records**: Verified in `docs/adr/` (`ADR-001` through `ADR-008`), each citing real experimental evidence from `results/`.
+2. **Compliance Mapping**: Verified in `docs/COMPLIANCE_MAPPING.md` across NIST AI RMF (Govern, Map, Measure, Manage), EU AI Act (Articles 9, 12, 14), and ISO/IEC 42001.
+3. **Operational Runbook**: Verified in `docs/RUNBOOK.md` covering architecture, operations, troubleshooting, disaster recovery backups, and model upgrades.
+4. **Business Case**: Verified in `docs/BUSINESS_CASE.md` with measured run costs ($0.00 API cost, ~27s golden run) and user-configurable sensitivity templates.
+5. **Documentation Number Checks**: `python scripts/check_docs_numbers.py` passed with 0 discrepancies.
+6. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **160/160 passed** on every run (Run 1: 21.25s, Run 2: 21.14s, Run 3: 20.86s).

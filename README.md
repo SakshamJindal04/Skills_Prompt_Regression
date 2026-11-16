@@ -12,39 +12,41 @@ We structured the core engine into modules where each component has a clear inpu
 
 ```mermaid
 flowchart TD
-    subgraph Sources["Sources"]
-        PR["prompts/*.md"]
-        SK["skills/*/SKILL.md"]
-        MOD["models.yaml"]
-        GT["tests_data/golden_tests.yaml"]
+    subgraph Sources["Sources & Configuration"]
+        PR["workspace/prompts/*.md"]
+        SK["workspace/skills/*/SKILL.md"]
+        CFG["policy.yaml & core/config.py"]
+        GT["tests_data/*.yaml (Golden, Analytics, Trajectories)"]
     end
 
     subgraph CoreEngine["Core Engine"]
-        V["versioner.py<br/>(Files + Model ID + Params -> Artifact ID + Manifest)"]
-        TG["testgen.py<br/>(Prompt/Skill Spec -> Rule + Inverse Rule Tests)"]
-        R["runner.py<br/>(Artifact ID + Test Case + k -> k Traces)"]
-        S["scorer.py<br/>(Trace + Check -> Pass/Fail + Score)"]
-        C["comparator.py<br/>(Baseline & Candidate Scores -> Flips, Delta, McNemar p-value)"]
-        G["gate.py + reporter.py<br/>(Comparison + Policy -> Verdict + report.md)"]
+        V["versioner.py & repo.py<br/>(Git Commits -> Content-Addressed Artifacts)"]
+        TG["testgen.py<br/>(Prompt Specs -> Rule & Adversarial Inverse Tests)"]
+        R["runner.py & agent.py<br/>(Local LLM + Deterministic Tools -> Traces)"]
+        S["checkers.py & scorer.py<br/>(AST/Regex/Exact/JSON -> Pass/Fail Scores)"]
+        C["comparator.py & decision_rules.py<br/>(McNemar, Non-Inf CI, Holm-Bonferroni, Odds Ratio)"]
+        D["drift_analysis.py<br/>(Semantic Cosine Sim, Latency p50/p95, Length Drift)"]
+        G["gate.py & bundle.py<br/>(Critical Invariants, Verdict, Sealed Replay Bundles)"]
+        RQ["review_queue.py & environments.py<br/>(Human Adjudication, Cohen's Kappa, Stage Gates)"]
     end
 
-    subgraph Storage["Storage"]
-        DB[("Database<br/>MySQL 8 / SQLite")]
-        TS["Trace Store<br/>(Replayable Traces)"]
-        BL["Baseline Registry<br/>(Active Baseline ID)"]
+    subgraph Storage["Storage & Persistence"]
+        DB[("Database<br/>MySQL 8 / SQLite (Alembic)")]
+        AL["Chained Audit Ledger<br/>(SHA-256 logs/audit.jsonl)"]
+        BDL["Sealed Replay Store<br/>(results/bundles/*.zip)"]
     end
 
-    subgraph Interfaces["Interfaces"]
-        CLI["CLI Gate<br/>(Exit code 1 on BLOCK)"]
-        DASH["Streamlit Dashboard<br/>(Multi-page)"]
-        ALERTS["Alerts<br/>(Log file, Webhook)"]
+    subgraph Interfaces["Interfaces & Services"]
+        CLI["CLI: regguard / cli.py<br/>(Exit code 1 on BLOCK, bundle, replay, power)"]
+        DASH["Streamlit Dashboard<br/>(16 Enterprise Pages)"]
+        API["FastAPI REST Service<br/>(127.0.0.1:8000 + Local Client Adapter)"]
+        REP["Release Reports<br/>(HTML & Headless Playwright PDF)"]
     end
 
     PR --> V
     SK --> V
-    MOD --> V
+    CFG --> V
     V --> DB
-    V --> BL
 
     PR --> TG
     SK --> TG
@@ -52,18 +54,23 @@ flowchart TD
 
     V --> R
     TG --> R
-    R --> TS
     R --> S
     S --> DB
 
     S --> C
-    BL --> C
+    S --> D
     C --> G
+    D --> G
+
+    G --> DB
+    G --> AL
+    G --> BDL
+    G --> RQ
 
     G --> CLI
     G --> DASH
-    G --> ALERTS
-    G --> BL
+    G --> API
+    G --> REP
 ```
 
 ### Module Contracts

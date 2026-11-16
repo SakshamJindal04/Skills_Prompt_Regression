@@ -156,5 +156,5 @@ with tab_metrics:
         st.markdown(f"- **Evaluated Pairs ($N$):** `{kappa_stats['n']}`")
         st.markdown(f"- **Observed Concordance ($P_o$):** `{kappa_stats['observed_agreement']:.4f}`")
         st.markdown(f"- **Hypothetical Chance Agreement ($P_e$):** `{kappa_stats['expected_agreement']:.4f}`")
-        st.markdown(f"- **Cohen's Kappa ($\kappa$):** `{kappa_stats['kappa']:.4f}`")
+        st.markdown(f"- **Cohen's Kappa ($\\kappa$):** `{kappa_stats['kappa']:.4f}`")
         st.markdown(f"- **Benchmark Classification:** `{kappa_stats['interpretation']}`")

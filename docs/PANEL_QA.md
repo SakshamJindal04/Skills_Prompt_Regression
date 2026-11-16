@@ -213,3 +213,31 @@ Both are well within production sub-millisecond to low-millisecond operating bud
 ### Q60: Where can the panel verify all claims and code?
 **Answer**: Every claim is mapped in `docs/REQUIREMENTS_TRACE.md`, verifiable via `docs/VERIFICATION.md`, and testable with `make test`, `python cli.py audit-verify`, and `python scripts/demo.py --quick`.
 
+
+---
+
+## Group 5: Industry Hardening & Enterprise Governance (Questions 61-68)
+
+### Q61: What are the four frozen decision rules in Tier 1, and why freeze them before evaluation?
+**Answer**: In `core/decision_rules.py`, we implemented and frozen: (a) Exact McNemar with critical invariants, (b) Non-inferiority bootstrap CI with a $-\text{margin}$ lower bound, (c) Holm-Bonferroni step-down FWER correction across slice tests, and (d) Discordant Odds Ratio ($OR^* = (b+0.5)/(c+0.5)$) with log-odds CI. Freezing these rules prior to evaluating the 26 prompt edits prevented post-hoc p-hacking or threshold tuning on test cases, ensuring scientific integrity.
+
+### Q62: How does offline bundle replay guarantee zero model call reproduction?
+**Answer**: `regguard bundle` packages the manifest, test suite checksum, model digest, random seeds, execution traces, individual scores, verdict, and report into a cryptographically sealed ZIP file. `regguard replay` reads the stored traces, re-evaluates the deterministic checkers, and recomputes discordant counts, McNemar p-value, and gate verdict with 0 LLM calls, asserting exact mathematical reproduction. Any tampering with stored files triggers a SHA-256 digest mismatch (`BundleTamperedError`).
+
+### Q63: How does the system evaluate agent tool trajectories without mock vulnerabilities?
+**Answer**: `core/agent.py` provides 3 deterministic, strictly local tools: an AST-based calculator (rejects `eval`/`exec`), a read-only document searcher across `data/sample_docs/`, and a strictly read-only SQLite database executor on `data/sample_agent.db`. The agent emits structured JSON actions (`{"thought": "...", "action": "...", "args": {...}}`), and the checker validates tool selection, argument schema, step count ($\le 5$), and absence of infinite identical-action loops across 40 trajectory benchmark tests.
+
+### Q64: How does multi-dimensional drift detection identify regressions that pass binary tests?
+**Answer**: `core/drift_analysis.py` evaluates 4 continuous dimensions: (1) pairwise semantic cosine similarity between baseline and candidate majority output embeddings via local `nomic-embed-text`; (2) call latency percentiles ($p_{50}, p_{95}$) with a 1,000-resample bootstrap CI of the difference; (3) output length token and character distribution ratios; and (4) wall-clock duration and call counts. This surfaces performance degradations (e.g. Llama 3.2 3B $p_{95}$ latency slowing to 6.386s from Qwen's 3.519s) even when outputs pass binary tests.
+
+### Q65: How does the system prevent path traversal attacks in local environments?
+**Answer**: In `core/security.py`, `safe_resolve_path()` resolves symlinks and relative paths, strictly asserting via `pathlib.Path.relative_to()` that the target path is strictly confined within the allowed repository boundary. Any attempt to traverse upward via `../` or escape via absolute paths raises `PathTraversalError`. Similarly, `safe_load_yaml()` uses `yaml.safe_load` exclusively after verifying boundary confinement.
+
+### Q66: How does the local RBAC system enforce separation of duties?
+**Answer**: In `core/auth.py`, local accounts are assigned roles (`author`, `reviewer`, `admin`) backed by PBKDF2 HMAC-SHA256 hashed credentials. Actions like production promotion (`promote_prod`), policy editing, and rollbacks require elevated permissions enforced by `check_action_permitted()`. Additionally, Change Requests enforce that `requester != approver`, preventing self-approval of changes into production.
+
+### Q67: How does the dual-backend architecture ensure zero-friction developer onboarding?
+**Answer**: `core/db.py` attempts a connection to production MySQL (e.g. in Docker Compose), and if unreachable, automatically falls back to local SQLite (`regression_manager.db`) without throwing errors or requiring configuration. Alembic auto-runs migrations on startup and verifies schema tables, allowing a new developer to clone the repository and run tests immediately without starting container services.
+
+### Q68: What property tests are executed using Hypothesis?
+**Answer**: In `tests/test_hypothesis_properties.py`, Hypothesis generates over 300 randomized fuzzing inputs to mathematically prove invariants: (1) Exact McNemar test symmetry ($\text{p-value}(b, c) == \text{p-value}(c, b)$ for all $b, c \ge 0$); (2) Monotonicity of the odds ratio with respect to regressions $b$; (3) Enclosure of sample pass-rate delta within bootstrap 95% confidence intervals; and (4) Monotonic step-down progression of Holm-Bonferroni significance thresholds.

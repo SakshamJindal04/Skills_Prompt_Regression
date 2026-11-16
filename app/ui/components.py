@@ -110,14 +110,21 @@ def verdict_banner(verdict: str, summary: str, p_value: Optional[float] = None, 
     st.markdown(html, unsafe_allow_html=True)
 
 
-def kpi_card(label: str, value: str, delta: Optional[str] = None, help_text: Optional[str] = None) -> None:
+def kpi_card(
+    label: str,
+    value: str,
+    delta: Optional[str] = None,
+    help_text: Optional[str] = None,
+    help: Optional[str] = None,
+) -> None:
     """Renders an enterprise KPI metric card with hover elevation."""
+    actual_help = help or help_text
     delta_html = ""
     if delta:
         delta_color = "var(--arm-success-text)" if ("+" in delta or "PROMOTE" in delta) else "var(--arm-danger-text)" if ("-" in delta or "BLOCK" in delta) else "var(--arm-text-muted)"
         delta_html = f"<div class='arm-kpi-delta' style='color: {delta_color};'>{delta}</div>"
 
-    help_attr = f"title='{help_text}'" if help_text else ""
+    help_attr = f"title='{actual_help}'" if actual_help else ""
     html = f"""
     <div class="arm-kpi-card" {help_attr}>
       <div class="arm-kpi-label">{label}</div>
