@@ -32,6 +32,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Change Requests")
@@ -147,6 +148,7 @@ with tab_list:
             for r in requests
         ]
         selected_req_label = st.selectbox("Select Change Request to Review:", options=req_labels)
+        source_caption("Source: Local MySQL database 'change_requests' table and policy.yaml rules.")
         selected_cr_id = int(selected_req_label.split()[1].replace("#", ""))
 
         selected_cr = get_change_request(selected_cr_id)

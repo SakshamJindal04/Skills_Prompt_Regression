@@ -26,6 +26,7 @@ from app.ui.components import (
     empty_state,
     section_card,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Slices & Simpson's Paradox")
@@ -145,8 +146,9 @@ if slices:
 
     df_slices = pd.DataFrame(slice_data)
     st.dataframe(df_slices, use_container_width=True, hide_index=True)
+    source_caption("Source: Local MySQL database 'scores' partitioned by slice tags from tests_data/golden_tests.yaml.")
 
-    # Plotly bar chart with custom styling and WCAG-safe palette
+    # Plotly bar chart with custom styling and Natural Palette
     df_plot = pd.DataFrame(plot_data)
     fig = px.bar(
         df_plot,
@@ -154,9 +156,9 @@ if slices:
         y="Delta (%)",
         color="Status",
         color_discrete_map={
-            "REGRESSED": "#DC2626",
-            "IMPROVED": "#16A34A",
-            "STABLE": "#64748B",
+            "REGRESSED": "#B4483C",
+            "IMPROVED": "#4C8A5E",
+            "STABLE": "#5B665F",
         },
         title="Pass Rate Delta (%) Across Evaluation Slices",
     )
@@ -166,7 +168,7 @@ if slices:
         legend=dict(title=dict(text="Slice Status")),
     )
     st.plotly_chart(fig, use_container_width=True)
-    st.caption("Figure: Sliced delta performance. Slices with <= -10.0% delta trigger strict slice regression flags.")
+    source_caption("Source: Local paired comparison across slices. Evaluates localized degradation independently from aggregate pass rates.")
 
 labelled_divider("Simpson's Paradox Analysis")
 

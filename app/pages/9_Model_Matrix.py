@@ -27,6 +27,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Model Matrix")
@@ -109,6 +110,7 @@ if summary_csv.exists():
         )
         fig_heat.update_layout(template=get_plotly_template(), height=450)
         st.plotly_chart(fig_heat, use_container_width=True)
+        source_caption("Source: results/model_summary.csv. Matrix of empirical pass rates across models and prompt tasks.")
 
     labelled_divider("Latency & Consistency Comparison")
     col_lat, col_cons = st.columns(2)
@@ -121,10 +123,12 @@ if summary_csv.exists():
             barmode="group",
             title="Mean Latency (s) by Prompt and Model",
             labels={"mean_latency_s": "Mean Latency (s)", "prompt_target": "Prompt Target"},
-            color_discrete_sequence=["#3B82F6", "#10B981", "#F59E0B"],
+            color_discrete_sequence=["#3F6B57", "#3E6E8C", "#B8862B"],
         )
         fig_lat.update_layout(template=get_plotly_template())
         col_lat.plotly_chart(fig_lat, use_container_width=True)
+        with col_lat:
+            source_caption("Source: results/model_summary.csv. Mean end-to-end execution latency per call.")
 
     with col_cons:
         fig_cons = px.bar(
@@ -135,10 +139,12 @@ if summary_csv.exists():
             barmode="group",
             title="Run-to-Run Consistency Score",
             labels={"consistency": "Consistency", "prompt_target": "Prompt Target"},
-            color_discrete_sequence=["#3B82F6", "#10B981", "#F59E0B"],
+            color_discrete_sequence=["#3F6B57", "#3E6E8C", "#B8862B"],
         )
         fig_cons.update_layout(template=get_plotly_template())
         col_cons.plotly_chart(fig_cons, use_container_width=True)
+        with col_cons:
+            source_caption("Source: results/model_summary.csv. Run-to-run consistency across k=5 repetitions.")
 
     labelled_divider("Model Performance Matrix")
     format_df = df_sum.copy()
@@ -167,7 +173,7 @@ if summary_csv.exists():
         "verdict",
     ]
     st.dataframe(format_df[display_cols], use_container_width=True, hide_index=True)
-    st.caption("Source: results/model_summary.csv | Models: qwen2.5:3b, llama3.2:3b, gemma2:2b | Repetitions: k=5 | Temperature: 0.0")
+    source_caption("Source: results/model_summary.csv. Evaluated on qwen2.5:3b, llama3.2:3b, gemma2:2b with k=5 repetitions.")
 
 else:
     empty_state(
@@ -251,6 +257,7 @@ if judge_json.exists():
             "Deterministic Fail (D=0)": [conf.get("fp", 0), conf.get("tn", 0)],
         }, index=["Judge Pass (J=1)", "Judge Fail (J=0)"])
         st.table(mat_df)
+        source_caption("Source: results/judge_calibration.json. 2x2 contingency matrix comparing deterministic checks to gemma2:2b judge.")
 
         if judge_md.exists():
             with st.expander(":material/description: Full Judge Calibration Report Markdown", expanded=False):

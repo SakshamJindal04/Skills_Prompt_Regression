@@ -34,6 +34,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Panel Lab")
@@ -185,6 +186,7 @@ with tab_lab:
         lint_findings = res.get("lint_v1", [])
         if lint_findings:
             st.dataframe(pd.DataFrame(lint_findings), use_container_width=True, hide_index=True)
+            source_caption("Source: Local static prompt lint analysis (core/lint.py). Specification and security checks.")
         else:
             st.success("Clean: Zero static lint warnings or injection vulnerabilities detected.")
 
@@ -192,6 +194,7 @@ with tab_lab:
         rule_df = pd.DataFrame(res.get("rule_summary", []))
         if not rule_df.empty:
             st.dataframe(rule_df, use_container_width=True, hide_index=True)
+            source_caption("Source: Local synthetic rule evaluation based on input prompt specifications.")
 
         if res.get("v2_comparison"):
             v2 = res["v2_comparison"]
@@ -242,6 +245,7 @@ with tab_lab:
         if not traces_df.empty:
             cols_to_show = [c for c in ["test_id", "input", "output", "passed", "latency_ms"] if c in traces_df.columns]
             st.dataframe(traces_df[cols_to_show], use_container_width=True, hide_index=True)
+            source_caption("Source: Local Ollama execution traces with latency and assertion verification.")
 
         labelled_divider("Save & Export Artifacts")
         col_s1, col_s2 = st.columns(2)

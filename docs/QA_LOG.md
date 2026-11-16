@@ -112,3 +112,26 @@ During this project, the agent environment made available the following speciali
 4. **Business Case**: Verified in `docs/BUSINESS_CASE.md` with measured run costs ($0.00 API cost, ~27s golden run) and user-configurable sensitivity templates.
 5. **Documentation Number Checks**: `python scripts/check_docs_numbers.py` passed with 0 discrepancies.
 6. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **160/160 passed** on every run (Run 1: 21.25s, Run 2: 21.14s, Run 3: 20.86s).
+
+
+---
+
+## 7. UI Refinement QA Pass (`ui-refine`)
+
+### Tool & Skill Applications
+| Skill / Tool | Domain Area | Specific Action | Deliverable / Result |
+| :--- | :--- | :--- | :--- |
+| **`frontend-design` & `design-taste-frontend`** | Natural Palette & Typography | Enforced calm natural palette tokens (sage `#3F6B57`, slate `#3E6E8C`, amber `#E4B661`, terracotta `#B4483C`), system typography stack, tabular numerals (`tabular-nums`), 8px spacing scale, and 1280px max content width. | Cohesive, calm enterprise aesthetic with zero generic gradients. |
+| **`web-design-guidelines`** | Ergonomics & Layout Structure | Standardized section cards, maximum 4-5 KPI cards per row, sentence-case labels, explicit measurement units (`s`, `ms`, `%`, `count`), dual-encoded status indicators (icon + text), and source captions beneath every chart and table. | Clean information hierarchy and transparent data sourcing. |
+| **`a11y-debugging` / `axe-core`** | Accessibility & Contrast Compliance | Created `scripts/check_contrast.py` verifying WCAG 2.1 AA $\ge 4.5:1$ for all text/background pairs (calibrated warning text to `#5D3C00` yielding 5.29:1). Verified visible focus rings and minimum 32px click targets. | 100% WCAG 2.1 AA compliance across light and dark modes. |
+| **`webapp-testing`** | Automated Multi-Viewport Verification | Executed Playwright Chromium capture of 34 full-page "before" screenshots across 17 views in light and dark modes. Verified headless Streamlit `AppTest` execution with 0 exceptions and 0 browser console errors. | Automated verification across 1280x800, 1440x900, and 1920x1080. |
+| **`writing-guidelines`** | Documentation & Design System Specs | Authored `docs/UI_STYLE_GUIDE.md`, `docs/UI_GUIDE.md`, `docs/UI_CHANGELOG.md`, and `docs/UI_VERIFICATION.md` with factual component documentation and zero speculative claims. | Complete design system and page-by-page operational guide. |
+
+### UI Refinement Execution Verification
+1. **WCAG 2.1 AA Color Contrast**: `python scripts/check_contrast.py` verified 25/25 color pairs meet or exceed 4.5:1 for normal text (min 4.88:1, max 14.84:1).
+2. **Automated Axe Accessibility Audit**: `python scripts/audit_accessibility_axe.py` verified 34/34 evaluations (17 views in light and dark mode) with **0 critical and 0 serious violations**.
+3. **Multi-Viewport Visual Capture**: `python scripts/capture_ui_screenshots.py` captured 102 full-page PNGs in `docs/screenshots/after/` across 17 views $\times$ 2 themes $\times$ 3 viewports (`1280x800`, `1440x900`, `1920x1080`) with 0 console errors.
+4. **Time to Usable Content**: Measured across all 17 views averaging 624.7 ms ($< 700$ ms everywhere, well below the 2.0s threshold).
+5. **Interaction & Fragment Stability**: `python scripts/test_ui_interactions.py` verified 8 interactive flows with 0 white flashes, 0 scroll jumps, and sub-450ms latency.
+6. **Documentation Numbers Check**: `python scripts/check_docs_numbers.py` confirmed 100% data consistency against `results/` ground truth.
+7. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **160/160 passed** on every run (Run 1: 24.88s, Run 2: 21.26s, Run 3: 20.73s).

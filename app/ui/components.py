@@ -35,7 +35,7 @@ def page_header(title: str, subtitle: Optional[str] = None) -> None:
     """Renders a standardized enterprise page header with clear hierarchy."""
     st.markdown(f"## {title}")
     if subtitle:
-        st.caption(subtitle)
+        st.markdown(f"<p class='arm-page-subtitle' style='color: var(--arm-text-muted) !important;'>{subtitle}</p>", unsafe_allow_html=True)
     st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
 
 
@@ -147,7 +147,7 @@ def labelled_divider(label: str) -> None:
     st.markdown(
         f"""
         <div style="display: flex; align-items: center; margin: 24px 0 16px 0;">
-          <span style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arm-text-caption); padding-right: 12px;">{label}</span>
+          <span style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arm-text-muted); padding-right: 12px;">{label}</span>
           <div style="flex: 1; height: 1px; background: var(--arm-border);"></div>
         </div>
         """,
@@ -198,6 +198,16 @@ def section_card(title: str, subtitle: Optional[str] = None) -> None:
         """,
         unsafe_allow_html=True,
     )
+
+
+def source_caption(text: str) -> None:
+    """Renders an italic source caption directly beneath charts and tables."""
+    st.markdown(f'<div class="arm-source-caption">{text}</div>', unsafe_allow_html=True)
+
+
+def skeleton_card(height: int = 100) -> None:
+    """Renders a soft shimmer placeholder while data loads."""
+    st.markdown(f'<div class="arm-skeleton" style="height: {height}px; margin-bottom: 16px;"></div>', unsafe_allow_html=True)
 
 
 def stat_row(items: List[Dict[str, str]]) -> None:
@@ -294,7 +304,7 @@ def top_bar() -> None:
           <span>Policy:</span> <span class="arm-mono">v{status['policy_version']}</span>
         </div>
         <div class="arm-top-item">
-          <span>Last Gate:</span> <b>{status['last_verdict']}</b> <span style="opacity: 0.7;">({status['last_run_time']})</span>
+          <span>Last Gate:</span> <b>{status['last_verdict']}</b> <span style="color: var(--arm-text-muted);">({status['last_run_time']})</span>
         </div>
       </div>
     </div>

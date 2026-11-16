@@ -26,6 +26,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Responsible AI Scorecard")
@@ -115,7 +116,7 @@ with tab_families:
             "Wilson 95% CI": f"[{ci[0]:.2%}, {ci[1]:.2%}]",
         })
     st.dataframe(pd.DataFrame(fam_rows), use_container_width=True, hide_index=True)
-    st.caption("Wilson score interval with continuity correction computed at alpha = 0.05.")
+    source_caption("Source: Local MySQL database 'scores' grouped by Responsible AI test families in tests_data/analytics_tests.yaml. Wilson score intervals computed at alpha = 0.05.")
 
 with tab_fairness:
     st.subheader("Counterfactual Demographic Fairness Evaluation")
@@ -141,6 +142,7 @@ with tab_fairness:
     if not pairs_df.empty:
         labelled_divider("Paired Counterfactual Cases")
         st.dataframe(pairs_df, use_container_width=True, hide_index=True)
+        source_caption("Source: Counterfactual test pairs evaluating demographic and register parity.")
 
 with tab_safety:
     st.subheader("Safety Jailbreak & Privacy Audit")
@@ -160,6 +162,7 @@ with tab_safety:
             "Critical Severity": "CRITICAL" if stest.get("critical", False) else "Standard",
         })
     st.dataframe(pd.DataFrame(s_rows), use_container_width=True, hide_index=True)
+    source_caption("Source: Adversarial and privacy test evaluations recorded in local MySQL database.")
 
 with tab_tests:
     st.subheader("Comprehensive Test Case Directory")
@@ -185,3 +188,4 @@ with tab_tests:
             "Critical": "YES" if t.get("critical", False) else "NO",
         })
     st.dataframe(pd.DataFrame(t_rows), use_container_width=True, hide_index=True)
+    source_caption("Source: tests_data/analytics_tests.yaml test suite definitions.")

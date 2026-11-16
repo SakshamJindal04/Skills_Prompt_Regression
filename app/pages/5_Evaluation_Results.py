@@ -24,6 +24,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Evaluation Results")
@@ -75,7 +76,7 @@ if csv_path.exists():
 
     labelled_divider("Benchmark Comparison Table")
     st.dataframe(df_summary, use_container_width=True, hide_index=True)
-    st.caption("Source: results/summary.csv | Run conditions: N=18 injected regressions, N=8 benign controls, k=5 repetitions, B=1,000 bootstrap iterations.")
+    source_caption("Source: results/summary.csv. Evaluated across N=18 injected regressions, N=8 benign controls, k=5 repetitions, B=1,000 bootstrap iterations.")
 
     # Detection metrics grouped bar chart
     fig_f1 = px.bar(
@@ -84,7 +85,7 @@ if csv_path.exists():
         y=["Precision", "Recall", "F1"],
         barmode="group",
         title="Detection Precision, Recall, and F1 by Strategy",
-        color_discrete_sequence=["#3B82F6", "#10B981", "#6366F1"],
+        color_discrete_sequence=["#3F6B57", "#3E6E8C", "#B8862B"],
     )
     fig_f1.update_layout(
         template=get_plotly_template(),
@@ -93,6 +94,7 @@ if csv_path.exists():
         legend=dict(title=dict(text="Metric")),
     )
     st.plotly_chart(fig_f1, use_container_width=True)
+    source_caption("Source: Empirical evaluation summary comparing detection precision, recall, and F1 across 5 regression detection strategies.")
 
     # Latency and cost comparisons
     col_c1, col_c2 = st.columns(2)
@@ -103,7 +105,7 @@ if csv_path.exists():
             x="Method",
             y=lat_col,
             title=f"Mean Latency ({'seconds' if 's' in lat_col else 'ms'})",
-            color_discrete_sequence=["#F59E0B"],
+            color_discrete_sequence=["#3E6E8C"],
         )
         fig_lat.update_layout(
             template=get_plotly_template(),
@@ -111,6 +113,8 @@ if csv_path.exists():
             yaxis=dict(title=dict(text="Latency")),
         )
         col_c1.plotly_chart(fig_lat, use_container_width=True)
+        with col_c1:
+            source_caption("Source: Mean end-to-end execution latency per validation check in results/summary.csv.")
 
     cost_col = "Measured_Calls" if "Measured_Calls" in df_summary.columns else ("Cost_calls" if "Cost_calls" in df_summary.columns else None)
     if cost_col:
@@ -119,7 +123,7 @@ if csv_path.exists():
             x="Method",
             y=cost_col,
             title="Measured Model Calls per Check",
-            color_discrete_sequence=["#8B5CF6"],
+            color_discrete_sequence=["#B8862B"],
         )
         fig_cost.update_layout(
             template=get_plotly_template(),
@@ -127,6 +131,8 @@ if csv_path.exists():
             yaxis=dict(title=dict(text="Calls per Check")),
         )
         col_c2.plotly_chart(fig_cost, use_container_width=True)
+        with col_c2:
+            source_caption("Source: Measured LLM inference calls dispatched per evaluation run.")
 
     labelled_divider("Summary Report & Raw Exports")
     if md_path.exists():

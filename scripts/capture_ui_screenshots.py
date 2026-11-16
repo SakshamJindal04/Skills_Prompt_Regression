@@ -1,19 +1,19 @@
 """
 Automated Playwright Screenshot and Console Error Verification Script.
-Captures full-page screenshots of all 15 dashboard views across:
+Captures full-page screenshots of all 17 dashboard views across:
 - Light and Dark modes
-- 1440x900 and 1920x1080 viewport resolutions
+- 1280x800, 1440x900 and 1920x1080 viewport resolutions
 Verifies that 0 browser console errors are raised across all views.
 """
 
+import sys
+import argparse
 import time
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SCREENSHOT_DIR = BASE_DIR / "docs" / "screenshots"
-SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
 
 PAGES = [
     {"slug": "00_overview", "nav": "System Overview", "name": "System Overview"},
@@ -31,9 +31,12 @@ PAGES = [
     {"slug": "12_test_health", "nav": "Test Health & Flakiness", "name": "Test Health"},
     {"slug": "13_deliverables", "nav": "Deliverables Verification", "name": "Deliverables Verification"},
     {"slug": "14_project_scorecard", "nav": "Project Scorecard", "name": "Project Scorecard"},
+    {"slug": "15_human_review", "nav": "Human Review Queue", "name": "Human Review Queue"},
+    {"slug": "16_environments", "nav": "Environments & Releases", "name": "Environments & Releases"},
 ]
 
 RESOLUTIONS = [
+    {"name": "1280x800", "width": 1280, "height": 800},
     {"name": "1440x900", "width": 1440, "height": 900},
     {"name": "1920x1080", "width": 1920, "height": 1080},
 ]
@@ -41,9 +44,13 @@ RESOLUTIONS = [
 THEMES = ["light", "dark"]
 
 
-def run_capture():
+def run_capture(target_dir: Path, quick: bool = False):
+    target_dir.mkdir(parents=True, exist_ok=True)
+    active_resolutions = [RESOLUTIONS[1]] if quick else RESOLUTIONS
+
     results = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
+        "target_dir": str(target_dir),
         "pages_tested": len(PAGES),
         "screenshots_captured": 0,
         "load_times_ms": {},
@@ -51,13 +58,13 @@ def run_capture():
         "status": "PASS",
     }
 
-    print(f"Starting Playwright UI Verification & Capture across {len(PAGES)} pages...")
+    print(f"Starting Playwright UI Capture across {len(PAGES)} pages -> {target_dir}...")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
 
         for theme in THEMES:
-            for res in RESOLUTIONS:
+            for res in active_resolutions:
                 res_name = res["name"]
                 print(f"\n--- Testing Theme: {theme.upper()} | Viewport: {res_name} ---")
 
@@ -67,13 +74,10 @@ def run_capture():
                 )
 
                 page = context.new_page()
-
-                # Track browser console errors per page
                 errors_for_context = []
 
                 def on_console(msg):
                     if msg.type in ("error", "assert"):
-                        # Filter out favicon or harmless deprecation warnings
                         text = msg.text
                         if "favicon.ico" not in text and "use_container_width" not in text:
                             errors_for_context.append(f"[{msg.type}] {text}")
@@ -86,7 +90,7 @@ def run_capture():
 
                 # Cold load root
                 page.goto("http://localhost:8501/", wait_until="networkidle", timeout=30000)
-                page.wait_for_timeout(500)
+                page.wait_for_timeout(600)
 
                 for page_info in PAGES:
                     slug = page_info["slug"]
@@ -94,11 +98,9 @@ def run_capture():
                     errors_for_context.clear()
 
                     t0 = time.time()
-                    # Click on sidebar link
                     link = page.locator("[data-testid='stSidebar'] a").filter(has_text=nav_text).first
                     link.click()
 
-                    # Wait for network idle and Streamlit rerun
                     page.wait_for_load_state("networkidle")
                     page.wait_for_timeout(600)
                     t_load = (time.time() - t0) * 1000
@@ -107,7 +109,7 @@ def run_capture():
                         results["load_times_ms"][slug] = round(t_load, 1)
 
                     img_name = f"{slug}_{theme}_{res_name}.png"
-                    img_path = SCREENSHOT_DIR / img_name
+                    img_path = target_dir / img_name
 
                     page.screenshot(path=str(img_path), full_page=True)
                     results["screenshots_captured"] += 1
@@ -124,18 +126,16 @@ def run_capture():
         browser.close()
 
     error_count = sum(len(errs) for errs in results["console_errors"].values())
-    if error_count > 0:
-        results["status"] = "FAIL"
-        print(f"\nVerification FAILED: {error_count} console errors detected.")
-    else:
-        results["status"] = "PASS"
-        print(f"\nVerification PASSED: {results['screenshots_captured']} screenshots captured with 0 console errors!")
-
-    log_path = BASE_DIR / "docs" / "PLAYWRIGHT_AUDIT.json"
-    log_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
-    print(f"Audit log saved to {log_path}")
+    results["status"] = "PASS" if error_count == 0 else "FAIL"
+    print(f"\nCompleted: {results['screenshots_captured']} screenshots captured into {target_dir} (Status: {results['status']}).")
     return results
 
 
 if __name__ == "__main__":
-    run_capture()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--target-dir", default="docs/screenshots/before", help="Output directory for screenshots")
+    parser.add_argument("--quick", action="store_true", help="Capture single resolution (1440x900) for faster capture")
+    args = parser.parse_args()
+
+    out_dir = BASE_DIR / args.target_dir
+    run_capture(out_dir, quick=args.quick)

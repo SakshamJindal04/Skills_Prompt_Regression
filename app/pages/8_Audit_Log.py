@@ -29,6 +29,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Audit Log")
@@ -147,6 +148,7 @@ else:
     ])
 
     st.dataframe(df_logs, use_container_width=True, hide_index=True)
+    source_caption("Source: Local append-only cryptographically chained logs/audit.jsonl and MySQL database 'audit_logs' table.")
 
     labelled_divider("Detailed Audit Record Inspector")
     log_ids = [row["id"] for row in logs]

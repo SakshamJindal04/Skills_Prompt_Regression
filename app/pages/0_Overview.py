@@ -28,11 +28,13 @@ from app.ui.components import (
     copyable_hash,
     labelled_divider,
     empty_state,
+    source_caption,
 )
 
 safe_set_page_config("System Overview")
 init_theme()
 init_db()
+top_bar()
 
 page_header(
     "System Overview & Health Dashboard",
@@ -159,6 +161,7 @@ with col_trend:
         )
         fig_t.update_layout(template=get_plotly_template(is_dark=False), height=340)
         st.plotly_chart(fig_t, use_container_width=True)
+        source_caption("Source: Local MySQL database 'scores' and 'artifacts' tables. Pass rate reflects majority-vote consensus per registered artifact.")
     else:
         empty_state("No version score history recorded yet.", "Run evaluation benchmarks or live tests to build historical trends.")
 
@@ -183,6 +186,7 @@ with col_recent:
                 "Time (UTC)": ts_str,
             })
         st.dataframe(pd.DataFrame(comp_rows), use_container_width=True, hide_index=True)
+        source_caption("Source: Local MySQL database 'comparisons' table. Records paired statistical regression evaluations.")
     else:
         empty_state("No comparisons recorded yet.", "Compare a candidate version against the baseline in Run Comparison.")
 
@@ -260,6 +264,7 @@ for m_id, m_info in configured_models.items():
 if model_table_rows:
     st.subheader("Configured Pipeline Models")
     st.dataframe(pd.DataFrame(model_table_rows), use_container_width=True, hide_index=True)
+    source_caption("Source: Local models.yaml configuration and Ollama daemon (/api/tags and /api/show).")
 
 # Loaded Models in RAM / VRAM
 loaded_models = default_client.get_loaded_models()
@@ -275,6 +280,7 @@ if loaded_models:
             "Expires At": lm.get("expires_at", "N/A"),
         })
     st.dataframe(pd.DataFrame(loaded_rows), use_container_width=True, hide_index=True)
+    source_caption("Source: Local Ollama daemon resident process endpoint (/api/ps). Reflects active memory consumption.")
 
 if last_comp and last_comp.report_md:
     labelled_divider("Latest Gate Evaluation Report")

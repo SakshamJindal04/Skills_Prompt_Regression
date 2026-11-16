@@ -36,6 +36,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Skill Activation")
@@ -127,6 +128,7 @@ with tab_try:
                 yaxis=dict(autorange="reversed", title=dict(text="Candidate Skill")),
             )
             st.plotly_chart(fig_cand, use_container_width=True)
+            source_caption("Source: Local nomic-embed-text cosine similarity scores against registered skill vectors.")
 
         labelled_divider("Live Agent Response Output")
         st.code(output, language="text")
@@ -162,6 +164,7 @@ with tab_overlap:
             height=550,
         )
         st.plotly_chart(fig_heat, use_container_width=True)
+        source_caption("Source: Local pairwise embedding cosine similarity across workspace/skills/ SKILL.md files.")
 
         labelled_divider("Ambiguity & Collision Alerts")
         if overlaps:
@@ -206,6 +209,7 @@ with tab_eval:
                 for r in res_list
             ])
             st.dataframe(df_res, use_container_width=True, hide_index=True)
+            source_caption("Source: 120-task benchmark in tests_data/skill_benchmarks.yaml executed against local router.")
 
             emb_res = next((r for r in res_list if r["method"] == "embedding"), res_list[0])
             labelled_divider("Category Breakdown (Embedding Router)")
@@ -219,6 +223,7 @@ with tab_eval:
                     "Top-3 Accuracy": f"{c_data['top3_accuracy'] * 100:.1f}%",
                 })
             st.dataframe(pd.DataFrame(cat_rows), use_container_width=True, hide_index=True)
+            source_caption("Source: Per-category accuracy breakdown from 120-task skill benchmark dataset.")
 
             confs = emb_res.get("top_confusions", [])
             if confs:
@@ -254,6 +259,7 @@ with tab_scale:
             legend=dict(title=dict(text="Metric")),
         )
         st.plotly_chart(fig_scale, use_container_width=True)
+        source_caption("Source: Scalability profiling across N=6, 12, 24 skills using local in-memory embeddings.")
 
 with tab_registry:
     st.subheader(f"Registered Skills Catalog ({len(skills)} Active)")

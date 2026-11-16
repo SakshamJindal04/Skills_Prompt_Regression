@@ -24,6 +24,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Test Health")
@@ -91,6 +92,7 @@ with tab_flaky:
     flaky = health_data["flaky"]
     if flaky:
         st.dataframe(pd.DataFrame(flaky), use_container_width=True, hide_index=True)
+        source_caption("Source: Local MySQL database 'scores' table analyzed across repeated test iterations.")
     else:
         st.success("Zero flaky tests detected across repeated runs.")
 
@@ -100,6 +102,7 @@ with tab_quarantine:
     quarantined = health_data["quarantined"]
     if quarantined:
         st.dataframe(pd.DataFrame(quarantined), use_container_width=True, hide_index=True)
+        source_caption("Source: Policy quarantine rule evaluating consistency threshold in policy.yaml.")
     else:
         st.info("No test assertions currently meet the quarantine threshold.")
 
@@ -116,6 +119,7 @@ with tab_always:
                 use_container_width=True,
                 hide_index=True,
             )
+            source_caption("Source: Empirical pass-rate profiling across all test runs in MySQL database.")
     with col_f:
         st.subheader("Always Fail Tests (Unachievable or Broken)")
         st.caption("Tests with 0% pass rate indicating outdated specs or impossible invariants.")
@@ -127,6 +131,7 @@ with tab_always:
                 use_container_width=True,
                 hide_index=True,
             )
+            source_caption("Source: Empirical pass-rate profiling across all test runs in MySQL database.")
 
 with tab_stale:
     st.subheader("Stale Test Assertions")
@@ -134,5 +139,6 @@ with tab_stale:
     stale = health_data["stale"]
     if stale:
         st.dataframe(pd.DataFrame(stale), use_container_width=True, hide_index=True)
+        source_caption("Source: Git commit revision history in workspace/ correlated with test metadata.")
     else:
         st.success("All test cases remain synchronized with recent prompt revisions.")

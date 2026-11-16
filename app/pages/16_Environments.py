@@ -22,6 +22,7 @@ from app.ui.components import (
     empty_state,
     labelled_divider,
     copyable_hash,
+    source_caption,
 )
 from core.environments import (
     get_environment_baselines,
@@ -153,6 +154,7 @@ with tab_compat:
         use_container_width=True,
         hide_index=True,
     )
+    source_caption("Source: Local multi-model benchmarks in results/model_matrix.csv and registered skills.")
 
 with tab_notes:
     st.markdown("#### Automated Semantic Versioning & Release Notes")

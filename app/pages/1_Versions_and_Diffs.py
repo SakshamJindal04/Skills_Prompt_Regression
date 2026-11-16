@@ -26,6 +26,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Versions & Diffs")
@@ -64,6 +65,7 @@ with tab_list:
                 "Modified Files": files_str,
             })
         st.dataframe(pd.DataFrame(commit_rows), use_container_width=True, hide_index=True)
+        source_caption("Source: Local Git repository in workspace/. Immutable commit log history.")
     else:
         empty_state("No Git commits found in workspace/.", "Use the Edit & Commit tab to commit your first prompt or skill.")
 
@@ -86,6 +88,7 @@ with tab_list:
             for a in art_dicts
         ])
         st.dataframe(df_art, use_container_width=True, hide_index=True)
+        source_caption("Source: Local MySQL database 'artifacts' table. Content-addressed manifests.")
     else:
         empty_state("No database artifacts recorded.", "Artifacts are automatically registered upon commit or test execution.")
 
@@ -112,11 +115,11 @@ with tab_diff:
             formatted_lines = []
             for line in diff_lines:
                 if line.startswith("+") and not line.startswith("+++"):
-                    formatted_lines.append(f"<div style='background: #ECFDF5; color: #047857; padding: 1px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem;'>{line}</div>")
+                    formatted_lines.append(f"<div style='background: var(--arm-success-bg); color: var(--arm-success-text); padding: 1px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem;'>{line}</div>")
                 elif line.startswith("-") and not line.startswith("---"):
-                    formatted_lines.append(f"<div style='background: #FEF2F2; color: #B91C1C; padding: 1px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem;'>{line}</div>")
+                    formatted_lines.append(f"<div style='background: var(--arm-danger-bg); color: var(--arm-danger-text); padding: 1px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem;'>{line}</div>")
                 elif line.startswith("@@"):
-                    formatted_lines.append(f"<div style='background: #EFF6FF; color: #1D4ED8; padding: 2px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem; font-weight: 600;'>{line}</div>")
+                    formatted_lines.append(f"<div style='background: var(--arm-info-bg); color: var(--arm-info-text); padding: 2px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem; font-weight: 600;'>{line}</div>")
                 else:
                     safe_l = line if line.strip() else "&nbsp;"
                     formatted_lines.append(f"<div style='padding: 1px 8px; font-family: var(--arm-font-mono); font-size: 0.85rem; color: var(--arm-text);'>{safe_l}</div>")
@@ -125,6 +128,7 @@ with tab_diff:
                 f"<div style='border: 1px solid var(--arm-border); border-radius: var(--arm-radius-md); overflow-x: auto; padding: 8px 0; background: var(--arm-surface);'>{''.join(formatted_lines)}</div>",
                 unsafe_allow_html=True,
             )
+            source_caption("Source: Local Git diff between selected commits in workspace/.")
         else:
             st.info("Identical file contents detected: zero textual differences between these two commits.")
 
@@ -200,6 +204,7 @@ with tab_lint:
                 for f in findings
             ])
             st.dataframe(df_findings, use_container_width=True, hide_index=True)
+            source_caption("Source: Local static lint analysis (core/lint.py) of target prompt/skill content.")
         else:
             st.success("Clean: Zero static lint violations detected. Conforms to quality and safety standards.")
     else:

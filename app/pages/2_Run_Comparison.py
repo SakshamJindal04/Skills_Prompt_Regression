@@ -32,6 +32,7 @@ from app.ui.components import (
     labelled_divider,
     empty_state,
     error_panel,
+    source_caption,
 )
 
 safe_set_page_config("Run Comparison")
@@ -336,6 +337,7 @@ with tab_slices:
             for s in slices_list
         ])
         st.dataframe(df_sl, use_container_width=True, hide_index=True)
+        source_caption("Source: Local test results segmented by tag/slice metadata in tests_data/golden_tests.yaml.")
     else:
         empty_state("No slice metadata defined on the evaluated tests.")
 
@@ -369,6 +371,7 @@ with tab_ablation:
                     for imp in impacts
                 ])
                 st.dataframe(df_imp, use_container_width=True, hide_index=True)
+                source_caption("Source: Local ablation runner testing single-file reverts against baseline test suite.")
     else:
         empty_state("Need at least two Git commits in workspace to execute ablation.")
 

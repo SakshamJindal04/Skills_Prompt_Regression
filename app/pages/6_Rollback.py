@@ -34,6 +34,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Rollback Workflow")
@@ -203,6 +204,7 @@ if art_list:
             use_container_width=True,
             hide_index=True,
         )
+        source_caption("Source: Local MySQL database 'scores' table for post-rollback verification.")
     else:
         empty_state(
             "No test runs recorded for this artifact.",

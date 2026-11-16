@@ -21,6 +21,7 @@ from app.ui.components import (
     status_chip,
     empty_state,
     labelled_divider,
+    source_caption,
 )
 from core.review_queue import (
     list_review_items,
@@ -132,6 +133,7 @@ with tab_history:
             for it in reviewed_items
         ])
         st.dataframe(df_history, use_container_width=True, hide_index=True)
+        source_caption("Source: Local MySQL database 'human_reviews' table and audit ledger.")
 
 with tab_metrics:
     st.markdown("#### LLM Judge vs Human Inter-Rater Reliability")
@@ -150,6 +152,7 @@ with tab_metrics:
             ]
         ).set_index("Judge")
         st.table(df_cm)
+        source_caption("Source: Contingency table of paired Human Reviewer vs LLM Judge classifications.")
 
     with mc2:
         st.markdown("**Statistical Coefficients:**")

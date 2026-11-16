@@ -1,6 +1,7 @@
 """
 Theme and design tokens for the Skill & Prompt Regression Manager.
 Enforces local-first fonts, WCAG AA contrast, and unified Plotly visualization styling.
+Calm Natural Palette: Sage green (#3F6B57), Slate blue (#3E6E8C), Amber (#B8862B / #E4B661), Terracotta (#B4483C).
 """
 
 from pathlib import Path
@@ -13,28 +14,33 @@ STYLES_CSS_PATH = BASE_DIR / "app" / "ui" / "styles.css"
 
 TOKENS = {
     "colors": {
-        "primary": "#1E3A8A",
-        "primary_accent": "#2563EB",
-        "bg_light": "#F8FAFC",
+        "primary": "#3F6B57",
+        "primary_hover": "#335A49",
+        "primary_accent": "#3F6B57",
+        "bg_light": "#FAF8F4",
         "surface_light": "#FFFFFF",
-        "border_light": "#E2E8F0",
-        "text_light": "#0F172A",
-        "text_muted_light": "#475569",
-        "bg_dark": "#0B0F19",
-        "surface_dark": "#111827",
-        "border_dark": "#374151",
-        "text_dark": "#F9FAFB",
-        "text_muted_dark": "#9CA3AF",
+        "surface_alt_light": "#F2EFE8",
+        "border_light": "#E3DED3",
+        "text_light": "#1F2A24",
+        "text_muted_light": "#5B665F",
+        "text_caption_light": "#7A857E",
+        "bg_dark": "#151A17",
+        "surface_dark": "#1D2420",
+        "surface_alt_dark": "#252D28",
+        "border_dark": "#33403A",
+        "text_dark": "#E8EDE6",
+        "text_muted_dark": "#9AA79F",
+        "primary_dark": "#7DB596",
         # Status semantics with WCAG AA contrast >= 4.5:1
-        "success": {"text": "#047857", "bg": "#ECFDF5", "border": "#6EE7B7"},
-        "danger": {"text": "#B91C1C", "bg": "#FEF2F2", "border": "#FCA5A5"},
-        "warning": {"text": "#92400E", "bg": "#FFFBEB", "border": "#FDE68A"},
-        "info": {"text": "#1D4ED8", "bg": "#EFF6FF", "border": "#BFDBFE"},
-        "neutral": {"text": "#334155", "bg": "#F8FAFC", "border": "#CBD5E1"},
+        "success": {"text": "#447D54", "bg": "#F0F7F2", "border": "#A3CEB0"},
+        "danger": {"text": "#B4483C", "bg": "#FDF2F0", "border": "#E8ABA3"},
+        "warning": {"text": "#5D3C00", "bg": "#FEF9EE", "border": "#E4B661", "fill": "#E4B661"},
+        "info": {"text": "#3E6E8C", "bg": "#F0F6F9", "border": "#ADC8D9"},
+        "neutral": {"text": "#5B665F", "bg": "#F2EFE8", "border": "#E3DED3"},
     },
     "typography": {
-        "font_sans": '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        "font_mono": 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace',
+        "font_sans": 'system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        "font_mono": 'ui-monospace, "Cascadia Mono", Consolas, monospace',
     },
     "icons": {
         "promote": ":material/check_circle:",
@@ -62,35 +68,35 @@ TOKENS = {
     },
 }
 
+# Natural palette chart sequence: #3F6B57, #3E6E8C, #B8862B, #B4483C, #7A6F99, #8A8F7C
 COLORWAY = [
-    "#2563EB",  # Primary Blue
-    "#059669",  # Emerald Green
-    "#DC2626",  # Crimson Red
-    "#D97706",  # Amber Orange
-    "#7C3AED",  # Violet
-    "#0891B2",  # Cyan
-    "#475569",  # Slate
+    "#3F6B57",  # Sage Green (Primary)
+    "#3E6E8C",  # Slate Blue (Secondary)
+    "#B8862B",  # Muted Amber / Ochre
+    "#B4483C",  # Terracotta Red
+    "#7A6F99",  # Muted Heather Purple
+    "#8A8F7C",  # Warm Olive Gray
 ]
 
 
 def init_theme() -> None:
-    """Injects custom enterprise CSS into the Streamlit session."""
+    """Injects custom natural design system CSS into the Streamlit session."""
     if STYLES_CSS_PATH.exists():
         css = STYLES_CSS_PATH.read_text(encoding="utf-8")
         st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 
 def get_plotly_template(is_dark: bool = False) -> go.layout.Template:
-    """Returns a standardized, color-blind-safe Plotly template with accessible typography."""
-    font_color = "#F9FAFB" if is_dark else "#0F172A"
-    grid_color = "#374151" if is_dark else "#E2E8F0"
+    """Returns a standardized, color-blind-safe Plotly template matching the Natural Palette."""
+    font_color = "#E8EDE6" if is_dark else "#1F2A24"
+    grid_color = "#33403A" if is_dark else "#E3DED3"
     bg_color = "rgba(0,0,0,0)"
 
     template = go.layout.Template()
     template.layout = go.Layout(
         colorway=COLORWAY,
         font=dict(
-            family='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            family='system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
             size=12,
             color=font_color,
         ),
@@ -98,10 +104,11 @@ def get_plotly_template(is_dark: bool = False) -> go.layout.Template:
         plot_bgcolor=bg_color,
         margin=dict(l=40, r=20, t=40, b=40),
         hoverlabel=dict(
-            bgcolor="#1E293B" if is_dark else "#0F172A",
+            bgcolor="#1D2420" if is_dark else "#FFFFFF",
             font_size=12,
-            font_color="#FFFFFF",
-            font_family='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            font_color=font_color,
+            font_family='system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            bordercolor=grid_color,
         ),
         xaxis=dict(
             gridcolor=grid_color,
@@ -130,5 +137,6 @@ def get_plotly_template(is_dark: bool = False) -> go.layout.Template:
 
 
 # Register custom template with Plotly
-pio.templates["arm_enterprise"] = get_plotly_template(is_dark=False)
-pio.templates.default = "arm_enterprise"
+pio.templates["regguard_natural"] = get_plotly_template(is_dark=False)
+pio.templates["arm_enterprise"] = pio.templates["regguard_natural"]
+pio.templates.default = "regguard_natural"

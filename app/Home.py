@@ -50,5 +50,4 @@ pages = {
 }
 
 pg = st.navigation(pages)
-top_bar()
 pg.run()

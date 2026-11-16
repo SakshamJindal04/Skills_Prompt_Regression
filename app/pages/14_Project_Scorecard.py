@@ -22,6 +22,7 @@ from app.ui.components import (
     empty_state,
     error_panel,
     labelled_divider,
+    source_caption,
 )
 
 safe_set_page_config("Project Scorecard")
@@ -97,7 +98,7 @@ st.dataframe(
     use_container_width=True,
     hide_index=True,
 )
-st.caption("Verification methodology: all metrics measured on local machine without synthetic mocks.")
+source_caption("Source: Empirical evaluation artifacts in results/summary.md, results/summary.csv, and results/model_matrix.csv. Measured locally without synthetic mocks.")
 
 labelled_divider("Methodological Notes & Artifact Citations")
 
