@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Git pre-push hook to prevent pushing regressions
+set -e
+
+echo "Running prompt and skill regression gate check..."
+python -m pytest tests/
+
+# Evaluate candidate against baseline
+python cli.py --candidate 4 --baseline 1 || {
+  echo "Push blocked: candidate version failed regression gate policy."
+  exit 1
+}
+
+echo "Regression gate passed. Proceeding with push."
+exit 0
+

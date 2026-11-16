@@ -1,0 +1,42 @@
+# Policy configuration for regression gate evaluation
+version: "1.0.0"
+alpha: 0.05
+minimum_tests: 10
+k: 5
+allowed_models:
+  - "qwen2.5:3b"
+  - "qwen2.5:7b"
+  - "qwen2.5:latest"
+  - "llama3.2:3b"
+  - "gemma2:2b"
+  - "qwen3:4b"
+# Governance & access control roles
+roles:
+  - "author"
+  - "reviewer"
+  - "approver"
+default_local_role:
+  - "author"
+  - "reviewer"
+
+# Operational controls
+freeze: false
+require_approval_for_rollback: true
+quarantine_consistency_threshold: 0.70
+skill_overlap_threshold: 0.75
+
+critical_test_ids:
+  - "ent_01"
+  - "sent_01"
+  - "sum_01"
+  - "doc_json_crit_01"
+  - "doc_json_crit_02"
+  - "sql_crit_01"
+  - "sql_crit_02"
+  - "meet_crit_01"
+  - "meet_crit_02"
+required_approvers:
+  - "Alice Reviewer"
+  - "Bob Lead"
+  - "Carol Admin"
+

@@ -1,0 +1,14 @@
+[1/3] Verifying primary database connection...
+  Active database type: mysql
+  Engine URL: mysql+pymysql://regression_user:***@localhost:3306/regression_db
+[2/3] Verifying tables and write/read operations in MySQL...
+  Tables detected (11): artifacts, audit_logs, baselines, change_requests, comparisons, results, runs, scores, test_cases, traces, versions
+  Successfully inserted verification records: Artifact ID=100, Run ID=3
+  Successfully verified read-after-write consistency in MySQL.
+  Successfully cleaned up verification records.
+[3/3] Verifying graceful fallback to SQLite when MySQL is unreachable...
+  Fallback database type: sqlite
+  Fallback engine URL: sqlite:///regression_manager.db
+  Successfully fell back to local SQLite on connection failure.
+
+MySQL verification completed successfully: All checks passed.

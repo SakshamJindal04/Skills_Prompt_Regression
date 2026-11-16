@@ -1,0 +1,1658 @@
+tests:
+- id: sent_01
+  target: sentiment_classifier
+  suite: sentiment
+  critical: true
+  slices:
+    category: customer_support
+    difficulty: easy
+    edge_case: 'false'
+  input: The customer service agent resolved my issue within three minutes and was extremely friendly!
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_02
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: customer_support
+    difficulty: easy
+    edge_case: 'false'
+  input: My order arrived broken and support refused to issue a refund. Terrible experience.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_03
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: general
+    difficulty: easy
+    edge_case: 'false'
+  input: The train arrived at 10:15 AM as scheduled on track 4.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_04
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: Company reports record quarterly revenue and EBITDA expansion of 24% year-over-year.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_05
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: Operating margins contracted sharply following supply chain disruptions and surging fuel costs.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_06
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: The Federal Reserve left the benchmark policy interest rate unchanged at 5.25%.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_07
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: The application crashes immediately upon opening the camera tab.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_08
+  target: sentiment_classifier
+  suite: sentiment
+  critical: true
+  slices:
+    category: tech
+    difficulty: hard
+    edge_case: 'true'
+  input: Not a single bug discovered during the entire week of rigorous stress testing.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_09
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: tech
+    difficulty: hard
+    edge_case: 'true'
+  input: I cannot say that I am disappointed with how responsive the new user interface feels.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_10
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: legal
+    difficulty: medium
+    edge_case: 'false'
+  input: The appellate court upheld the lower court verdict without alteration.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_11
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: legal
+    difficulty: hard
+    edge_case: 'true'
+  input: The defendant was found guilty on all twelve counts of fraudulent racketeering.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_12
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: retail
+    difficulty: easy
+    edge_case: 'false'
+  input: High quality fabric, fits true to size, and arrived two days earlier than expected.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_13
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: retail
+    difficulty: easy
+    edge_case: 'false'
+  input: Fabric felt cheap like plastic, stitching unravelled after the first gentle wash.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_14
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: retail
+    difficulty: medium
+    edge_case: 'false'
+  input: The parcel contains two blue cotton shirts and one pair of grey socks.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_15
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: medical
+    difficulty: medium
+    edge_case: 'false'
+  input: Patient reports complete cessation of migrainous headaches following medication adjustment.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_16
+  target: sentiment_classifier
+  suite: sentiment
+  critical: true
+  slices:
+    category: medical
+    difficulty: hard
+    edge_case: 'true'
+  input: Severe adverse event detected with sudden onset of acute kidney failure.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_17
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: medical
+    difficulty: easy
+    edge_case: 'false'
+  input: The patient appointment is scheduled for Thursday at 9:00 AM in clinic room 3.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_18
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: social
+    difficulty: easy
+    edge_case: 'false'
+  input: So thrilled to announce that our research paper was accepted with oral presentation!
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_19
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: social
+    difficulty: easy
+    edge_case: 'false'
+  input: Devastated to hear that the funding grant was abruptly cancelled without warning.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_20
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: social
+    difficulty: medium
+    edge_case: 'false'
+  input: The university library opens at 8am on weekdays and 10am on weekends.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_21
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: finance
+    difficulty: hard
+    edge_case: 'true'
+  input: While debt levels remain elevated, restructuring has substantially reduced immediate liquidity risk.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_22
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: finance
+    difficulty: hard
+    edge_case: 'true'
+  input: Net profit increased only because of one-off asset disposals, while core revenues sank.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_23
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: tech
+    difficulty: medium
+    edge_case: 'false'
+  input: The cloud database successfully replicated five terabytes of records with zero latency spike.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_24
+  target: sentiment_classifier
+  suite: sentiment
+  critical: true
+  slices:
+    category: customer_support
+    difficulty: hard
+    edge_case: 'true'
+  input: I waited three hours on hold only to be hung up on by an automated robot.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_25
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: customer_support
+    difficulty: easy
+    edge_case: 'false'
+  input: Support quickly sent a replacement item free of charge. Wonderful service!
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_26
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: general
+    difficulty: medium
+    edge_case: 'false'
+  input: The conference registration desk is located on the second floor foyer.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_27
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: retail
+    difficulty: hard
+    edge_case: 'true'
+  input: Not the worst gadget I bought this season, but definitely lacking premium feel.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_28
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: Battery life exceeds twenty hours and the keyboard is delightfully tactile.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_29
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: Wi-Fi disconnected four times during a thirty-minute video presentation.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_30
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: legal
+    difficulty: easy
+    edge_case: 'false'
+  input: The contractual agreement will expire on December 31, 2026.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_31
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: legal
+    difficulty: hard
+    edge_case: 'true'
+  input: The settlement terms were extraordinarily favorable and resolved all pending litigation.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_32
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: medical
+    difficulty: medium
+    edge_case: 'false'
+  input: Laboratory test results for blood glucose fell back into the normal physiological range.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_33
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: medical
+    difficulty: easy
+    edge_case: 'false'
+  input: The pathology biopsy report will be reviewed at the Monday morning clinical board.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: sent_34
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: social
+    difficulty: hard
+    edge_case: 'true'
+  input: I honestly had zero expectations, yet the performance completely blew me away.
+  checks:
+  - type: exact_match
+    value: POSITIVE
+  - type: max_words
+    count: 1
+- id: sent_35
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: social
+    difficulty: medium
+    edge_case: 'false'
+  input: A complete waste of time and money; poor acting and incoherent script.
+  checks:
+  - type: exact_match
+    value: NEGATIVE
+  - type: max_words
+    count: 1
+- id: sent_36
+  target: sentiment_classifier
+  suite: sentiment
+  critical: false
+  slices:
+    category: general
+    difficulty: easy
+    edge_case: 'false'
+  input: The annual weather report recorded average rainfall of 850 millimeters.
+  checks:
+  - type: exact_match
+    value: NEUTRAL
+  - type: max_words
+    count: 1
+- id: ent_01
+  target: entity_extractor
+  suite: entity
+  critical: true
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: Satya Nadella spoke at the Microsoft campus in Redmond.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_02
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: Tim Cook announced new hardware at Apple Park in Cupertino.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_03
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: Jamie Dimon leads JPMorgan Chase headquartered in New York City.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_04
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: Goldman Sachs expanded its investment banking office in London.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_05
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: general
+    difficulty: easy
+    edge_case: 'false'
+  input: The solar panel was installed on a south-facing residential rooftop.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_06
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: general
+    difficulty: hard
+    edge_case: 'true'
+  input: No entities exist in this abstract theoretical mathematics formula.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_07
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: news
+    difficulty: medium
+    edge_case: 'false'
+  input: Emmanuel Macron met Olaf Scholz in Berlin to discuss European defence.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_08
+  target: entity_extractor
+  suite: entity
+  critical: true
+  slices:
+    category: legal
+    difficulty: hard
+    edge_case: 'true'
+  input: Judge Sonia Sotomayor delivered the majority opinion for the Supreme Court in Washington.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_09
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: medium
+    edge_case: 'false'
+  input: Jensen Huang unveiled new graphics microarchitectures at Nvidia headquarters in Santa Clara.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_10
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: Sundar Pichai welcomed software developers to Googleplex in Mountain View.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_11
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: corporate
+    difficulty: medium
+    edge_case: 'false'
+  input: Mary Barra oversaw the transition of General Motors in Detroit.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_12
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: corporate
+    difficulty: hard
+    edge_case: 'true'
+  input: Bernard Arnault manages the luxury conglomerate LVMH in Paris.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_13
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: academia
+    difficulty: easy
+    edge_case: 'false'
+  input: Dr. Jennifer Doudna conducted biochemical experiments at UC Berkeley.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_14
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: academia
+    difficulty: medium
+    edge_case: 'false'
+  input: Researchers at Harvard University collaborated with scientists in Cambridge.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_15
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: medical
+    difficulty: medium
+    edge_case: 'false'
+  input: The World Health Organization organized vaccination drives across Geneva and Nairobi.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_16
+  target: entity_extractor
+  suite: entity
+  critical: true
+  slices:
+    category: medical
+    difficulty: hard
+    edge_case: 'true'
+  input: Pfizer and BioNTech manufactured mRNA vaccines in Mainz.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_17
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: news
+    difficulty: easy
+    edge_case: 'false'
+  input: Keir Starmer delivered a keynote speech outside Downing Street in London.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_18
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: finance
+    difficulty: easy
+    edge_case: 'false'
+  input: Christine Lagarde addressed reporters at the European Central Bank in Frankfurt.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_19
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: finance
+    difficulty: hard
+    edge_case: 'true'
+  input: BlackRock chief Larry Fink released the annual institutional investor letter from Manhattan.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_20
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: medium
+    edge_case: 'false'
+  input: Mark Zuckerberg demonstrated mixed-reality headsets at Meta in Menlo Park.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_21
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: hard
+    edge_case: 'true'
+  input: Demis Hassabis leads DeepMind located near King's Cross in London.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_22
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: general
+    difficulty: easy
+    edge_case: 'false'
+  input: Gravity causes all physical objects with mass to accelerate towards one another.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_23
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: news
+    difficulty: medium
+    edge_case: 'false'
+  input: "Ant\xF3nio Guterres opened the General Assembly at United Nations headquarters in New York."
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_24
+  target: entity_extractor
+  suite: entity
+  critical: true
+  slices:
+    category: legal
+    difficulty: hard
+    edge_case: 'true'
+  input: The International Court of Justice in The Hague issued a provisional ruling against the respondent.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_25
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: corporate
+    difficulty: easy
+    edge_case: 'false'
+  input: Akio Toyoda stepped down from the executive board of Toyota in Nagoya.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_26
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: corporate
+    difficulty: medium
+    edge_case: 'false'
+  input: Siemens opened a modern rail rolling stock factory in Munich.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_27
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: academia
+    difficulty: easy
+    edge_case: 'false'
+  input: Prof. Andrew Ng co-founded Coursera after teaching computer science at Stanford.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_28
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: academia
+    difficulty: hard
+    edge_case: 'true'
+  input: Oxford University and Cambridge University competed in the annual boat race along the River Thames.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_29
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: medium
+    edge_case: 'false'
+  input: Elon Musk inspected spacecraft assembly at SpaceX in Boca Chica.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_30
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: tech
+    difficulty: hard
+    edge_case: 'true'
+  input: Sam Altman discussed generative foundation architectures with Microsoft leaders in Seattle.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_31
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: finance
+    difficulty: easy
+    edge_case: 'false'
+  input: Morgan Stanley opened a regional wealth management branch in Singapore.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_32
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: UBS finalized its corporate merger with Credit Suisse in Zurich.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_33
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: medical
+    difficulty: easy
+    edge_case: 'false'
+  input: AstraZeneca developed oncology therapeutics at its discovery hub in Cambridge.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_34
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: medical
+    difficulty: medium
+    edge_case: 'false'
+  input: Novartis expanded clinical manufacturing facilities located in Basel.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_35
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: news
+    difficulty: easy
+    edge_case: 'false'
+  input: Justin Trudeau addressed parliamentarians gathered in Ottawa.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: ent_36
+  target: entity_extractor
+  suite: entity
+  critical: false
+  slices:
+    category: general
+    difficulty: medium
+    edge_case: 'false'
+  input: The weather across the central plateau remained dry and sunny for three consecutive weeks.
+  checks:
+  - type: valid_json
+  - type: json_schema
+    required_keys:
+    - entities
+- id: sum_01
+  target: short_summarizer
+  suite: summary
+  critical: true
+  slices:
+    category: science
+    difficulty: medium
+    edge_case: 'false'
+  input: Astronomers using the James Webb Space Telescope detected carbon dioxide and methane in the atmosphere of an exoplanet
+    orbiting a star 120 light-years away, providing clues about potential chemical processes in alien solar systems.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_02
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: A software company patched three critical zero-day vulnerabilities in its open-source container orchestration framework
+    after independent security researchers flagged memory corruption bugs capable of remote code execution.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_03
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: Central banks across developing economies increased gold reserves to historic highs in the fourth quarter, attempting
+    to diversify sovereign asset reserves away from currency volatility and elevated geopolitical tensions.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_04
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: legal
+    difficulty: hard
+    edge_case: 'true'
+  input: The antitrust regulatory commission filed an injunction alleging monopolistic distribution agreements in mobile app
+    marketplaces, seeking structural divestiture of digital advertising and search indexing operations within twelve months.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_05
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: science
+    difficulty: hard
+    edge_case: 'true'
+  input: A clinical trial involving four hundred patients diagnosed with early-stage non-small cell lung cancer demonstrated
+    that targeted tyrosine kinase inhibitors combined with immunotherapy extended overall progression-free survival by eighteen
+    months.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_06
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: executive
+    difficulty: medium
+    edge_case: 'false'
+  input: During the board review, executive leadership approved capital allocations of four hundred million dollars toward
+    expanding domestic semiconductor fabrication facilities to mitigate risks from international supply bottlenecks.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_07
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: education
+    difficulty: easy
+    edge_case: 'false'
+  input: The education department rolled out digital tablet learning across three thousand rural primary schools, achieving
+    an estimated twenty-five percent increase in third-grade reading fluency test scores over eighteen months.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_08
+  target: short_summarizer
+  suite: summary
+  critical: true
+  slices:
+    category: tech
+    difficulty: hard
+    edge_case: 'true'
+  input: Engineers constructed an ultra-low-power neuromorphic processor that processes event-driven sensory signals using
+    ninety percent less electrical energy than standard microcontrollers in automated industrial robotics.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_09
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: politics
+    difficulty: medium
+    edge_case: 'false'
+  input: Parliamentary representatives ratified the cross-border climate accord, mandating a forty percent reduction in industrial
+    greenhouse emissions by 2030 through carbon taxation and clean energy subsidies.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_10
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: finance
+    difficulty: easy
+    edge_case: 'false'
+  input: Consumer price index inflation cooled to two point four percent annualized in July, bolstering equity market expectations
+    that the central bank will introduce interest rate cuts before the autumn quarter.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_11
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: executive
+    difficulty: easy
+    edge_case: 'false'
+  input: The corporate steering committee mandated a phased return to regional headquarters, setting expectations for three
+    in-person collaboration days per week starting in the second fiscal quarter.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_12
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: science
+    difficulty: medium
+    edge_case: 'false'
+  input: Oceanographic sensors deployed along the Atlantic meridional overturning circulation recorded a gradual slowdown
+    in deep convective currents, raising concerns over long-term weather stability in northern Europe.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_13
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: legal
+    difficulty: medium
+    edge_case: 'false'
+  input: The Supreme Court declined to review the intellectual property dispute over synthetic biological sequence patents,
+    leaving intact the appellate decision favoring open academic licensing.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_14
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: tech
+    difficulty: medium
+    edge_case: 'false'
+  input: A cybersecurity firm observed widespread credential stuffing attacks targeting cloud identity providers, urging organizations
+    to immediately enforce hardware-based passkey multifactor authentication.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_15
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: finance
+    difficulty: hard
+    edge_case: 'true'
+  input: Despite escalating bond yields and commercial real estate valuation write-downs, top-tier commercial lenders reported
+    strong return on equity boosted by elevated net interest income.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_16
+  target: short_summarizer
+  suite: summary
+  critical: true
+  slices:
+    category: science
+    difficulty: hard
+    edge_case: 'true'
+  input: Particle physicists operating the subterranean neutrino observatory announced the first direct statistical detection
+    of diffuse supernova background neutrinos after twenty years of data collection.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_17
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: executive
+    difficulty: medium
+    edge_case: 'false'
+  input: The automotive company entered a joint venture with a battery chemistry manufacturer to build a twelve gigawatt-hour
+    cathode fabrication plant in the Midwest.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_18
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: politics
+    difficulty: easy
+    edge_case: 'false'
+  input: Municipal voters passed a civic bond measure granting eighty million dollars for replacing aging lead drinking water
+    pipes and modernizing storm flood drainage systems.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_19
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: education
+    difficulty: medium
+    edge_case: 'false'
+  input: A nationwide longitudinal study tracked fifty thousand university graduates, finding that interdisciplinary STEM
+    and design degrees correlated with higher twenty-year earnings growth.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_20
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: tech
+    difficulty: easy
+    edge_case: 'false'
+  input: The telecommunications regulator finalized spectrum auction guidelines for sixth-generation wireless trials scheduled
+    across twelve metropolitan test corridors starting next summer.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_21
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: finance
+    difficulty: easy
+    edge_case: 'false'
+  input: Foreign direct investment into southeast Asian green manufacturing facilities rose thirty-eight percent as multinational
+    enterprises established regional production redundancies.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_22
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: science
+    difficulty: easy
+    edge_case: 'false'
+  input: Agricultural botanists bred a drought-resistant cultivar of winter wheat that preserves kernel yields while consuming
+    thirty percent less irrigation water during heatwaves.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_23
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: legal
+    difficulty: hard
+    edge_case: 'true'
+  input: An international arbitration tribunal ordered the national government to compensate foreign utility investors for
+    sudden regulatory tariff cancellations made without due procedural process.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_24
+  target: short_summarizer
+  suite: summary
+  critical: true
+  slices:
+    category: executive
+    difficulty: hard
+    edge_case: 'true'
+  input: Following an unannounced forensic financial audit, the board of directors unanimously removed the chief operating
+    officer due to undisclosed related-party procurement conflicts.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_25
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: tech
+    difficulty: medium
+    edge_case: 'false'
+  input: A collaborative research initiative released an open-source mathematical solver that accelerates finite-element structural
+    simulation benchmarks by three orders of magnitude on GPUs.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_26
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: politics
+    difficulty: hard
+    edge_case: 'true'
+  input: Negotiators from twenty nations concluded discussions on deep-sea mineral exploration regulations, instituting strict
+    biological preservation zones and environmental impact reviews.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_27
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: education
+    difficulty: easy
+    edge_case: 'false'
+  input: Community colleges partnered with local regional hospitals to offer accelerated two-year nursing credentials funded
+    entirely through public state health development grants.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_28
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: science
+    difficulty: medium
+    edge_case: 'false'
+  input: Geologists mapping seismic fault slip rates along the oceanic ridge identified clustered micro-tremors indicating
+    magma intrusion into shallow hydrothermal crustal reservoirs.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_29
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: finance
+    difficulty: medium
+    edge_case: 'false'
+  input: Sovereign wealth funds increased direct equity co-investments in European green hydrogen projects, citing predictable
+    long-term utility yields backed by governmental contracts.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_30
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: legal
+    difficulty: easy
+    edge_case: 'false'
+  input: A regional court dismissed consumer class-action claims against an internet service provider after forensic evidence
+    verified advertised download speeds conformed to contract provisions.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_31
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: tech
+    difficulty: hard
+    edge_case: 'true'
+  input: Semiconductor foundries began commercial shipment of backside power delivery test chips, solving heat dissipation
+    challenges in dense three-dimensional monolithic logic stacks.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_32
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: executive
+    difficulty: medium
+    edge_case: 'false'
+  input: The pharmaceutical enterprise consolidated its clinical development operations from four regional facilities into
+    one central innovation campus to accelerate drug filings.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_33
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: politics
+    difficulty: easy
+    edge_case: 'false'
+  input: Federal infrastructure ministers unveiled a multi-billion dollar national high-speed passenger rail corridor connecting
+    three major commercial manufacturing centres.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_34
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: education
+    difficulty: hard
+    edge_case: 'true'
+  input: A consortium of research universities launched an open educational repository making peer-reviewed lecture sequences
+    and laboratory datasets globally accessible without paywalls.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_35
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: science
+    difficulty: easy
+    edge_case: 'false'
+  input: Ecologists studying coral reefs recorded significant coral regeneration in marine protected zones where commercial
+    bottom trawling was strictly prohibited for ten years.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion
+- id: sum_36
+  target: short_summarizer
+  suite: summary
+  critical: false
+  slices:
+    category: finance
+    difficulty: hard
+    edge_case: 'true'
+  input: Global reinsurance premiums stabilized after primary property insurers restructured deductible clauses and exited
+    high-risk coastal hurricane flood zones.
+  checks:
+  - type: max_words
+    count: 40
+  - type: not_contains
+    values:
+    - Here is
+    - Here's
+    - In conclusion

@@ -1,0 +1,46 @@
+
+==============================================================================
+  SKILL & PROMPT REGRESSION MANAGER - LIVE DEMO [QUICK MODE (k=3)]
+==============================================================================
+[1/6] Checking system environment, database, and Ollama models...
+  Database backend: MYSQL
+  Model `qwen2.5:3b`: ready (SHA-256: 357c53fb659c...)
+  Model `llama3.2:3b`: ready (SHA-256: a80c4f17acd5...)
+  Model `gemma2:2b`: ready (SHA-256: 8ccf136fdd52...)
+  Model `nomic-embed-text`: ready (SHA-256: 0a109f422b47...)
+
+[2/6] Synchronizing golden test suite to database...
+  Synced 236 test cases into database.
+
+[3/6] Executing Case 1: Baseline Clean Run (Expected Verdict: PROMOTE)...
+  Gate evaluation: regressed=0, fixed=0, p=1.0000
+  Verdict: PROMOTE (Pass)
+
+[4/6] Executing Case 2: Silent Regression Run (Expected Verdict: BLOCK)...
+  Gate evaluation: regressed=1, fixed=0, critical_regressed=True
+  Verdict: BLOCK (Automated gate blocked deployment)
+
+[5/6] Executing Case 3: Change Attribution (Ablation to isolate guilty prompt)...
+  Analyzing diff between commits: 08e43ee -> c836eb2
+  Attribution result: isolated culprit file -> `prompts/analytics_sql.md`
+
+[6/6] Executing Case 4: Rollback & Recovery Verification...
+  Triggering Git non-destructive rollback...
+  Rollback commit created in Git history: working tree restored to previous baseline.
+  Post-rollback verification: pass rate restored to 100.0%.
+
+==============================================================================
+  DEMO SUMMARY RESULTS
+==============================================================================
+Check / Pipeline Step                    | Expected     | Actual       | Status
+------------------------------------------------------------------------------
+1. Local Ollama & Models Health          | 4 Models     | 4 Models     | PASS
+2. MySQL Database Read/Write             | Operational  | MYSQL        | PASS
+3. Clean Candidate Gate (PROMOTE)        | PROMOTE      | PROMOTE      | PASS
+4. Regressed Candidate Gate (BLOCK)      | BLOCK        | BLOCK        | PASS
+5. Change Attribution Ablation           | Isolated     | Isolated     | PASS
+6. Rollback & Pass Rate Recovery         | Restored     | Restored     | PASS
+------------------------------------------------------------------------------
+Total Demo Wall-Clock Time: 10.55 seconds.
+All regression checks verified. Prototype ready for panel review.
+

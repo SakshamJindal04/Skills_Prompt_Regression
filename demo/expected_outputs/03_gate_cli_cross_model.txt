@@ -1,0 +1,6 @@
+Executing Cross-Model Gate: Baseline `qwen2.5:3b` vs Candidate `llama3.2:3b`
+Suite: golden_tests.yaml (20 tests x 3 runs), alpha=0.05
+Running baseline model: qwen2.5:3b...
+Running candidate model: llama3.2:3b...
+Gate Verdict: BLOCK
+Report written to report.md

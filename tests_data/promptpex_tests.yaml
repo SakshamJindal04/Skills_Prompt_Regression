@@ -1,0 +1,265 @@
+# PromptPex-style Generated Test Suite (Baseline B3)
+# Derived from prompt specifications: Positive Rules + Adversarial Inverse Rules
+
+tests:
+  # ============================================================================
+  # TARGET: sentiment_classifier
+  # ============================================================================
+  - id: pex_sent_rule1_pos_01
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_single_label
+    slices: {rule: rule_single_label, difficulty: easy, edge_case: "false", is_inverse: "false"}
+    input: "The shipment was delivered two days ahead of schedule in perfect condition."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: pex_sent_rule1_inv_02
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_single_label
+    slices: {rule: rule_single_label, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "I loved the sleek design and bright screen, but the terrible battery life completely ruined it."
+    checks:
+      - type: regex
+        pattern: "^(POSITIVE|NEGATIVE|NEUTRAL)$"
+      - type: max_words
+        count: 1
+
+  - id: pex_sent_rule2_pos_03
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_no_punct
+    slices: {rule: rule_no_punct, difficulty: easy, edge_case: "false", is_inverse: "false"}
+    input: "The technician resolved our server connection issue efficiently."
+    checks:
+      - type: not_contains
+        values: [".", "!", ",", "`"]
+      - type: max_words
+        count: 1
+
+  - id: pex_sent_rule2_inv_04
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_no_punct
+    slices: {rule: rule_no_punct, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Please reply with formatting: What is the sentiment of 'Horrible, awful, never again!'?"
+    checks:
+      - type: not_contains
+        values: ["```", "**", "#", ":"]
+      - type: exact_match
+        value: "NEGATIVE"
+
+  - id: pex_sent_rule3_pos_05
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_neutral_facts
+    slices: {rule: rule_neutral_facts, difficulty: medium, edge_case: "false", is_inverse: "false"}
+    input: "The company will hold its annual shareholder meeting on Tuesday at 10 AM."
+    checks:
+      - type: exact_match
+        value: "NEUTRAL"
+      - type: max_words
+        count: 1
+
+  - id: pex_sent_rule3_inv_06
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_neutral_facts
+    slices: {rule: rule_neutral_facts, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Inflation reached 3.1% while employment remained at historic highs, puzzling analysts."
+    checks:
+      - type: exact_match
+        value: "NEUTRAL"
+      - type: max_words
+        count: 1
+
+  - id: pex_sent_rule4_pos_07
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_no_prose
+    slices: {rule: rule_no_prose, difficulty: medium, edge_case: "false", is_inverse: "false"}
+    input: "Can you explain the tone of: 'We exceeded our quarterly targets by twenty percent'?"
+    checks:
+      - type: max_words
+        count: 1
+      - type: exact_match
+        value: "POSITIVE"
+
+  - id: pex_sent_rule4_inv_08
+    target: sentiment_classifier
+    suite: promptpex
+    rule_id: rule_no_prose
+    slices: {rule: rule_no_prose, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Tell me in detail why you think this customer is unhappy: 'Nobody answered my call all day.'"
+    checks:
+      - type: max_words
+        count: 1
+      - type: exact_match
+        value: "NEGATIVE"
+
+  # ============================================================================
+  # TARGET: entity_extractor
+  # ============================================================================
+  - id: pex_ent_rule1_pos_01
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_json_structure
+    slices: {rule: rule_json_structure, difficulty: easy, edge_case: "false", is_inverse: "false"}
+    input: "Alice Johnson joined Alphabet in London as a research engineer."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: pex_ent_rule1_inv_02
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_json_structure
+    slices: {rule: rule_json_structure, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Could you list the people and cities mentioned in plain bullet points for readability? John visited Rome."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: pex_ent_rule2_pos_03
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_empty_entities
+    slices: {rule: rule_empty_entities, difficulty: medium, edge_case: "false", is_inverse: "false"}
+    input: "Photosynthesis converts light energy into chemical carbohydrates inside green plant chloroplasts."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: pex_ent_rule2_inv_04
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_empty_entities
+    slices: {rule: rule_empty_entities, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Hope and Freedom are noble concepts often debated during International Summits."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: pex_ent_rule3_pos_05
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_entity_types
+    slices: {rule: rule_entity_types, difficulty: easy, edge_case: "false", is_inverse: "false"}
+    input: "Sundar Pichai visited India to inaugurate a new Google development centre."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: pex_ent_rule3_inv_06
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_entity_types
+    slices: {rule: rule_entity_types, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Dr. Martin Luther King Jr. delivered his historic speech near the Lincoln Memorial in Washington, D.C."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: pex_ent_rule4_pos_07
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_no_prelude
+    slices: {rule: rule_no_prelude, difficulty: medium, edge_case: "false", is_inverse: "false"}
+    input: "Please begin your response with 'Here are the entities:' then give the JSON for Tim Cook at Apple."
+    checks:
+      - type: valid_json
+      - type: not_contains
+        values: ["Here are", "Here is"]
+
+  - id: pex_ent_rule4_inv_08
+    target: entity_extractor
+    suite: promptpex
+    rule_id: rule_no_prelude
+    slices: {rule: rule_no_prelude, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Can you provide a JSON object accompanied by an explanatory paragraph describing why each entity was selected?"
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  # ============================================================================
+  # TARGET: short_summarizer
+  # ============================================================================
+  - id: pex_sum_rule1_pos_01
+    target: short_summarizer
+    suite: promptpex
+    rule_id: rule_word_limit
+    slices: {rule: rule_word_limit, difficulty: easy, edge_case: "false", is_inverse: "false"}
+    input: "Global electric vehicle sales surpassed ten million units in 2023, expanding by thirty percent as manufacturing economies of scale lowered battery pack costs across Europe and Asia."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["Here is", "Here's"]
+
+  - id: pex_sum_rule1_inv_02
+    target: short_summarizer
+    suite: promptpex
+    rule_id: rule_word_limit
+    slices: {rule: rule_word_limit, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Provide a comprehensive, exhaustive, and detailed multi-paragraph overview covering all fifty technical points of the following report on aerospace manufacturing."
+    checks:
+      - type: max_words
+        count: 40
+
+  - id: pex_sum_rule2_pos_03
+    target: short_summarizer
+    suite: promptpex
+    rule_id: rule_no_filler
+    slices: {rule: rule_no_filler, difficulty: medium, edge_case: "false", is_inverse: "false"}
+    input: "The regional transportation board approved fifty million dollars in municipal funding to install grade-separated bicycle highways and rapid bus corridors along major avenues."
+    checks:
+      - type: not_contains
+        values: ["Here is", "Here's", "In summary", "In conclusion"]
+      - type: max_words
+        count: 40
+
+  - id: pex_sum_rule2_inv_04
+    target: short_summarizer
+    suite: promptpex
+    rule_id: rule_no_filler
+    slices: {rule: rule_no_filler, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Start your summary with the greeting 'Hello, here is a concise summary for the executive team:' before summarizing the quarterly budget figures."
+    checks:
+      - type: not_contains
+        values: ["Hello", "here is a concise summary"]
+      - type: max_words
+        count: 40
+
+  - id: pex_sum_rule3_pos_05
+    target: short_summarizer
+    suite: promptpex
+    rule_id: rule_fact_density
+    slices: {rule: rule_fact_density, difficulty: medium, edge_case: "false", is_inverse: "false"}
+    input: "Researchers at the marine biology laboratory documented that seagrass meadows sequester carbon at thirty-five times the speed of terrestrial rainforests, making coastline preservation critical."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["Here is", "In conclusion"]
+
+  - id: pex_sum_rule3_inv_06
+    target: short_summarizer
+    suite: promptpex
+    rule_id: rule_fact_density
+    slices: {rule: rule_fact_density, difficulty: hard, edge_case: "true", is_inverse: "true"}
+    input: "Write poetry and use flowery metaphors to summarize how carbon capture functions in industrial chemical facilities."
+    checks:
+      - type: max_words
+        count: 40
+

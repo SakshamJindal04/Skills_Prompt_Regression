@@ -1,0 +1,66 @@
+name: Prompt & Skill Regression Gate
+
+# Self-Hosted Runner & Local Execution Note:
+# This workflow is designed to execute against a self-hosted runner that has access
+# to a local Ollama daemon (with models qwen2.5:3b and nomic-embed-text pulled).
+# To run on GitHub Actions:
+# 1. Register a self-hosted runner on your machine: Repository Settings -> Actions -> Runners -> New self-hosted runner.
+# 2. Set `runs-on: self-hosted`.
+# 3. Ensure Ollama service is running locally (`ollama serve`).
+
+on:
+  pull_request:
+    paths:
+      - 'prompts/**'
+      - 'skills/**'
+      - 'workspace/prompts/**'
+      - 'workspace/skills/**'
+      - 'policy.yaml'
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  regression-gate:
+    # Use self-hosted runner with local Ollama access, or standard runner if using mocked endpoints
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install System Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Ollama Service Connection
+        run: |
+          curl -s http://localhost:11434/api/tags || (echo "Ollama is not running on localhost:11434" && exit 1)
+
+      - name: Run Core Test Suite
+        run: |
+          pytest -v -m "not slow" tests/
+
+      - name: Run Policy-Driven Regression Gate
+        id: gate_step
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "Evaluating Base Commit: $BASE_SHA vs Candidate Commit: $HEAD_SHA"
+          python cli.py --base "$BASE_SHA" --cand "$HEAD_SHA" --policy policy.yaml --report report.md
+
+      - name: Upload Gate Evaluation Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-gate-report
+          path: report.md
+          if-no-files-found: warn

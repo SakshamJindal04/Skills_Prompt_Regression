@@ -1,0 +1,135 @@
+# Baseline B4: GPR-style static suite
+# Fixed general benchmark suite covering standard tasks across prompts
+
+tests:
+  - id: gpr_01
+    target: sentiment_classifier
+    input: "The product is great, worked on day one."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: gpr_02
+    target: sentiment_classifier
+    input: "Arrived shattered in pieces, utterly useless."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  - id: gpr_03
+    target: sentiment_classifier
+    input: "The shipment was delivered on Tuesday afternoon."
+    checks:
+      - type: exact_match
+        value: "NEUTRAL"
+      - type: max_words
+        count: 1
+
+  - id: gpr_04
+    target: sentiment_classifier
+    input: "Outstanding build quality and fast charging speeds."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: gpr_05
+    target: entity_extractor
+    input: "Sundar Pichai spoke at Google headquarters in Mountain View."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: gpr_06
+    target: entity_extractor
+    input: "Satya Nadella announced new cloud features at Microsoft in Redmond."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: gpr_07
+    target: entity_extractor
+    input: "Tim Cook introduced products at Apple Park in Cupertino."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: gpr_08
+    target: entity_extractor
+    input: "The team analyzed physical characteristics of mineral rocks."
+    checks:
+      - type: valid_json
+      - type: json_schema
+        required_keys: ["entities"]
+
+  - id: gpr_09
+    target: short_summarizer
+    input: "The Federal Reserve raised interest rates by 25 basis points to combat inflation pressures across consumer goods markets."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["Here is", "Here's"]
+
+  - id: gpr_10
+    target: short_summarizer
+    input: "Electric vehicle sales reached a historic milestone this quarter, growing by 35% compared to the prior fiscal year."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["Here is", "Here's"]
+
+  - id: gpr_11
+    target: short_summarizer
+    input: "Astronomers discovered water vapor in the atmosphere of an Earth-sized exoplanet orbiting within the habitable zone of a nearby red dwarf star."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["Here is", "Here's"]
+
+  - id: gpr_12
+    target: short_summarizer
+    input: "A new clinical trial revealed that daily physical exercise significantly improved memory consolidation in elderly participants over six months."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["Here is", "Here's"]
+
+  - id: gpr_13
+    target: skill_selection
+    input: "Draft a follow-up email to the sales client regarding our quarterly proposal."
+    checks:
+      - type: exact_match
+        value: "draft-email"
+
+  - id: gpr_14
+    target: skill_selection
+    input: "Write a SQL query to find duplicate users grouped by email address."
+    checks:
+      - type: exact_match
+        value: "write-sql"
+
+  - id: gpr_15
+    target: skill_selection
+    input: "Translate the customer review from Japanese to English."
+    checks:
+      - type: exact_match
+        value: "translate-text"
+
+  - id: gpr_16
+    target: skill_selection
+    input: "Explain what this recursive Python function does and analyze its time complexity."
+    checks:
+      - type: exact_match
+        value: "explain-code"

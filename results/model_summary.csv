@@ -1,0 +1,13 @@
+prompt_target,model_id,model_digest,tests_count,pass_rate,ci_lower,ci_upper,consistency,mean_latency_s,p95_latency_s,skill_activation_acc,regressed_b,fixed_c,p_value,verdict
+entity_extractor,qwen2.5:3b,357c53fb659c,36,0.0,0.0,0.0964,1.0,2.609,4.281,0.9,0,0,1.0,N/A (Baseline)
+entity_extractor,llama3.2:3b,a80c4f17acd5,36,0.0,0.0,0.0964,1.0,4.843,7.803,1.0,0,0,1.0,PROMOTE
+entity_extractor,gemma2:2b,8ccf136fdd52,36,0.0,0.0,0.0964,1.0,2.575,3.599,1.0,0,0,1.0,PROMOTE
+sentiment_classifier,qwen2.5:3b,357c53fb659c,36,0.9444,0.8186,0.9846,1.0,0.227,0.308,0.9,0,0,1.0,N/A (Baseline)
+sentiment_classifier,llama3.2:3b,a80c4f17acd5,36,0.8611,0.7134,0.9392,0.9778,0.271,0.331,1.0,4,1,0.375,BLOCK
+sentiment_classifier,gemma2:2b,8ccf136fdd52,36,0.9167,0.7817,0.9713,0.9778,0.366,0.554,1.0,1,0,1.0,PROMOTE
+short_summarizer,qwen2.5:3b,357c53fb659c,36,1.0,0.9036,1.0,1.0,0.784,1.081,0.9,0,0,1.0,N/A (Baseline)
+short_summarizer,llama3.2:3b,a80c4f17acd5,36,1.0,0.9036,1.0,1.0,1.303,1.792,1.0,0,0,1.0,PROMOTE
+short_summarizer,gemma2:2b,8ccf136fdd52,36,1.0,0.9036,1.0,1.0,0.889,1.169,1.0,0,0,1.0,PROMOTE
+ALL_PROMPTS,qwen2.5:3b,357c53fb659c,108,0.6481,0.5544,0.7317,1.0,1.207,3.519,0.9,0,0,1.0,N/A (Baseline)
+ALL_PROMPTS,llama3.2:3b,a80c4f17acd5,108,0.6204,0.5262,0.7063,0.9926,2.139,6.386,1.0,4,1,0.375,BLOCK
+ALL_PROMPTS,gemma2:2b,8ccf136fdd52,108,0.6389,0.545,0.7233,0.9926,1.277,3.249,1.0,1,0,1.0,PROMOTE

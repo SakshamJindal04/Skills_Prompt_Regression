@@ -1,0 +1,638 @@
+# Comprehensive Test Suite for Prompts and Skill Selection
+# >= 40 test cases across diverse slices, domains, and difficulty levels
+
+tests:
+  # ============================================================================
+  # TARGET: sentiment_classifier
+  # Must output exactly one of: POSITIVE, NEGATIVE, NEUTRAL (no punctuation, no prose)
+  # ============================================================================
+  - id: sent_01
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: customer_support
+      difficulty: easy
+      edge_case: "false"
+    input: "The customer service agent resolved my issue within three minutes and was extremely friendly!"
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_02
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: customer_support
+      difficulty: easy
+      edge_case: "false"
+    input: "My order arrived broken and support refused to issue a refund. Terrible experience."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_03
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: general
+      difficulty: easy
+      edge_case: "false"
+    input: "The train arrived at 10:15 AM as scheduled on track 4."
+    checks:
+      - type: exact_match
+        value: "NEUTRAL"
+      - type: max_words
+        count: 1
+
+  - id: sent_04
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: finance
+      difficulty: medium
+      edge_case: "false"
+    input: "Company reports record revenue and EBITDA expansion of 24% year-over-year."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_05
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "Despite macroeconomic headwinds and supply chain bottlenecks, operating margins slightly beat lowered analyst expectations."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_06
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "Revenue jumped 15% but guidance for next quarter was slashed drastically due to severe customer churn."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_07
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: tech
+      difficulty: medium
+      edge_case: "false"
+    input: "The latest firmware patch fixed the memory leak and decreased boot latency by 40%."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_08
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: tech
+      difficulty: hard
+      edge_case: "true"
+    input: "I wouldn't say this new cloud database is completely unusable, but it is certainly far from reliable."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_09
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: general
+      difficulty: hard
+      edge_case: "true"
+    input: "Oh wonderful, another mandatory two-hour compliance webinar on a Friday afternoon."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_10
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: finance
+      difficulty: medium
+      edge_case: "false"
+    input: "The Federal Reserve held the benchmark federal funds rate steady at 5.25% today."
+    checks:
+      - type: exact_match
+        value: "NEUTRAL"
+      - type: max_words
+        count: 1
+
+  - id: sent_11
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: customer_support
+      difficulty: medium
+      edge_case: "false"
+    input: "The replacement item arrived today; haven't opened the box yet to test it."
+    checks:
+      - type: exact_match
+        value: "NEUTRAL"
+      - type: max_words
+        count: 1
+
+  - id: sent_12
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: tech
+      difficulty: hard
+      edge_case: "true"
+    input: "Not bad at all! Actually surpassed my expectations considering the bargain price."
+    checks:
+      - type: exact_match
+        value: "POSITIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_13
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: general
+      difficulty: hard
+      edge_case: "true"
+    input: "I was hoping this movie would be great, but it ended up being thoroughly mediocre and predictable."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  - id: sent_14
+    target: sentiment_classifier
+    suite: sentiment
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "The stock plummeted 8% immediately after market open following the regulatory inquiry."
+    checks:
+      - type: exact_match
+        value: "NEGATIVE"
+      - type: max_words
+        count: 1
+
+  # ============================================================================
+  # TARGET: entity_extractor
+  # Must output valid JSON with structure {"entities": [{"text": str, "type": "PERSON"|"ORG"|"LOC"}]}
+  # ============================================================================
+  - id: ent_01
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: tech
+      difficulty: easy
+      edge_case: "false"
+    input: "Satya Nadella spoke at the Microsoft Ignite conference in Seattle."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Microsoft", "Satya Nadella", "Seattle"]
+
+  - id: ent_02
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: finance
+      difficulty: medium
+      edge_case: "false"
+    input: "JPMorgan Chase CEO Jamie Dimon met with Treasury officials in Washington yesterday."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Jamie Dimon", "Washington"]
+
+  - id: ent_03
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: tech
+      difficulty: easy
+      edge_case: "false"
+    input: "Sundar Pichai unveiled new Gemini models at Google headquarters in Mountain View."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Sundar Pichai", "Google", "Mountain View"]
+
+  - id: ent_04
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "BlackRock and Vanguard expanded their European asset management desks in Frankfurt and Zurich."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["BlackRock", "Frankfurt", "Zurich"]
+
+  - id: ent_05
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: legal
+      difficulty: medium
+      edge_case: "false"
+    input: "Judge Sarah Evans presided over the antitrust trial against Apple in San Francisco."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Apple", "San Francisco"]
+
+  - id: ent_06
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: general
+      difficulty: hard
+      edge_case: "true"
+    input: "The old wooden bridge over the quiet river creaked in the morning autumn breeze."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+
+  - id: ent_07
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "Goldman Sachs analyst David Solomon published a bullish note on semiconductor manufacturing in Tokyo."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Goldman Sachs", "Tokyo"]
+
+  - id: ent_08
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: tech
+      difficulty: medium
+      edge_case: "false"
+    input: "Tim Cook announced that Apple will open a new research lab in Munich, Germany."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Tim Cook", "Apple", "Munich"]
+
+  - id: ent_09
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: legal
+      difficulty: hard
+      edge_case: "true"
+    input: "The Department of Justice filed suit in federal court in Alexandria against Boeing regarding aircraft safety certifications."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Boeing", "Alexandria"]
+
+  - id: ent_10
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: general
+      difficulty: medium
+      edge_case: "false"
+    input: "Dr. Marie Curie conducted pioneering radiological research at the Sorbonne in Paris."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Marie Curie", "Paris"]
+
+  - id: ent_11
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "Berkshire Hathaway, guided by Warren Buffett in Omaha, acquired additional shares of Occidental Petroleum."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Warren Buffett", "Omaha"]
+
+  - id: ent_12
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: tech
+      difficulty: hard
+      edge_case: "true"
+    input: "OpenAI CEO Sam Altman delivered the keynote address in San Jose alongside Jensen Huang of Nvidia."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["OpenAI", "Sam Altman", "Nvidia"]
+
+  - id: ent_13
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: legal
+      difficulty: hard
+      edge_case: "true"
+    input: "Attorney Michael Clayton negotiated a settlement between U/North Agriculture and plaintiffs in New York."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Michael Clayton", "New York"]
+
+  - id: ent_14
+    target: entity_extractor
+    suite: entity
+    slices:
+      category: customer_support
+      difficulty: easy
+      edge_case: "false"
+    input: "Alice Johnson sent her warranty claim from Chicago to Sony Customer Care."
+    checks:
+      - type: json_schema_valid
+        required_keys: ["entities"]
+      - type: contains
+        values: ["Alice Johnson", "Chicago", "Sony"]
+
+  # ============================================================================
+  # TARGET: short_summarizer
+  # Must produce a summary of at most 40 words that captures core facts
+  # ============================================================================
+  - id: summ_01
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: tech
+      difficulty: easy
+      edge_case: "false"
+    input: "Quantum computing researchers at MIT have built a 100-qubit coherent system capable of running fault-tolerant surface codes at room temperature, potentially reducing cryogenic refrigeration expenses by 90% for industrial applications."
+    checks:
+      - type: max_words
+        count: 40
+      - type: contains
+        values: ["MIT"]
+
+  - id: summ_02
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: finance
+      difficulty: medium
+      edge_case: "false"
+    input: "Global oil prices surged over 4% after OPEC+ producers unexpectedly announced an extension of voluntary crude output cuts of 1.2 million barrels per day through the end of the fourth quarter, stoking inflation anxieties among central bankers."
+    checks:
+      - type: max_words
+        count: 40
+      - type: contains
+        values: ["oil"]
+
+  - id: summ_03
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: legal
+      difficulty: hard
+      edge_case: "true"
+    input: "The European Union Court of Justice issued a landmark ruling enforcing strict digital sovereign jurisdiction over cross-border data transfers, demanding immediate revocation of non-compliant commercial standard contractual clauses within 90 days."
+    checks:
+      - type: max_words
+        count: 40
+      - type: not_contains
+        values: ["unnecessary chatter", "here is your summary"]
+
+  - id: summ_04
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: customer_support
+      difficulty: easy
+      edge_case: "false"
+    input: "Customer reported an intermittent Wi-Fi connection on model X-200. Technician replaced the internal transceiver module and updated the firmware to build 4.2. Connection is now verified stable across 24 hours of continuous packet testing."
+    checks:
+      - type: max_words
+        count: 40
+
+  - id: summ_05
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: general
+      difficulty: medium
+      edge_case: "false"
+    input: "A team of marine biologists discovered a vibrant, previously unmapped coral reef ecosystem thriving at mesophotic depths off the coast of Tahiti, displaying remarkable resistance to thermal bleaching events."
+    checks:
+      - type: max_words
+        count: 40
+      - type: contains
+        values: ["coral"]
+
+  - id: summ_06
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: tech
+      difficulty: hard
+      edge_case: "true"
+    input: "The Linux kernel maintenance collective disclosed a critical zero-day vulnerability in socket buffer allocation that allows remote code execution. Systems administrators are urged to apply kernel patch 6.8.4 immediately."
+    checks:
+      - type: max_words
+        count: 40
+      - type: contains
+        values: ["patch"]
+
+  - id: summ_07
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: finance
+      difficulty: medium
+      edge_case: "false"
+    input: "Commercial real estate developers in downtown Chicago face mounting debt maturities with over $3.2 billion due next spring, prompting distress asset sales and debt restructuring negotiations with regional lenders."
+    checks:
+      - type: max_words
+        count: 40
+
+  - id: summ_08
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: general
+      difficulty: easy
+      edge_case: "false"
+    input: "NASA launched the Europa Clipper spacecraft on a 1.8-billion-mile voyage to investigate whether Jupiter's icy moon harbors conditions suitable for microscopic extraterrestrial life in its subsurface ocean."
+    checks:
+      - type: max_words
+        count: 40
+      - type: contains
+        values: ["Europa"]
+
+  - id: summ_09
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: tech
+      difficulty: hard
+      edge_case: "true"
+    input: "A startup introduced a declarative compiler converting high-level PyTorch neural network architectures directly into verified Verilog FPGA hardware descriptions, claiming a 5x energy efficiency advantage over GPU inference clusters."
+    checks:
+      - type: max_words
+        count: 40
+
+  - id: summ_10
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: legal
+      difficulty: hard
+      edge_case: "true"
+    input: "State attorneys general initiated an inquiry into consumer privacy practices regarding automated telemetric tracking in connected vehicles, questioning whether location data was sold without explicit consumer consent."
+    checks:
+      - type: max_words
+        count: 40
+
+  - id: summ_11
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: customer_support
+      difficulty: medium
+      edge_case: "false"
+    input: "Billing anomaly identified where recurring software licenses charged inactive users during account suspension. The accounting system was patched and automated credit refunds were distributed to 342 affected accounts."
+    checks:
+      - type: max_words
+        count: 40
+
+  - id: summ_12
+    target: short_summarizer
+    suite: summary
+    slices:
+      category: finance
+      difficulty: hard
+      edge_case: "true"
+    input: "The Bank of Japan raised its short-term policy target to 0.25% in an unexpected monetary tightening move, sparking an abrupt unwind of the multi-trillion-dollar global currency carry trade."
+    checks:
+      - type: max_words
+        count: 40
+
+  # ============================================================================
+  # TARGET: skill_selection
+  # Tests autonomous routing to the expected SKILL.md tool
+  # ============================================================================
+  - id: sel_sql_01
+    target: skill_selection
+    suite: selection
+    slices:
+      category: tech
+      difficulty: medium
+      edge_case: "false"
+    input: "Construct an SQL query with recursive CTE to traverse hierarchical employee managerial levels."
+    checks:
+      - type: exact_match
+        value: "write-sql"
+
+  - id: sel_email_01
+    target: skill_selection
+    suite: selection
+    slices:
+      category: customer_support
+      difficulty: easy
+      edge_case: "false"
+    input: "Draft a formal response email notifying a vendor that their invoice has been received and scheduled for disbursement."
+    checks:
+      - type: exact_match
+        value: "draft-email"
+
+  - id: sel_code_01
+    target: skill_selection
+    suite: selection
+    slices:
+      category: tech
+      difficulty: medium
+      edge_case: "false"
+    input: "Explain line-by-line how this Python generator function achieves non-blocking streaming data pipeline processing."
+    checks:
+      - type: exact_match
+        value: "explain-code"
+
+  - id: sel_trans_01
+    target: skill_selection
+    suite: selection
+    slices:
+      category: general
+      difficulty: easy
+      edge_case: "false"
+    input: "Translate this English marketing brochure into fluent Japanese while preserving professional brand tone."
+    checks:
+      - type: exact_match
+        value: "translate-text"
+
+  - id: sel_summ_01
+    target: skill_selection
+    suite: selection
+    slices:
+      category: general
+      difficulty: easy
+      edge_case: "false"
+    input: "Summarize this 15-page clinical trial research publication into three actionable paragraphs."
+    checks:
+      - type: exact_match
+        value: "summarize-text"
+
+  - id: sel_ent_01
+    target: skill_selection
+    suite: selection
+    slices:
+      category: legal
+      difficulty: medium
+      edge_case: "false"
+    input: "Extract all legal entity names, court jurisdictions, and penalty amounts from this trial transcript."
+    checks:
+      - type: exact_match
+        value: "extract-entities"
+

@@ -1,0 +1,9 @@
+# Authorized approvers for change request promotion
+approvers:
+  - name: "Alice Reviewer"
+    role: "Lead Prompt Engineer"
+  - name: "Bob Lead"
+    role: "Model Governance Lead"
+  - name: "Carol Admin"
+    role: "Release Manager"
+

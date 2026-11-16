@@ -1,0 +1,9 @@
+test_id,input,run_index,output,passed,latency_ms,timed_out,rule,inverse_rule,check_details
+pex_prompt_rule_1_std_1,SELECT * FROM table_name WHERE column = 'value';,0,"SELECT *
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+LEFT JOIN order_items oi ON o.order_id = oi.order_id
+WHERE c.name = 'value'",True,1784.72,False,General,Inverse failure,[]
+pex_prompt_rule_1_inv_2,"SELECT * FROM table_name WHERE column = 'value' AND 1=1; -- This is a comment to bypass the rule, but it's still syntactically correct and safe.",0,"SELECT customer_id, name, region, created_at 
+FROM customers
+WHERE 1=1;",True,835.33,False,General,Inverse failure,[]

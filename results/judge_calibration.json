@@ -1,0 +1,417 @@
+{
+  "model_under_test": "qwen2.5:3b",
+  "judge_model": "gemma2:2b",
+  "total_evaluated": 40,
+  "observed_agreement": 0.75,
+  "chance_agreement": 0.75,
+  "cohen_kappa": 0.0,
+  "confusion_matrix": {
+    "tp": 30,
+    "fp": 0,
+    "fn": 10,
+    "tn": 0
+  },
+  "discordant_count": 10,
+  "records": [
+    {
+      "index": 1,
+      "test_id": "sum_01",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "James Webb telescope detects CO\u2082, CH\u2084 on exoplanet 120ly away, hinting at alien chemistry."
+    },
+    {
+      "index": 2,
+      "test_id": "sum_02",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Software patches three critical zero-day vulnerabilities in open-source container framework due to researcher-detected m"
+    },
+    {
+      "index": 3,
+      "test_id": "sum_03",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Developing countries boosted gold reserves to record levels in Q4 amid currency volatility and geopolitical risks."
+    },
+    {
+      "index": 4,
+      "test_id": "sum_04",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "Antitrust sues for divesting digital ad and search ops from marketplace distributors due to alleged monopolistic practic"
+    },
+    {
+      "index": 5,
+      "test_id": "sum_05",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Targeted tyrosine kinase inhibitors plus immunotherapy improved overall progression-free survival by 18 months in 400 ea"
+    },
+    {
+      "index": 6,
+      "test_id": "sum_06",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Executive leadership approved $400M for domestic semiconductor expansion to address supply risk."
+    },
+    {
+      "index": 7,
+      "test_id": "sum_07",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Digital tablets increased 25% third-grade reading fluency scores by 18 months in 3k rural schools."
+    },
+    {
+      "index": 8,
+      "test_id": "sum_08",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Engineers developed ultra-low-power neuromorphic processor 90% less energy than microcontrollers for industrial robotics"
+    },
+    {
+      "index": 9,
+      "test_id": "sum_09",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Parliament ratifies 40% industrial GHG reduction by 2030 via carbon taxes and clean energy subsidies."
+    },
+    {
+      "index": 10,
+      "test_id": "sum_10",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "July CPI at 2.4% annual, easing pressure for pre-autumn rate cuts by central bank."
+    },
+    {
+      "index": 11,
+      "test_id": "sum_11",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Corporate mandates phased return to regional HQs, starting 3 weekly in-person meetings in Q2."
+    },
+    {
+      "index": 12,
+      "test_id": "sum_12",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "Oceanic sensors detect slowing of Atlantic overturning circulation, worrying about Northern Europe's climate stability."
+    },
+    {
+      "index": 13,
+      "test_id": "sum_13",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Supreme Court upheld appellate ruling allowing open academic use of synthetic biological sequence patents."
+    },
+    {
+      "index": 14,
+      "test_id": "sum_14",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "Cybersecurity firm warns of widespread credential stuffing attacks; urgent need for hardware-based passkey multifactor a"
+    },
+    {
+      "index": 15,
+      "test_id": "sum_15",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "Top-tier lenders saw ROE boost via high NI despite rising yields and CRE valuations."
+    },
+    {
+      "index": 16,
+      "test_id": "sum_16",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "Particle physicists detect first direct statistical evidence of diffuse supernova background neutrinos from 20-year unde"
+    },
+    {
+      "index": 17,
+      "test_id": "sum_17",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 60,
+      "output_preview": "Automotive company partners with battery chemist for 12GWh cathode plant in Midwest."
+    },
+    {
+      "index": 18,
+      "test_id": "sum_18",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 60,
+      "output_preview": "Voters approve $80M bond for lead pipe replacement and storm drain modernization."
+    },
+    {
+      "index": 19,
+      "test_id": "sum_19",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "Fifty thousand grads showed 20y salary growth for those with interdisciplinary STEM/design degrees."
+    },
+    {
+      "index": 20,
+      "test_id": "sum_20",
+      "target": "short_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 60,
+      "output_preview": "Telecom regulator sets guidelines for 6G trials in 12 metro areas starting summer."
+    },
+    {
+      "index": 21,
+      "test_id": "meet_test_01",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "**Executive Briefing Summary**  - Sprint 42 sync concluded with discussions on latency issues in local Large Language Mo"
+    },
+    {
+      "index": 22,
+      "test_id": "meet_test_02",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary**  The Q3 Board Briefing highlighted 24% year-over-year (YoY) revenue growth, with focus on AWS egress cost re"
+    },
+    {
+      "index": 23,
+      "test_id": "meet_test_03",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "**Executive Briefing**  - **Platform Migration Status:** Decided to migrate from MySQL to PostgreSQL in staging environm"
+    },
+    {
+      "index": 24,
+      "test_id": "meet_crit_04",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": false,
+      "judge_score": 65,
+      "output_preview": "**Executive Briefing Summary**  - Audit identified non-compliant credential storage practices in production environments"
+    },
+    {
+      "index": 25,
+      "test_id": "meet_crit_05",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Meeting Summary:**  - CRITICAL: Incident occurred due to an unindexed foreign key in the orders table, leading to OCC "
+    },
+    {
+      "index": 26,
+      "test_id": "meet_test_06",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary:**  Discussed the launch of a developer evangelism program. Marketing team aims to publish 4 technical blog po"
+    },
+    {
+      "index": 27,
+      "test_id": "meet_test_07",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary:**  - Sales pipeline under review, highlighting delays in East Coast enterprise deals due to procurement secur"
+    },
+    {
+      "index": 28,
+      "test_id": "meet_test_08",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "**Summary**  Discussed Q4 product roadmaps, focusing on regression management and telemetry, with dark mode redesign def"
+    },
+    {
+      "index": 29,
+      "test_id": "meet_test_09",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary**  - Multi-model benchmark exports added for enterprise customers, including Markdown and CSV formats.  - Supp"
+    },
+    {
+      "index": 30,
+      "test_id": "meet_test_10",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Meeting Summary:**  Redshift migration is ahead of schedule, with pipeline latency reduced by 40%. The team will depre"
+    },
+    {
+      "index": 31,
+      "test_id": "meet_test_11",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "**Executive Meeting Briefing**  - **Action Items:**     - Enable strict rate limiting immediately per SecOps directive. "
+    },
+    {
+      "index": 32,
+      "test_id": "meet_test_12",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "**Summary:** Executive Staff Meeting discussed the annual operating plan, approved hiring freezes, and aligned on key ne"
+    },
+    {
+      "index": 33,
+      "test_id": "meet_test_13",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 75,
+      "output_preview": "**Summary:**  - Discussed improving webhook reliability for partners. - Action Items:   - Add exponential backoff retrie"
+    },
+    {
+      "index": 34,
+      "test_id": "meet_test_14",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Executive Briefing Summary**  - **Action Items:**     - Audit all container images for security vulnerabilities (Team "
+    },
+    {
+      "index": 35,
+      "test_id": "meet_test_15",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Meeting Summary**  - Flaky tests causing pipeline issues; 4 tests identified as non-deterministic.   - Test lead to in"
+    },
+    {
+      "index": 36,
+      "test_id": "meet_test_16",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Executive Briefing Summary**  - **Q2 departmental spending reviewed, remaining 4% within forecast.** - **R&D budget re"
+    },
+    {
+      "index": 37,
+      "test_id": "meet_test_17",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Executive Summary**  The AI Research team reviewed the local embedding model **nomic-embed-text** against Google's **t"
+    },
+    {
+      "index": 38,
+      "test_id": "meet_crit_18",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary**  Key points discussed: External auditors' review highlighted the need for an audit trail for prompt modifica"
+    },
+    {
+      "index": 39,
+      "test_id": "meet_test_19",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary:**  - iOS app ready for release, pending final review. - Android rollout scheduled to commence at 50%, with su"
+    },
+    {
+      "index": 40,
+      "test_id": "meet_test_20",
+      "target": "meeting_summarizer",
+      "deterministic_passed": true,
+      "det_failures": [],
+      "judge_passed": true,
+      "judge_score": 85,
+      "output_preview": "**Summary**  - Cloud spend up 18%, attributed to uncleaned preview environments. - SRE initiated automatic 48-hour envir"
+    }
+  ]
+}

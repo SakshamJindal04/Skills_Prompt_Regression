@@ -1,0 +1,433 @@
+/*
+ * Enterprise Design System Stylesheet
+ * Local-first: System font stack only, zero external CDNs, full WCAG AA contrast.
+ */
+
+:root {
+  --arm-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --arm-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Color Palette - Light */
+  --arm-primary: #1E3A8A;
+  --arm-primary-accent: #2563EB;
+  --arm-bg: #F8FAFC;
+  --arm-surface: #FFFFFF;
+  --arm-surface-alt: #F1F5F9;
+  --arm-border: #E2E8F0;
+  --arm-border-subtle: #F1F5F9;
+  --arm-text: #0F172A;
+  --arm-text-muted: #475569;
+  --arm-text-caption: #64748B;
+
+  /* Semantic Status Tokens (WCAG AA Contrast >= 4.5:1) */
+  --arm-success-bg: #ECFDF5;
+  --arm-success-border: #6EE7B7;
+  --arm-success-text: #047857;
+
+  --arm-danger-bg: #FEF2F2;
+  --arm-danger-border: #FCA5A5;
+  --arm-danger-text: #B91C1C;
+
+  --arm-warning-bg: #FFFBEB;
+  --arm-warning-border: #FDE68A;
+  --arm-warning-text: #92400E;
+
+  --arm-info-bg: #EFF6FF;
+  --arm-info-border: #BFDBFE;
+  --arm-info-text: #1D4ED8;
+
+  --arm-neutral-bg: #F8FAFC;
+  --arm-neutral-border: #CBD5E1;
+  --arm-neutral-text: #334155;
+
+  /* Radii & Shadows */
+  --arm-radius-sm: 4px;
+  --arm-radius-md: 6px;
+  --arm-radius-lg: 8px;
+  --arm-radius-full: 9999px;
+
+  --arm-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --arm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --arm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+
+  --arm-transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --arm-primary: #3B82F6;
+    --arm-primary-accent: #60A5FA;
+    --arm-bg: #0B0F19;
+    --arm-surface: #111827;
+    --arm-surface-alt: #1F2937;
+    --arm-border: #374151;
+    --arm-border-subtle: #1F2937;
+    --arm-text: #F9FAFB;
+    --arm-text-muted: #9CA3AF;
+    --arm-text-caption: #6B7280;
+
+    --arm-success-bg: #064E3B;
+    --arm-success-border: #059669;
+    --arm-success-text: #6EE7B7;
+
+    --arm-danger-bg: #450A0A;
+    --arm-danger-border: #DC2626;
+    --arm-danger-text: #FCA5A5;
+
+    --arm-warning-bg: #451A03;
+    --arm-warning-border: #D97706;
+    --arm-warning-text: #FDE68A;
+
+    --arm-info-bg: #1E3A8A;
+    --arm-info-border: #2563EB;
+    --arm-info-text: #93C5FD;
+
+    --arm-neutral-bg: #1F2937;
+    --arm-neutral-border: #4B5563;
+    --arm-neutral-text: #D1D5DB;
+
+    --arm-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --arm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Base resets & typography */
+html, body, [data-testid="stAppViewContainer"] {
+  font-family: var(--arm-font-sans);
+  color: var(--arm-text);
+  background-color: var(--arm-bg);
+}
+
+/* Accessible focus outlines */
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--arm-primary-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Page fade-in */
+[data-testid="stAppViewBlockContainer"] {
+  animation: armFadeIn 200ms ease-out;
+  padding-top: 1.5rem !important;
+  padding-bottom: 3rem !important;
+  max-width: 1440px;
+}
+
+@keyframes armFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Top Shell Status Bar */
+.arm-top-shell {
+  background: var(--arm-surface);
+  border: 1px solid var(--arm-border);
+  border-radius: var(--arm-radius-md);
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--arm-shadow-sm);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.arm-top-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--arm-text);
+  letter-spacing: -0.01em;
+}
+
+.arm-top-metrics {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.82rem;
+  color: var(--arm-text-muted);
+  flex-wrap: wrap;
+}
+
+.arm-top-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Status Chips (Always Icon + Text) */
+.arm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--arm-radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-width: 1px;
+  border-style: solid;
+  line-height: 1.3;
+}
+
+.arm-chip-success {
+  background: var(--arm-success-bg);
+  border-color: var(--arm-success-border);
+  color: var(--arm-success-text);
+}
+
+.arm-chip-danger {
+  background: var(--arm-danger-bg);
+  border-color: var(--arm-danger-border);
+  color: var(--arm-danger-text);
+}
+
+.arm-chip-warning {
+  background: var(--arm-warning-bg);
+  border-color: var(--arm-warning-border);
+  color: var(--arm-warning-text);
+}
+
+.arm-chip-info {
+  background: var(--arm-info-bg);
+  border-color: var(--arm-info-border);
+  color: var(--arm-info-text);
+}
+
+.arm-chip-neutral {
+  background: var(--arm-neutral-bg);
+  border-color: var(--arm-neutral-border);
+  color: var(--arm-neutral-text);
+}
+
+/* KPI Card */
+.arm-kpi-card {
+  background: var(--arm-surface);
+  border: 1px solid var(--arm-border);
+  border-radius: var(--arm-radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--arm-shadow-sm);
+  transition: var(--arm-transition);
+  height: 100%;
+}
+
+.arm-kpi-card:hover {
+  border-color: var(--arm-primary-accent);
+  box-shadow: var(--arm-shadow-md);
+  transform: translateY(-1px);
+}
+
+.arm-kpi-label {
+  font-size: 0.80rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--arm-text-muted);
+  margin-bottom: 6px;
+}
+
+.arm-kpi-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--arm-text);
+  line-height: 1.15;
+  font-feature-settings: "tnum" 1;
+}
+
+.arm-kpi-delta {
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* Verdict Banners */
+.arm-verdict-banner {
+  border-radius: var(--arm-radius-md);
+  padding: 18px 24px;
+  margin: 16px 0 24px 0;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: var(--arm-shadow-sm);
+}
+
+.arm-verdict-banner-promote {
+  background: var(--arm-success-bg);
+  border-color: var(--arm-success-border);
+  color: var(--arm-success-text);
+}
+
+.arm-verdict-banner-block {
+  background: var(--arm-danger-bg);
+  border-color: var(--arm-danger-border);
+  color: var(--arm-danger-text);
+}
+
+.arm-verdict-banner-neutral {
+  background: var(--arm-info-bg);
+  border-color: var(--arm-info-border);
+  color: var(--arm-info-text);
+}
+
+.arm-verdict-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.arm-verdict-desc {
+  font-size: 0.90rem;
+  line-height: 1.45;
+  opacity: 0.95;
+}
+
+/* Section Cards */
+.arm-section-card {
+  background: var(--arm-surface);
+  border: 1px solid var(--arm-border);
+  border-radius: var(--arm-radius-md);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--arm-shadow-sm);
+}
+
+/* Monospace & Hashes */
+.arm-mono {
+  font-family: var(--arm-font-mono);
+  font-size: 0.85em;
+  background: var(--arm-surface-alt);
+  padding: 2px 6px;
+  border-radius: var(--arm-radius-sm);
+  border: 1px solid var(--arm-border);
+}
+
+/* Custom copyable hash pill */
+.arm-hash-pill {
+  font-family: var(--arm-font-mono);
+  font-size: 0.82rem;
+  background: var(--arm-surface-alt);
+  border: 1px solid var(--arm-border);
+  border-radius: var(--arm-radius-sm);
+  padding: 2px 8px;
+  color: var(--arm-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Error and empty state panels */
+.arm-empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--arm-surface);
+  border: 1px dashed var(--arm-border);
+  border-radius: var(--arm-radius-md);
+  margin: 16px 0;
+}
+
+.arm-empty-icon {
+  font-size: 2.2rem;
+  color: var(--arm-text-caption);
+  margin-bottom: 12px;
+}
+
+.arm-empty-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--arm-text);
+  margin-bottom: 6px;
+}
+
+.arm-empty-subtitle {
+  font-size: 0.88rem;
+  color: var(--arm-text-muted);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Table styling enhancement */
+[data-testid="stDataFrame"] {
+  border: 1px solid var(--arm-border);
+  border-radius: var(--arm-radius-md);
+  overflow: hidden;
+}
+
+/* Form inputs & buttons polish */
+button[kind="primary"] {
+  border-radius: var(--arm-radius-md) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  transition: var(--arm-transition) !important;
+}
+
+button[kind="secondary"] {
+  border-radius: var(--arm-radius-md) !important;
+  transition: var(--arm-transition) !important;
+}
+
+/* Stepper Bar for Panel Lab */
+.arm-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 28px 0;
+  padding: 12px 20px;
+  background: var(--arm-surface);
+  border: 1px solid var(--arm-border);
+  border-radius: var(--arm-radius-md);
+}
+
+.arm-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--arm-text-muted);
+}
+
+.arm-step-active {
+  color: var(--arm-primary-accent);
+  font-weight: 700;
+}
+
+.arm-step-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--arm-surface-alt);
+  border: 1px solid var(--arm-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.arm-step-active .arm-step-number {
+  background: var(--arm-primary-accent);
+  color: #FFFFFF;
+  border-color: var(--arm-primary-accent);
+}
+
+.arm-step-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--arm-border);
+  margin: 0 12px;
+}
