@@ -8,3 +8,12 @@
 {"timestamp": "2026-11-16T05:47:11.412636+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
 {"timestamp": "2026-11-16T05:47:40.561317+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
 {"timestamp": "2026-11-16T05:48:09.661446+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T12:31:24.547765+00:00", "level": "INFO", "logger": "api", "message": "GET /health -> 200 (178.1ms)", "run_id": null, "test_id": null, "caller": "api.py:63"}
+{"timestamp": "2026-11-16T13:30:34.351250+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T13:31:06.750886+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T13:31:38.479394+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T13:42:08.227547+00:00", "level": "INFO", "logger": "api", "message": "HEAD /docs -> 200 (24.7ms)", "run_id": null, "test_id": null, "caller": "api.py:63"}
+{"timestamp": "2026-11-16T14:11:47.460381+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T14:12:26.801189+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T14:13:01.295539+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
+{"timestamp": "2026-11-16T14:16:13.567070+00:00", "level": "INFO", "logger": "api", "message": "HEAD /docs -> 200 (8.9ms)", "run_id": null, "test_id": null, "caller": "api.py:63"}

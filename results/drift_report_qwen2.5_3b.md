@@ -1,6 +1,6 @@
 # Model Drift Diagnostic Report: `qwen2.5:3b`
 
-- **Check Timestamp**: 2026-11-16 05:47:52 UTC
+- **Check Timestamp**: 2026-11-16 14:12:44 UTC
 - **Baseline Digest**: `357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b`
 - **Current Digest**: `new_altered_sha256_digest_1234567890abcdef`
 - **Digest Status**: **DRIFT DETECTED** (Silent re-pull or weight change)
