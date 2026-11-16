@@ -158,6 +158,77 @@ class Checker:
         return passed, details
 
     @staticmethod
+    def _extract_trajectory_data(output: Any) -> Optional[Dict[str, Any]]:
+        """Helper to extract structured agent trajectory dictionary from output."""
+        if isinstance(output, dict):
+            return output
+        if isinstance(output, str):
+            return extract_json_from_text(output)
+        return None
+
+    @staticmethod
+    def check_tool_called(output: Any, check_def: Dict[str, Any]) -> Tuple[bool, str]:
+        expected_tool = str(check_def.get("tool", "")).strip().lower()
+        data = Checker._extract_trajectory_data(output)
+        if not data:
+            # Fallback to string search for tool action
+            passed = f'"action": "{expected_tool}"' in str(output).lower() or f"'action': '{expected_tool}'" in str(output).lower()
+            return passed, f"Tool '{expected_tool}' {'called' if passed else 'missing from trajectory text'}."
+
+        tools_used = [str(t).lower() for t in data.get("tools_used", [])]
+        if not tools_used and "trajectory" in data:
+            tools_used = [str(step.get("action", "")).lower() for step in data["trajectory"]]
+
+        passed = expected_tool in tools_used
+        details = f"Tool '{expected_tool}' was {'invoked' if passed else 'NOT invoked in trajectory'} (tools used: {tools_used})"
+        return passed, details
+
+    @staticmethod
+    def check_no_loops(output: Any, check_def: Dict[str, Any]) -> Tuple[bool, str]:
+        data = Checker._extract_trajectory_data(output)
+        if not data:
+            passed = "infinite loop detected" not in str(output).lower()
+            return passed, "No loops detected" if passed else "Infinite loop detected in trajectory text."
+
+        loop_detected = bool(data.get("loop_detected", False))
+        passed = not loop_detected
+        details = "No infinite loops detected in agent trajectory." if passed else "Execution aborted: infinite loop detected."
+        return passed, details
+
+    @staticmethod
+    def check_step_count(output: Any, check_def: Dict[str, Any]) -> Tuple[bool, str]:
+        max_limit = int(check_def.get("limit", check_def.get("max_steps", 5)))
+        data = Checker._extract_trajectory_data(output)
+        if not data:
+            return True, "No structured trajectory to count steps."
+
+        step_count = int(data.get("step_count", len(data.get("trajectory", []))))
+        passed = step_count <= max_limit
+        details = f"Trajectory step count ({step_count}) {'<=' if passed else '>'} limit ({max_limit})."
+        return passed, details
+
+    @staticmethod
+    def check_valid_arguments(output: Any, check_def: Dict[str, Any]) -> Tuple[bool, str]:
+        required_keys = check_def.get("required_keys", [])
+        expected_tool = check_def.get("tool")
+        data = Checker._extract_trajectory_data(output)
+        if not data or "trajectory" not in data:
+            return True, "Trajectory not present."
+
+        for step in data.get("trajectory", []):
+            action = step.get("action")
+            if expected_tool and action != expected_tool:
+                continue
+            args = step.get("args", {})
+            if not isinstance(args, dict):
+                return False, f"Step '{action}' arguments must be a JSON dictionary."
+            missing = [k for k in required_keys if k not in args or not str(args[k]).strip()]
+            if missing:
+                return False, f"Step '{action}' missing valid argument(s): {missing}"
+
+        return True, "All tool arguments in trajectory were valid."
+
+    @staticmethod
     def check_llm_judge(
         output: str,
         check_def: Dict[str, Any],
@@ -236,6 +307,14 @@ def evaluate_checks(
             passed, details = Checker.check_json_schema_valid(output, check)
         elif check_type == "max_words":
             passed, details = Checker.check_max_words(output, check)
+        elif check_type in ("tool_called", "tool_used"):
+            passed, details = Checker.check_tool_called(output, check)
+        elif check_type == "no_loops":
+            passed, details = Checker.check_no_loops(output, check)
+        elif check_type in ("max_steps", "step_count_limit"):
+            passed, details = Checker.check_step_count(output, check)
+        elif check_type == "valid_arguments":
+            passed, details = Checker.check_valid_arguments(output, check)
         elif check_type == "llm_judge":
             passed, details, extra_meta = Checker.check_llm_judge(output, check, client=client)
         else:

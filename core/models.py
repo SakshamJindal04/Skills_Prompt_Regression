@@ -395,3 +395,72 @@ def audit_log_before_update(mapper, connection, target):
 def audit_log_before_delete(mapper, connection, target):
     raise PermissionError("AuditLog records are append-only and cannot be deleted.")
 
+
+class ReviewItem(Base):
+    __tablename__ = "review_items"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    score_id = Column(Integer, ForeignKey("scores.id"), nullable=True)
+    trace_id = Column(Integer, ForeignKey("traces.id"), nullable=False)
+    test_id = Column(String(128), nullable=False)
+    artifact_id = Column(Integer, nullable=False)
+    flag_reason = Column(String(255), nullable=False)
+    model_output = Column(Text, nullable=True)
+    judge_score = Column(Float, nullable=True)
+    judge_passed = Column(Boolean, nullable=True)
+    status = Column(String(32), default="pending")  # pending, reviewed
+    human_passed = Column(Boolean, nullable=True)
+    reviewer_id = Column(String(128), nullable=True)
+    comment = Column(Text, nullable=True)
+    reviewed_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "score_id": self.score_id,
+            "trace_id": self.trace_id,
+            "test_id": self.test_id,
+            "artifact_id": self.artifact_id,
+            "flag_reason": self.flag_reason,
+            "model_output": self.model_output,
+            "judge_score": self.judge_score,
+            "judge_passed": self.judge_passed,
+            "status": self.status,
+            "human_passed": self.human_passed,
+            "reviewer_id": self.reviewer_id,
+            "comment": self.comment,
+            "reviewed_at": self.reviewed_at.isoformat() if self.reviewed_at else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+
+class EnvironmentBaseline(Base):
+    __tablename__ = "environment_baselines"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    environment = Column(String(32), nullable=False, index=True)  # dev, staging, prod
+    artifact_id = Column(Integer, ForeignKey("artifacts.id"), nullable=False)
+    git_hash = Column(String(64), nullable=False)
+    semver = Column(String(32), nullable=False, default="1.0.0")
+    promoted_by = Column(String(128), default="Developer")
+    gate_verdict = Column(String(32), default="PROMOTE")
+    gate_comparison_id = Column(Integer, ForeignKey("comparisons.id"), nullable=True)
+    release_notes = Column(Text, nullable=True)
+    promoted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "environment": self.environment,
+            "artifact_id": self.artifact_id,
+            "git_hash": self.git_hash,
+            "semver": self.semver,
+            "promoted_by": self.promoted_by,
+            "gate_verdict": self.gate_verdict,
+            "gate_comparison_id": self.gate_comparison_id,
+            "release_notes": self.release_notes,
+            "promoted_at": self.promoted_at.isoformat() if self.promoted_at else None,
+        }
+
+

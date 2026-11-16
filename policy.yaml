@@ -35,8 +35,35 @@ critical_test_ids:
   - "sql_crit_02"
   - "meet_crit_01"
   - "meet_crit_02"
+  - "traj_01"
+  - "traj_03"
+  - "traj_09"
+  - "traj_10"
+  - "traj_17"
+  - "traj_18"
+  - "traj_25"
+  - "traj_33"
+  - "traj_34"
 required_approvers:
   - "Alice Reviewer"
   - "Bob Lead"
   - "Carol Admin"
+
+# Tier 1 Decision Quality Rules & Evidence
+active_decision_rule: "mcnemar_exact"  # Options: mcnemar_exact, non_inferiority, holm_bonferroni, odds_ratio
+non_inferiority_margin: 0.05
+odds_ratio_threshold: 1.5
+
+# Beyond Pass/Fail Monitoring Controls
+beyond_pass_fail:
+  flag_semantic_drift: true
+  semantic_drift_threshold: 0.85
+  block_on_semantic_drift: false
+  flag_latency_regression: true
+  latency_p95_diff_threshold_ms: 500.0
+  block_on_latency_regression: false
+  flag_length_drift: true
+  length_ratio_threshold: 0.50
+  block_on_length_drift: false
+
 

@@ -1,0 +1,5 @@
+Compute Cluster Hardware Specifications:
+Node worker-01: 64 vCPU, 256GB RAM, 2TB NVMe SSD, Region: us-east-1.
+Node worker-02: 32 vCPU, 128GB RAM, 1TB NVMe SSD, Region: us-west-2.
+Node worker-03: 16 vCPU, 64GB RAM, 500GB SSD, Region: eu-central-1.
+Database Primary: 128 vCPU, 512GB RAM, 4TB NVMe RAID-10.

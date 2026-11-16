@@ -184,6 +184,65 @@ verdict_banner(
     delta_pass_rate=comp_res["delta_pass_rate"],
 )
 
+# Replay Verification & Release Artifacts
+v_col1, v_col2, v_col3 = st.columns([1, 1, 1])
+with v_col1:
+    if st.button(":material/verified: Verify Run (Replay Bundle)", use_container_width=True):
+        try:
+            from core.bundle import create_run_bundle, replay_run_bundle
+            bundle_zip = create_run_bundle(comparison_id=None, bundle_dir="results/bundles")
+            replay_res = replay_run_bundle(bundle_zip)
+            if replay_res["status"] == "VERIFIED":
+                st.success(
+                    f":material/task_alt: **Verified**: Re-scored {replay_res['recomputed']['total_traces_replayed']} traces with 0 model calls. "
+                    f"b={replay_res['recomputed']['b']}, c={replay_res['recomputed']['c']}, p={replay_res['recomputed']['p_value']:.4f} matched recorded values."
+                )
+        except Exception as e:
+            st.error(f"Verification error: {e}")
+
+with v_col2:
+    try:
+        from core.bundle import create_run_bundle
+        bundle_file = create_run_bundle(comparison_id=None, bundle_dir="results/bundles")
+        with open(bundle_file, "rb") as bf:
+            st.download_button(
+                ":material/archive: Download Run Bundle (.zip)",
+                data=bf.read(),
+                file_name=Path(bundle_file).name,
+                mime="application/zip",
+                use_container_width=True,
+            )
+    except Exception:
+        pass
+
+with v_col3:
+    try:
+        from core.release_report import generate_release_report_html, render_report_pdf
+        r_data = {
+            "comparison_id": f"{base_id}_vs_{cand_id}",
+            "verdict": verdict,
+            "baseline_id": base_id,
+            "candidate_id": cand_id,
+            "delta_pass_rate": comp_res["delta_pass_rate"],
+            "p_value": p_val,
+            "b": comp_res["regressed_count"],
+            "c": comp_res["fixed_count"],
+            "ci_delta": comp_res.get("ci_delta", (0.0, 0.0)),
+            "flips": comp_res.get("flips", []),
+        }
+        _, h_path = generate_release_report_html(r_data)
+        pdf_f = render_report_pdf(h_path)
+        with open(pdf_f, "rb") as pf:
+            st.download_button(
+                ":material/picture_as_pdf: Download Report (PDF)",
+                data=pf.read(),
+                file_name=pdf_f.name,
+                mime="application/pdf",
+                use_container_width=True,
+            )
+    except Exception:
+        pass
+
 if comp_res["hidden_flips_detected"]:
     st.warning(":material/warning: **Simpson's Paradox Alert**: The aggregate pass rate appears stable, but individual test cases suffered regressions that were masked by other tests.")
 

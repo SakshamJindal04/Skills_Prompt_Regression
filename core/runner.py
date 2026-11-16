@@ -1,3 +1,4 @@
+import json
 import time
 import os
 import yaml
@@ -98,7 +99,19 @@ def run_test(artifact_id, test_case, k=5, model_id="qwen2.5:3b", with_skill=True
         skills_used = []
         tool_calls = []
 
-        if target == "skill_selection":
+        if target in ("agent_trajectory", "tool_agent") or "trajectory" in target:
+            from core.agent import run_agent_trajectory
+            traj_res = run_agent_trajectory(
+                task_input=test_case["input"],
+                client=default_client,
+                model=model_id,
+                max_steps=test_case.get("max_steps", 5),
+            )
+            out = json.dumps(traj_res)
+            tools_used = traj_res.get("tools_used", [])
+            tool_calls = traj_res.get("trajectory", [])
+            lat = sum(step.get("latency_ms", 0.0) for step in traj_res.get("trajectory", []))
+        elif target == "skill_selection":
             # Run skill selector
             selector = EmbeddingSelector(registry, client=default_client)
             ranked, lat = selector.select(test_case["input"], top_k=3)
@@ -165,6 +178,7 @@ def sync_tests_to_db(tests_file=None):
             tests_dir / "analytics_tests.yaml",
             tests_dir / "promptpex_tests.yaml",
             tests_dir / "gpr_subset.yaml",
+            tests_dir / "agent_trajectory_tests.yaml",
         ]
 
     total_synced = 0

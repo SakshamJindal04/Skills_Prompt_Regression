@@ -50,3 +50,24 @@ During this project, the agent environment made available the following speciali
 7. **Audit Immutability Proof**: `tests/test_audit_chain.py` verified that direct unauthorized database updates are cryptographically caught by `python cli.py audit-verify`.
 8. **Panel Lab Rehearsal**: Evaluated 10 distinct prompt archetypes live in `results/panel_lab_rehearsal.md`.
 9. **Zero Emojis & Relative Paths**: All source files, dashboard UI components, documentation, and configuration files enforce clean student style with zero emojis (using Material icons `:material/...`) and relative paths only.
+
+---
+
+## 4. Tier 1 Industry-Hardening QA Pass
+
+### Tool & Skill Applications
+| Skill / Tool | Domain Area | Specific Action | Deliverable / Result |
+| :--- | :--- | :--- | :--- |
+| **`writing-guidelines`** | Empirical Documentation | Authored `docs/TIER_1_REPORT.md` and updated `docs/KNOWN_ISSUES.md` in concise, factual student-team style without marketing adjectives or AI clichés. | Fully grounded technical report with exact numbers matching computation. |
+| **`web-design-guidelines`** | Dashboard Extension | Designed `15_Human_Review.py` and `16_Environments.py` using shared design tokens, WCAG AA contrast, and dual-encoding status chips. | Human review queue with Cohen's kappa matrix and environment baseline promotion. |
+| **`webapp-testing`** | Headless PDF Generation | Leveraged Playwright Chromium (`page.pdf()`) in `core/release_report.py` to generate standalone release report PDFs locally. | Verified local 210KB PDF report generated with zero network requests. |
+| **`convex-reviewer` / Code Review** | Statistical & Cryptographic Defenses | Implemented cryptographic SHA-256 ZIP bundle hashing in `core/bundle.py`, anti-hallucination number verification in `core/release_report.py`, and Haldane-Anscombe continuity correction in `core/decision_rules.py`. | 100% reproducible test re-scoring and tamper resistance. |
+
+### Tier 1 Execution Verification
+1. **Replay Verification**: `python cli.py bundle 100` and `python cli.py replay` re-scored stored traces with **0 model calls**, asserting exact reproduction ($b=0, c=0, p=1.0000$). Tampering with `verdict.json` correctly raised `BundleTamperedError`.
+2. **Frozen Decision Rules Evaluation**: Evaluated all 4 rules across 26 edits in `results/edits.csv` with zero tuning on test edits. Precision: 1.0000, Recall: 1.0000, False Alarm Rate: 0.0000 across all 4 rules.
+3. **Statistical Power**: `python cli.py power --n 100 --k 5` verified formula $b_{\text{min}} = 6$ ($6.0\%$ detectable drop) and $55.3\%$ noise variance reduction from majority-5 voting.
+4. **Agent Trajectory Suite**: Synced 40 trajectory tests in `tests_data/agent_trajectory_tests.yaml` (5 slices, 16 critical tests), verified local tools (`calculator`, `doc_lookup`, `db_query`) and invariant checkers (`tool_called`, `no_loops`, `max_steps`, `valid_arguments`).
+5. **Human Review Queue**: Enqueued borderline evaluations, submitted human reviews with rationales, verified Cohen's kappa computation and cryptographic audit logging.
+6. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **133/133 passed** on every run (Run 1: 15.99s, Run 2: 16.38s, Run 3: 15.89s) with zero flakiness.
+

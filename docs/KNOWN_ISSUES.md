@@ -1,6 +1,6 @@
 # Known Issues & Operational Considerations
 
-This document records operational edge cases, platform dependencies, and known constraints in the current prototype implementation.
+This document records operational edge cases, platform dependencies, and known constraints in the current implementation.
 
 ---
 
@@ -16,13 +16,18 @@ This document records operational edge cases, platform dependencies, and known c
 
 ---
 
-## 3. GitHub Actions Execution Environment
-- **Issue**: Standard GitHub-hosted runners (`ubuntu-latest`) do not include GPU acceleration or local Ollama daemons, causing CLI regression runs that call Ollama to fail if run on cloud infrastructure without pre-pulled weights.
-- **Resolution**: The provided workflow (`.github/workflows/regression_gate.yml`) is documented and configured for **self-hosted runners** equipped with local Ollama weights. We verified the CLI gate locally.
+## 3. Small-Sample Statistical Power in Exact McNemar Testing
+- **Issue**: For exact two-sided McNemar testing at $\alpha = 0.05$ with $c = 0$ fixes, the minimum number of discordant regressions required for statistical significance is $b = 6$ ($0.5^{6-1} = 0.03125 \le 0.05$). For small evaluation sets ($N \le 20$), this requires a $\ge 30\%$ drop.
+- **Resolution**: Handled via two complementary mechanisms: (1) `regguard power --n N --k K` provides upfront power warnings and recommended sample sizes; (2) Critical test invariants bypass aggregate p-values, immediately blocking deployment if any critical test regresses ($b_{\text{crit}} \ge 1$).
 
 ---
 
-## 4. Git Workspace Boundary
-- **Issue**: The Git repository tracked by `core/repo.py` resides inside the managed subfolder `workspace/` (`workspace/.git`), rather than the project root.
-- **Resolution**: All versioning commands in `core/repo.py` and `app/pages/1_Repository.py` explicitly resolve to `get_workspace_path()`. Running Git commands from the project root will not show the prompt commit history unless targeting `-C workspace`.
+## 4. Multi-Hop Trajectory Reasoning in 3B Parameter Models
+- **Issue**: Highly compressed 3B local models (e.g. Qwen 2.5 3B) achieve strong performance on single-step tool execution (calculator, document lookup, SQLite queries), but can struggle with 3+ step compositional reasoning without explicit few-shot trajectories.
+- **Resolution**: The agent execution loop enforces step-count limits ($\le 5$), identical-action loop detection, and argument schema validation, terminating looping executions deterministically.
 
+---
+
+## 5. Append-Only Audit Log Constraints
+- **Issue**: Direct SQL `UPDATE` or `DELETE` statements on `audit_logs` fail by design via SQLAlchemy event listeners (`before_update`, `before_delete`) to maintain regulatory compliance.
+- **Resolution**: Corrections must be appended as new audit entries referencing previous record IDs; test fixtures that reset database state must rebuild tables using `Base.metadata.drop_all()` rather than issuing bulk deletes.

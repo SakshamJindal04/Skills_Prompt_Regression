@@ -1,0 +1,5 @@
+Subscription Pricing Model:
+Starter Tier: $49 per month ($490 billed annually). Includes 5 user seats.
+Team Tier: $199 per month ($1,990 billed annually). Includes 25 user seats.
+Enterprise Tier: $499 per month ($4,990 billed annually). Unlimited user seats.
+Additional user seat add-on: $15 per user per month.

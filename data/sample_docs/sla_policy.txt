@@ -1,0 +1,5 @@
+Enterprise Service Level Agreement (SLA):
+Standard Tier: 99.0% uptime, 4-hour critical response time.
+Pro Tier: 99.9% uptime, 1-hour critical response time.
+Enterprise Tier: 99.99% uptime, 15-minute critical response time.
+Data retention window for all tiers is 90 days.

@@ -1,0 +1,5 @@
+Security and Compliance Policies:
+Password Minimum Length: 14 characters with at least 1 numeral and 1 symbol.
+MFA Enforcement: Mandatory for all administrative and developer accounts.
+Session Timeout: 15 minutes of inactivity for production access.
+Default Ingress Ports: Port 443 (HTTPS) only; SSH port 22 strictly gated via VPN.

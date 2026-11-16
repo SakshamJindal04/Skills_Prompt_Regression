@@ -57,6 +57,42 @@ def generate_markdown_report(
 
 """
 
+    if comparison.get("decision_rules"):
+        md += """
+## Decision Rules Comparison (Frozen Variants)
+
+| Decision Rule | Verdict | Value | Criterion |
+| :--- | :--- | :--- | :--- |
+"""
+        rules = comparison["decision_rules"]
+        if "mcnemar_exact" in rules:
+            r = rules["mcnemar_exact"]
+            m = r.get("metrics", {})
+            p_v = r.get("p_value", m.get("p_value", 1.0))
+            b_v = r.get("b", m.get("b", 0))
+            c_v = r.get("c", m.get("c", 0))
+            md += f"| **(a) Exact McNemar + Critical** | **{r.get('verdict')}** | p = {p_v:.4f}, b={b_v}, c={c_v} | p >= 0.05 & 0 critical regressions |\n"
+        if "non_inferiority" in rules:
+            r = rules["non_inferiority"]
+            m = r.get("metrics", {})
+            ci_low = r.get("ci_lower", m.get("ci_lower", 0.0))
+            marg = r.get("margin", m.get("margin", 0.05))
+            md += f"| **(b) Non-Inferiority Margin** | **{r.get('verdict')}** | CI lower = {ci_low*100:+.2f}% | CI lower >= -{marg*100:.1f}% |\n"
+        if "holm_bonferroni" in rules:
+            r = rules["holm_bonferroni"]
+            m = r.get("metrics", {})
+            reg_cnt = len(m.get("regressed_slices", []))
+            md += f"| **(c) Holm-Bonferroni Slices** | **{r.get('verdict')}** | Regressed slices: {reg_cnt} | FWER-corrected alpha per slice |\n"
+        if "odds_ratio" in rules:
+            r = rules["odds_ratio"]
+            m = r.get("metrics", {})
+            or_v = r.get("odds_ratio", m.get("odds_ratio", 1.0))
+            cil = r.get("ci_lower", m.get("ci_lower", 0.0))
+            ciu = r.get("ci_upper", m.get("ci_upper", 0.0))
+            thresh = r.get("threshold", 1.5)
+            md += f"| **(d) Discordant Odds Ratio** | **{r.get('verdict')}** | OR = {or_v:.2f} (95% CI [{cil:.2f}, {ciu:.2f}]) | OR < {thresh:.2f} |\n"
+        md += "\n"
+
     if comparison.get("hidden_flips_detected"):
         md += """
 > **Note**: Overall aggregate pass rate remained flat/positive, but per-test regressions were detected. This confirms why per-test paired tracking is required.

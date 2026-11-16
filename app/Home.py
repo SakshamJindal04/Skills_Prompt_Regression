@@ -30,6 +30,7 @@ pages = {
         st.Page(str(pages_dir / "2_Run_Comparison.py"), title="Run Comparison", icon=":material/compare_arrows:"),
         st.Page(str(pages_dir / "6_Rollback.py"), title="Rollback Workflow", icon=":material/history:"),
         st.Page(str(pages_dir / "7_Change_Requests.py"), title="Change Requests", icon=":material/rule:"),
+        st.Page(str(pages_dir / "16_Environments.py"), title="Environments & Releases", icon=":material/rocket_launch:"),
     ],
     "Quality & Analysis": [
         st.Page(str(pages_dir / "3_Slices.py"), title="Slices & Simpson's Paradox", icon=":material/pie_chart:"),
@@ -38,6 +39,7 @@ pages = {
         st.Page(str(pages_dir / "10_Panel_Lab.py"), title="Panel Lab", icon=":material/science:"),
         st.Page(str(pages_dir / "11_Responsible_AI_Scorecard.py"), title="Responsible AI Scorecard", icon=":material/verified_user:"),
         st.Page(str(pages_dir / "12_Test_Health.py"), title="Test Health & Flakiness", icon=":material/health_and_safety:"),
+        st.Page(str(pages_dir / "15_Human_Review.py"), title="Human Review Queue", icon=":material/rate_review:"),
     ],
     "Governance & Proof": [
         st.Page(str(pages_dir / "8_Audit_Log.py"), title="System Audit Trail", icon=":material/security:"),

@@ -106,6 +106,42 @@ def run_drift_cli(args):
     sys.exit(1 if res.get("drift_detected") and "BLOCK" in res.get("report_md", "") else 0)
 
 
+def run_bundle_cli(args):
+    from core.bundle import create_run_bundle
+    out_path = str(args.output) if getattr(args, "output", None) else None
+    bundle_zip = create_run_bundle(args.run, output_path=out_path)
+    print(f"Run bundle successfully created at: {bundle_zip}")
+    sys.exit(0)
+
+
+def run_replay_cli(args):
+    from core.bundle import replay_run_bundle
+    print(f"Replaying bundle: {args.bundle}...")
+    try:
+        res = replay_run_bundle(args.bundle)
+        rec = res["recomputed"]
+        orig = res["recorded"]
+        print(f"Replay Status: {res['status']}")
+        print(f"Recorded Verdict: {orig.get('verdict')} -> Recomputed Verdict: {rec.get('verdict')}")
+        print(f"Discordant Pairs: b={rec.get('b')}, c={rec.get('c')}, p={rec.get('p_value'):.4f}")
+        if res["status"] == "VERIFIED":
+            print("SUCCESS: Run bundle reproduced exactly with zero model calls.")
+            sys.exit(0)
+        else:
+            print(f"FAILED: {res.get('error')}")
+            sys.exit(1)
+    except Exception as e:
+        print(f"ERROR: Bundle replay failed: {e}")
+        sys.exit(1)
+
+
+def run_power_cli(args):
+    from core.power import format_power_report
+    report_text = format_power_report(n=args.n, k=args.k, alpha=getattr(args, "alpha", 0.05))
+    print(report_text)
+    sys.exit(0)
+
+
 def run_audit_verify_cli(args):
     from core.audit import verify_audit_hash_chain
 
@@ -128,7 +164,34 @@ def run_audit_verify_cli(args):
 def main():
     if len(sys.argv) > 1:
         cmd = sys.argv[1].lower()
-        if cmd == "lab":
+        if cmd == "bundle":
+            parser = argparse.ArgumentParser(description="Run Bundle Generator CLI")
+            parser.add_argument("cmd", help="Subcommand (bundle)")
+            parser.add_argument("run", type=int, help="Comparison run ID to bundle")
+            parser.add_argument("--output", default=None, help="Output zip file path")
+            args = parser.parse_args()
+            run_bundle_cli(args)
+            return
+
+        elif cmd == "replay":
+            parser = argparse.ArgumentParser(description="Run Bundle Replay Verifier CLI")
+            parser.add_argument("cmd", help="Subcommand (replay)")
+            parser.add_argument("bundle", help="Path to bundle zip file")
+            args = parser.parse_args()
+            run_replay_cli(args)
+            return
+
+        elif cmd == "power":
+            parser = argparse.ArgumentParser(description="Statistical Power & Sample Size CLI")
+            parser.add_argument("cmd", help="Subcommand (power)")
+            parser.add_argument("--n", type=int, required=True, help="Number of distinct test cases (N)")
+            parser.add_argument("--k", type=int, default=5, help="Repetitions per test case (k)")
+            parser.add_argument("--alpha", type=float, default=0.05, help="Significance level alpha")
+            args = parser.parse_args()
+            run_power_cli(args)
+            return
+
+        elif cmd == "lab":
             parser = argparse.ArgumentParser(description="Panel Lab CLI")
             parser.add_argument("cmd", help="Subcommand (lab)")
             parser.add_argument("--prompt", required=True, help="Path to base prompt file")

@@ -12,6 +12,7 @@ from core.versioner import get_current_baseline, set_current_baseline
 from core.reporter import generate_markdown_report
 from core.policy import load_policy
 from core.audit import record_audit_event
+from core.decision_rules import evaluate_all_decision_rules
 
 load_dotenv()
 logger = logging.getLogger("gate")
@@ -62,24 +63,24 @@ def evaluate_gate(
     c = comparison["fixed_count"]
     p_val = comparison["p_value"]
 
-    # Check for critical test regressions (from test case or policy list)
-    critical_regressed = any(
-        (f.get("critical", False) or f.get("test_id") in policy_crit_ids)
-        and (f.get("outcome") == "regressed" or str(f.get("status", "")).lower() == "regressed")
-        for f in comparison.get("flips", [])
+    # Evaluate all 4 frozen decision rules
+    active_rule = policy.get("active_decision_rule", "mcnemar_exact")
+    margin = policy.get("non_inferiority_margin", 0.05)
+    or_thresh = policy.get("odds_ratio_threshold", 1.5)
+
+    all_rules_eval = evaluate_all_decision_rules(
+        comparison,
+        alpha=alpha,
+        margin=margin,
+        odds_ratio_threshold=or_thresh,
+        policy_critical_ids=policy_crit_ids,
     )
+    comparison["decision_rules"] = all_rules_eval
 
-    is_significant_regression = (p_val < alpha) and (b > c)
-
-    if critical_regressed:
-        verdict = "BLOCK"
-        reason = "A critical test suffered a regression."
-    elif is_significant_regression:
-        verdict = "BLOCK"
-        reason = f"Statistically significant regression: regressed={b} > fixed={c} (p={p_val:.4f} < {alpha})."
-    else:
-        verdict = "PROMOTE"
-        reason = "Passed gate policy."
+    # Selected rule determines primary verdict
+    primary_eval = all_rules_eval.get(active_rule, all_rules_eval["mcnemar_exact"])
+    verdict = primary_eval["verdict"]
+    reason = primary_eval["reason"]
 
     report_md = generate_markdown_report(
         comparison,
