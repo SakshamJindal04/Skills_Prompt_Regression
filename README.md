@@ -38,7 +38,7 @@ flowchart TD
 
     subgraph Interfaces["Interfaces & Services"]
         CLI["CLI: regguard / cli.py<br/>(Exit code 1 on BLOCK, bundle, replay, power)"]
-        DASH["Streamlit Dashboard<br/>(16 Enterprise Pages)"]
+        DASH["Streamlit Dashboard<br/>(17 Enterprise Pages - Light-Only Modern UI)"]
         API["FastAPI REST Service<br/>(127.0.0.1:8000 + Local Client Adapter)"]
         REP["Release Reports<br/>(HTML & Headless Playwright PDF)"]
     end
@@ -452,33 +452,33 @@ If MySQL is not available, the application automatically falls back to SQLite.
 
 ## Enterprise Dashboard & Visual Tour
 
-The Streamlit dashboard is built as an enterprise product adhering to a local-first design system with zero external CDN dependencies, WCAG AA contrast compliance, dual-encoded status indicators (always an icon plus text label), sub-second page loads, and native light and dark mode support.
+The Streamlit dashboard is built as an enterprise product adhering to a local-first, Light-Only Modern design system with zero external CDN dependencies, WCAG AAA body text contrast compliance (>= 7:1), WCAG AA UI contrast (>= 4.5:1), dual-encoded status indicators (always an icon plus text label), sub-second page loads, and native suppression of operating-system dark mode overrides.
 
-For full page-by-page documentation, see [`docs/UI_GUIDE.md`](docs/UI_GUIDE.md).
+For full page-by-page operational documentation, see [`docs/UI_GUIDE.md`](docs/UI_GUIDE.md). For design tokens and components, see [`docs/UI_STYLE_GUIDE.md`](docs/UI_STYLE_GUIDE.md).
 
 ### 1. System Overview & Health Monitoring
 Real-time telemetry tracking active baseline hash, gate verdict, historical pass-rate trends, recent comparisons, installed local models, and model weight digest drift monitoring.
-![System Overview](docs/screenshots/00_overview_light_1440x900.png)
+![System Overview](docs/screenshots/after/00_overview_light_1440x900.png)
 
 ### 2. Statistical Run Comparison & Regression Gating
 Paired evaluation between baseline and candidate artifacts evaluating exact McNemar test significance ($p < 0.05$), 95% bootstrap confidence intervals, and sortable flip tables with side-by-side output inspection.
-![Run Comparison](docs/screenshots/02_run_comparison_light_1440x900.png)
+![Run Comparison](docs/screenshots/after/02_run_comparison_light_1440x900.png)
 
 ### 3. Slices & Simpson's Paradox Analysis
 Partitioned test performance across task categories and difficulty tiers, catching localized regressions ($\Delta \le -0.10$) masked by aggregate metrics.
-![Slices Breakdown](docs/screenshots/03_slices_light_1440x900.png)
+![Slices Breakdown](docs/screenshots/after/03_slices_light_1440x900.png)
 
 ### 4. Skill Activation & Semantic Routing
 Benchmark evaluation across 120 standardized tasks with pairwise cosine similarity heatmaps to prevent conceptual collisions.
-![Skill Activation](docs/screenshots/04_skill_activation_light_1440x900.png)
+![Skill Activation](docs/screenshots/after/04_skill_activation_light_1440x900.png)
 
 ### 5. Multi-Model Regression Matrix & Judge Calibration
 Cross-model comparison across local LLMs (`qwen2.5:3b`, `llama3.2:3b`, `gemma2:2b`) with Cohen's kappa calibration against deterministic checks.
-![Model Matrix](docs/screenshots/09_model_matrix_light_1440x900.png)
+![Model Matrix](docs/screenshots/after/09_model_matrix_light_1440x900.png)
 
 ### 6. Interactive Panel Evaluation Lab
 Structured stepper pipeline (Input, Rules, Tests, Run, Results, Compare) for ad-hoc prompt engineering, custom rule synthesis, execution profiling, and candidate gate verification.
-![Panel Lab](docs/screenshots/10_panel_lab_light_1440x900.png)
+![Panel Lab](docs/screenshots/after/10_panel_lab_light_1440x900.png)
 
 ---
 
