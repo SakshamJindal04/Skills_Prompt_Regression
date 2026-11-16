@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
-  db:
+  mysql:
     image: mysql:8.0
-    container_name: regression_mysql
-    restart: always
+    container_name: regguard-mysql
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: regression_db
@@ -14,7 +12,46 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "regression_user", "-pregression_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: regguard-dashboard
+    restart: unless-stopped
+    environment:
+      DB_URL: mysql+pymysql://regression_user:regression_pass@mysql:3306/regression_db
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+    ports:
+      - "8501:8501"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: regguard-api
+    restart: unless-stopped
+    entrypoint: ["uvicorn", "core.api:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      DB_URL: mysql+pymysql://regression_user:regression_pass@mysql:3306/regression_db
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   mysql_data:
-

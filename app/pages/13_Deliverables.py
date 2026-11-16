@@ -65,7 +65,7 @@ with col1_a:
 with col1_b:
     if st.button("Verify Skill Repo", key="v_skills", icon=":material/verified:"):
         lint_all = [lint_skill(s.path) for s in reg.list_skills()]
-        passed = all(l["valid"] for l in lint_all)
+        passed = all(item["valid"] for item in lint_all)
         if passed:
             st.success(f"VERIFIED: {len(lint_all)} skills schema-compliant.")
         else:

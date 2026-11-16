@@ -26,7 +26,7 @@ def test_audit_event_recording_and_filtering():
     # Query with filters
     logs = get_audit_logs(limit=10, filter_what="gate_evaluation_block", filter_verdict="BLOCK")
     assert len(logs) >= 1
-    assert any(l["who"] == "Auditor_Alice" for l in logs)
+    assert any(item["who"] == "Auditor_Alice" for item in logs)
 
 
 def test_export_audit_report(tmp_path):

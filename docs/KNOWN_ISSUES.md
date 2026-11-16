@@ -31,3 +31,15 @@ This document records operational edge cases, platform dependencies, and known c
 ## 5. Append-Only Audit Log Constraints
 - **Issue**: Direct SQL `UPDATE` or `DELETE` statements on `audit_logs` fail by design via SQLAlchemy event listeners (`before_update`, `before_delete`) to maintain regulatory compliance.
 - **Resolution**: Corrections must be appended as new audit entries referencing previous record IDs; test fixtures that reset database state must rebuild tables using `Base.metadata.drop_all()` rather than issuing bulk deletes.
+
+---
+
+## 6. Local Path Traversal Boundaries in Multi-Tenant Environments
+- **Issue**: In local setups where external scripts invoke `safe_load_yaml()` or `safe_resolve_path()`, passing absolute paths pointing outside the repository root raises `PathTraversalError`.
+- **Resolution**: Pass an explicit `allowed_base` parameter when evaluating test suites located in isolated temporary folders (`tmp_path`), or confine all artifact paths to relative repository locations.
+
+---
+
+## 7. Dual-Mode Client Adapter Latency Probing
+- **Issue**: When `REGGUARD_CLIENT_MODE=api` is selected but the FastAPI background process is not running, the client adapter performs a 500ms connection probe to `http://127.0.0.1:8000/health` before falling back to direct in-process Python execution.
+- **Resolution**: In automated test environments and standalone CLI executions, `REGGUARD_CLIENT_MODE` defaults to `direct`, completely eliminating connection timeout latency.

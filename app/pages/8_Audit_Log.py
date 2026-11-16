@@ -129,29 +129,29 @@ if not logs:
 else:
     df_logs = pd.DataFrame([
         {
-            "ID": l["id"],
-            "Timestamp (UTC)": l["timestamp"][:19] if l.get("timestamp") else "-",
-            "Actor": l["who"],
-            "Action": l["what"],
-            "Base Commit": (l.get("base_commit") or "-")[:7],
-            "Cand Commit": (l.get("candidate_commit") or "-")[:7],
-            "Model": l.get("model_id") or "-",
-            "Verdict": l.get("verdict") or "-",
-            "p-value": f"{l['p_value']:.4f}" if l.get("p_value") is not None else "-",
-            "Regressed (b)": l.get("b", 0),
-            "Fixed (c)": l.get("c", 0),
-            "Approver": l.get("approver") or "-",
-            "Comment": l.get("comment") or "-",
+            "ID": row["id"],
+            "Timestamp (UTC)": row["timestamp"][:19] if row.get("timestamp") else "-",
+            "Actor": row["who"],
+            "Action": row["what"],
+            "Base Commit": (row.get("base_commit") or "-")[:7],
+            "Cand Commit": (row.get("candidate_commit") or "-")[:7],
+            "Model": row.get("model_id") or "-",
+            "Verdict": row.get("verdict") or "-",
+            "p-value": f"{row['p_value']:.4f}" if row.get("p_value") is not None else "-",
+            "Regressed (b)": row.get("b", 0),
+            "Fixed (c)": row.get("c", 0),
+            "Approver": row.get("approver") or "-",
+            "Comment": row.get("comment") or "-",
         }
-        for l in logs
+        for row in logs
     ])
 
     st.dataframe(df_logs, use_container_width=True, hide_index=True)
 
     labelled_divider("Detailed Audit Record Inspector")
-    log_ids = [l["id"] for l in logs]
+    log_ids = [row["id"] for row in logs]
     selected_id = st.selectbox("Select Audit Event ID to Inspect:", options=log_ids)
-    selected_entry = next((l for l in logs if l["id"] == selected_id), None)
+    selected_entry = next((row for row in logs if row["id"] == selected_id), None)
 
     if selected_entry:
         col_a, col_b = st.columns(2)

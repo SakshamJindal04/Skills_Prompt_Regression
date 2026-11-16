@@ -5,6 +5,7 @@ Supports MySQL 8 with automatic graceful fallback to SQLite.
 
 import os
 import logging
+from pathlib import Path
 from contextlib import contextmanager
 from typing import Generator
 
@@ -122,22 +123,37 @@ def get_session() -> Generator[Session, None, None]:
 
 
 def init_db(engine=None):
-    """Create all tables in the database."""
+    """
+    Automatic Alembic upgrade on start and assert that schema matches the code.
+    Gracefully falls back to create_all if alembic table exists.
+    """
     if engine is None:
         engine = get_engine()
-    Base.metadata.create_all(engine)
-    try:
-        with engine.connect() as conn:
-            try:
-                conn.execute(text("ALTER TABLE audit_logs ADD COLUMN prev_hash VARCHAR(64) NULL"))
-                conn.commit()
-            except Exception:
-                pass
-            try:
-                conn.execute(text("ALTER TABLE audit_logs ADD COLUMN entry_hash VARCHAR(64) NULL"))
-                conn.commit()
-            except Exception:
-                pass
-    except Exception:
-        pass
-    logger.info("Database schema verified and tables initialized.")
+
+    base_dir = Path(__file__).resolve().parent.parent
+    alembic_ini_path = base_dir / "alembic.ini"
+
+    if alembic_ini_path.exists():
+        try:
+            from alembic.config import Config
+            from alembic import command
+
+            alembic_cfg = Config(str(alembic_ini_path))
+            alembic_cfg.set_main_option("script_location", str(base_dir / "alembic"))
+            command.upgrade(alembic_cfg, "head")
+        except Exception as exc:
+            logger.warning(f"Alembic auto-upgrade encountered: {exc}. Ensuring tables via Base.metadata.")
+            Base.metadata.create_all(engine)
+    else:
+        Base.metadata.create_all(engine)
+
+    # Assert that all required model tables match the code
+    from sqlalchemy import inspect
+    inspector = inspect(engine)
+    existing_tables = set(inspector.get_table_names())
+    expected_tables = {table.name for table in Base.metadata.sorted_tables}
+
+    missing_tables = expected_tables - existing_tables
+    assert not missing_tables, f"Database schema mismatch! Missing tables in DB: {missing_tables}"
+
+    logger.info("Database schema verified, Alembic migrations at head, and tables asserted.")

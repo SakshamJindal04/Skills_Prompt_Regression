@@ -318,8 +318,17 @@ def evaluate_checks(
         elif check_type == "llm_judge":
             passed, details, extra_meta = Checker.check_llm_judge(output, check, client=client)
         else:
-            passed = False
-            details = f"Unknown check type: {check_type}"
+            from core.plugins import get_custom_check
+            custom_fn = get_custom_check(check_type)
+            if custom_fn:
+                try:
+                    passed, details = custom_fn(output, check)
+                except Exception as e:
+                    passed = False
+                    details = f"Custom check '{check_type}' execution failed: {e}"
+            else:
+                passed = False
+                details = f"Unknown check type: {check_type}"
 
         if not passed:
             all_passed = False

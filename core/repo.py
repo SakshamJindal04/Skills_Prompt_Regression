@@ -183,7 +183,12 @@ def revert_commit(
     actor = git.Actor(author_name, "regression@local.test")
 
     commit_to_revert = repo.commit(git_hash)
-    default_msg = f"Revert '{commit_to_revert.message.strip()}' (hash: {git_hash[:7]})"
+    msg_str = (
+        commit_to_revert.message.decode("utf-8", errors="replace")
+        if isinstance(commit_to_revert.message, bytes)
+        else str(commit_to_revert.message or "")
+    )
+    default_msg = f"Revert '{msg_str.strip()}' (hash: {git_hash[:7]})"
     commit_msg = message or default_msg
 
     try:

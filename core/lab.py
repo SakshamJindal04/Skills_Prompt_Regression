@@ -378,8 +378,8 @@ def export_lab_markdown(results: Dict[str, Any], output_path: Optional[str] = No
     lint_v1 = results.get("lint_v1", [])
     if lint_v1:
         md += "| Code | Severity | Message | Line |\n| :--- | :--- | :--- | :--- |\n"
-        for l in lint_v1:
-            md += f"| `{l.get('code')}` | **{l.get('severity')}** | {l.get('message')} | {l.get('line', '-')} |\n"
+        for lint_item in lint_v1:
+            md += f"| `{lint_item.get('code')}` | **{lint_item.get('severity')}** | {lint_item.get('message')} | {lint_item.get('line', '-')} |\n"
     else:
         md += "No lint findings detected. Prompt adheres cleanly to formatting and safety rules.\n"
 

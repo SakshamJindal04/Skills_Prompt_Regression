@@ -8,5 +8,6 @@ __pycache__/
 .coverage
 .env
 logs/*.log
+*.egg-info/
 
 

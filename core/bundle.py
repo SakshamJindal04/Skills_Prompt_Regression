@@ -199,7 +199,7 @@ def replay_run_bundle(bundle_path: str, assert_exact: bool = True) -> Dict[str, 
 
         # If test case exists with checks, re-evaluate checks deterministically
         if tc and tc.get("checks"):
-            passed, _ = evaluate_checks(t.get("output", "") or "", tc["checks"], llm_judge_fallback=False)
+            passed, _ = evaluate_checks(t.get("output", "") or "", tc["checks"], client=None)
         else:
             # Fall back to recorded score in trace or score entry
             matching_s = next(

@@ -237,9 +237,6 @@ def request_governed_rollback(target_commit: str, requester: str = "Developer", 
     Submits a governed rollback request. If policy requires approval, enters change_requests table
     for approver review; otherwise immediately promotes target commit.
     """
-    from core.repo import get_repo, list_versions
-    from core.versioner import get_current_baseline
-
     policy = load_policy()
     base_art = get_current_baseline()
     base_commit = base_art["commit_hash"] if base_art else "HEAD"

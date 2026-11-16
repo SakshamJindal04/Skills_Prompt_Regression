@@ -268,17 +268,17 @@ Head hash: `{chain_status.get("head_hash") or "N/A"}`
 | ID | Timestamp (UTC) | Action | Actor | Commits (Base -> Cand) | Verdict | p-value | (b, c) | Approver | Hash (Prefix) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 """
-    for l in logs:
-        ts = l["timestamp"][:19] if l.get("timestamp") else "-"
-        base = (l["base_commit"] or "-")[:7]
-        cand = (l["candidate_commit"] or "-")[:7]
+    for log_entry in logs:
+        ts = log_entry["timestamp"][:19] if log_entry.get("timestamp") else "-"
+        base = (log_entry["base_commit"] or "-")[:7]
+        cand = (log_entry["candidate_commit"] or "-")[:7]
         commit_str = f"`{base}` -> `{cand}`" if base != "-" else "-"
-        p_str = f"{l['p_value']:.4f}" if l.get("p_value") is not None else "-"
-        bc_str = f"({l.get('b', 0)}, {l.get('c', 0)})"
-        verdict = l.get("verdict") or "-"
-        approver = l.get("approver") or "-"
-        hash_prefix = (l.get("entry_hash") or "-")[:8]
-        md += f"| {l['id']} | {ts} | `{l['what']}` | {l['who']} | {commit_str} | {verdict} | {p_str} | {bc_str} | {approver} | `{hash_prefix}` |\n"
+        p_str = f"{log_entry['p_value']:.4f}" if log_entry.get("p_value") is not None else "-"
+        bc_str = f"({log_entry.get('b', 0)}, {log_entry.get('c', 0)})"
+        verdict = log_entry.get("verdict") or "-"
+        approver = log_entry.get("approver") or "-"
+        hash_prefix = (log_entry.get("entry_hash") or "-")[:8]
+        md += f"| {log_entry['id']} | {ts} | `{log_entry['what']}` | {log_entry['who']} | {commit_str} | {verdict} | {p_str} | {bc_str} | {approver} | `{hash_prefix}` |\n"
 
     md += """
 ## Append-Only Security Verification

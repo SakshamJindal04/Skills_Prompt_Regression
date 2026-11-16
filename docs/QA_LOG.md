@@ -71,3 +71,24 @@ During this project, the agent environment made available the following speciali
 5. **Human Review Queue**: Enqueued borderline evaluations, submitted human reviews with rationales, verified Cohen's kappa computation and cryptographic audit logging.
 6. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **133/133 passed** on every run (Run 1: 15.99s, Run 2: 16.38s, Run 3: 15.89s) with zero flakiness.
 
+
+---
+
+## 5. Tier 2 Industry-Hardening QA Pass
+
+### Tool & Skill Applications
+| Skill / Tool | Domain Area | Specific Action | Deliverable / Result |
+| :--- | :--- | :--- | :--- |
+| **`writing-guidelines`** | Architecture & Benchmark Documentation | Authored `docs/TIER_2_REPORT.md`, `results/scaling.md`, and `docs/SECURITY_SCAN.md` with factual ground-truth metrics and zero placeholder estimates. | Complete empirical technical documentation. |
+| **Security & Supply Chain Standards** | Boundary Confinement & Static Analysis | Implemented `safe_resolve_path()` and `safe_load_yaml()` in `core/security.py`. Audited codebase with `bandit -r core app` (0 High) and `pip-audit` (0 CVEs). | Defense against path traversal and supply-chain vulnerabilities. |
+| **`convex-reviewer` / Code Review** | Software Ergonomics & Configuration | Defined strongly-typed Pydantic v2 `AppSettings` in `core/config.py`, Alembic auto-migrations in `core/db.py`, and local PBKDF2 multi-role RBAC in `core/auth.py`. | Type-safe configuration, schema auto-migration, and secure access control. |
+| **`web-design-guidelines` & API Architecture** | REST API & Observability | Implemented local-first FastAPI service in `core/api.py`, structured JSON logging in `core/observability.py`, and dual-mode client adapter in `core/api_client.py`. | Local REST endpoints with correlation tracking and in-process fallback. |
+| **Property-Based Testing Standards** | Mathematical Invariant Verification | Implemented Hypothesis property-based testing in `tests/test_hypothesis_properties.py` across 300+ randomized states for McNemar symmetry, odds ratio monotonicity, bootstrap CI bounds, and Holm-Bonferroni thresholds. | Zero mathematical regression across randomized edge cases. |
+
+### Tier 2 Execution Verification
+1. **Packaging**: Verified `pyproject.toml` installation via `uv pip install -e .` and console script `.venv/bin/regguard --help`.
+2. **Migrations**: Verified Alembic auto-upgrade on startup and schema assertions in `core/db.py:init_db()`.
+3. **Property Testing**: 4 Hypothesis property tests passed across 300 trials in 1.27s.
+4. **Benchmarking & Scaling**: `python scripts/benchmark_scaling.py` executed for $N=10, 50, 100$ on SQLite and MySQL, confirming sub-millisecond per-test scaling.
+5. **Static Analysis & Linting**: `ruff check core/ app/ cli.py tests/` (0 errors), `mypy core/` (0 errors across 39 files).
+6. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **158/158 passed** on every run (Run 1: 20.65s, Run 2: 20.69s, Run 3: 20.72s).
