@@ -1,108 +1,76 @@
 /*
- * RegGuard Natural Design System Stylesheet
- * Local-first: System font stack only, zero external CDNs, full WCAG AA contrast.
- * Palette: Natural calm sage, slate, amber, terracotta.
+ * RegGuard Light-Only Modern Design System Stylesheet
+ * Local-first: System font stack only, zero external CDNs, 100% WCAG AAA/AA contrast.
+ * Palette: Pure modern light layout (#F6F8FB bg, #FFFFFF cards, #1E293B primary text).
  */
 
 :root {
+  /* Enforce light color scheme globally so OS dark mode never alters the interface */
+  color-scheme: light;
+
   /* Typography Stacks */
   --arm-font-sans: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --arm-font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
-  /* Natural Palette - Light Mode */
-  --arm-bg: #FAF8F4;
+  /* Light-Only Palette Tokens */
+  --arm-bg: #F6F8FB;
   --arm-surface: #FFFFFF;
-  --arm-surface-alt: #F2EFE8;
-  --arm-border: #E3DED3;
-  --arm-border-subtle: #EDE8DF;
-  --arm-text: #1F2A24;
-  --arm-text-muted: #5B665F;
-  --arm-text-caption: #55605A;
+  --arm-surface-alt: #F1F5F9;
+  --arm-border: #E2E8F0;
+  --arm-border-strong: #CBD5E1;
+  --arm-border-subtle: #EDF2F7;
 
-  /* Primary Accent (Natural Deep Sage) */
-  --arm-primary: #3F6B57;
-  --arm-primary-hover: #335A49;
-  --arm-primary-accent: #3F6B57;
-  --arm-btn-primary-text: #FFFFFF;
+  /* High-Clarity Text Tokens (WCAG AAA >= 7.0:1 for primary, >= 4.5:1 for secondary) */
+  --arm-text: #1E293B;
+  --arm-text-secondary: #475569;
+  --arm-text-muted: #475569;
+  --arm-text-caption: #475569;
 
-  /* Status Colors (WCAG AA Compliant >= 4.5:1) */
-  --arm-success-bg: #F0F7F2;
-  --arm-success-border: #A3CEB0;
-  --arm-success-text: #356341;
+  /* Action Buttons (Light fill + Dark text + Crisp border) */
+  --arm-primary: #1E3A8A;
+  --arm-btn-primary-bg: #DBEAFE;
+  --arm-btn-primary-border: #93C5FD;
+  --arm-btn-primary-text: #1E3A8A;
+  --arm-btn-primary-hover-bg: #BFDBFE;
 
-  --arm-danger-bg: #FDF2F0;
-  --arm-danger-border: #E8ABA3;
-  --arm-danger-text: #B4483C;
+  --arm-btn-secondary-bg: #FFFFFF;
+  --arm-btn-secondary-border: #CBD5E1;
+  --arm-btn-secondary-text: #1E293B;
+  --arm-btn-secondary-hover-bg: #F1F5F9;
 
-  --arm-warning-bg: #FEF9EE;
-  --arm-warning-fill: #E4B661;
-  --arm-warning-border: #E4B661;
-  --arm-warning-text: #5D3C00;
+  /* Status Colors (Light fill + Dark text >= 4.5:1 + Semantic border) */
+  --arm-success-bg: #DCFCE7;
+  --arm-success-border: #86EFAC;
+  --arm-success-text: #166534;
 
-  --arm-info-bg: #F0F6F9;
-  --arm-info-border: #ADC8D9;
-  --arm-info-text: #3E6E8C;
+  --arm-danger-bg: #FEE2E2;
+  --arm-danger-border: #FCA5A5;
+  --arm-danger-text: #991B1B;
 
-  --arm-neutral-bg: #F2EFE8;
-  --arm-neutral-border: #E3DED3;
-  --arm-neutral-text: #5B665F;
+  --arm-warning-bg: #FEF3C7;
+  --arm-warning-border: #FCD34D;
+  --arm-warning-text: #92400E;
 
-  /* Radii & Low-Opacity Soft Shadows */
-  --arm-radius-sm: 4px;
-  --arm-radius-md: 6px;
-  --arm-radius-lg: 8px;
+  --arm-info-bg: #E0F2FE;
+  --arm-info-border: #7DD3FC;
+  --arm-info-text: #075985;
+
+  --arm-neutral-bg: #F1F5F9;
+  --arm-neutral-border: #CBD5E1;
+  --arm-neutral-text: #334155;
+
+  /* Card Geometry & Soft Low-Opacity Shadows (no heavier than 0 1px 2px rgba(15,23,42,0.06)) */
+  --arm-radius-sm: 6px;
+  --arm-radius-md: 8px;
+  --arm-radius-lg: 12px;
   --arm-radius-full: 9999px;
 
-  --arm-shadow-sm: 0 1px 2px 0 rgba(31, 42, 36, 0.04);
-  --arm-shadow-md: 0 4px 6px -1px rgba(31, 42, 36, 0.06), 0 2px 4px -2px rgba(31, 42, 36, 0.03);
-  --arm-shadow-lg: 0 8px 12px -2px rgba(31, 42, 36, 0.08);
+  --arm-shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+  --arm-shadow-md: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+  --arm-shadow-lg: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
 
-  /* Subtle 180ms ease-out transitions (color/background/border/shadow only) */
-  --arm-transition: border-color 180ms ease-out, background-color 180ms ease-out, color 180ms ease-out, box-shadow 180ms ease-out;
-}
-
-/* Natural Palette - Dark Mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --arm-bg: #151A17;
-    --arm-surface: #1D2420;
-    --arm-surface-alt: #252D28;
-    --arm-border: #33403A;
-    --arm-border-subtle: #26302B;
-    --arm-text: #E8EDE6;
-    --arm-text-muted: #9AA79F;
-    --arm-text-caption: #9AA79F;
-
-    --arm-primary: #7DB596;
-    --arm-primary-hover: #93C4AA;
-    --arm-primary-accent: #7DB596;
-    --arm-btn-primary-text: #151A17;
-
-    --arm-success-bg: #162E20;
-    --arm-success-border: #2B593D;
-    --arm-success-text: #7DB596;
-
-    --arm-danger-bg: #3A1A17;
-    --arm-danger-border: #6B2A22;
-    --arm-danger-text: #E08A7E;
-
-    --arm-warning-bg: #3B2E15;
-    --arm-warning-fill: #E4B661;
-    --arm-warning-border: #6E531D;
-    --arm-warning-text: #E4B661;
-
-    --arm-info-bg: #162733;
-    --arm-info-border: #274A63;
-    --arm-info-text: #8DB7D2;
-
-    --arm-neutral-bg: #252D28;
-    --arm-neutral-border: #33403A;
-    --arm-neutral-text: #9AA79F;
-
-    --arm-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --arm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-    --arm-shadow-lg: 0 8px 12px -2px rgba(0, 0, 0, 0.5);
-  }
+  /* Subtle 150ms ease-out transitions (color/background/border/shadow only) */
+  --arm-transition: border-color 150ms ease-out, background-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out;
 }
 
 /* Base resets & typography */
@@ -110,57 +78,87 @@ html, body, [data-testid="stAppViewContainer"] {
   font-family: var(--arm-font-sans);
   color: var(--arm-text);
   background-color: var(--arm-bg);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.55;
   font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Tabular numbers across all tables and numbers */
+/* Main Container centered and bound to 1280px max width */
+[data-testid="stAppViewBlockContainer"] {
+  padding-top: 1.5rem !important;
+  padding-bottom: 3.5rem !important;
+  max-width: 1280px !important;
+  margin: 0 auto;
+}
+
+/* Headings scale and clear hierarchy */
+h1, .arm-page-title {
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  color: var(--arm-text) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 4px !important;
+}
+
+h2, .arm-section-title {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: var(--arm-text) !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+  margin-top: 16px !important;
+  margin-bottom: 8px !important;
+}
+
+h3 {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: var(--arm-text) !important;
+  line-height: 1.4 !important;
+}
+
+p, li, div, span {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--arm-text);
+}
+
+/* Max 75 character line width for long-form reading clarity */
+p, .arm-prose-block {
+  max-width: 75ch;
+}
+
+/* Tabular numbers across all metric values, numbers, and data rows */
 span, div, p, code, th, td, [data-testid="stMetricValue"] {
   font-variant-numeric: tabular-nums;
 }
 
-/* Captions and subtitles with full WCAG AA contrast */
+/* Captions at least 13px, high-contrast secondary text (>= 4.5:1), no smaller */
 [data-testid="stCaptionContainer"] {
   opacity: 1 !important;
 }
 [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p, [data-testid="stCaptionContainer"] span, .arm-page-subtitle {
-  color: var(--arm-text-muted) !important;
+  font-size: 13.5px !important;
+  color: var(--arm-text-secondary) !important;
+  line-height: 1.5 !important;
 }
 
-/* Form labels and markdown containers inside labels must inherit var(--arm-text) for WCAG AA compliance in both themes */
+/* Form labels inherit high contrast text */
 label, label p, label span, [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p, [data-testid="stWidgetLabel"] span {
+  font-size: 14px !important;
+  font-weight: 500 !important;
   color: var(--arm-text) !important;
 }
 
-/* Inputs and Textareas: surface background and high-contrast text across themes */
-input, textarea, select, [data-testid="stTextArea"] textarea, [data-testid="stTextInput"] input {
-  background-color: var(--arm-surface) !important;
-  color: var(--arm-text) !important;
-  border-color: var(--arm-border) !important;
-}
-
-/* Streamlit Alerts: ensure text contrast across themes */
-[data-testid="stAlertContentInfo"], [data-testid="stAlertContentInfo"] p, [data-testid="stAlertContentInfo"] span, [data-testid="stAlertContentInfo"] strong {
-  color: var(--arm-info-text) !important;
-}
-[data-testid="stAlertContentSuccess"], [data-testid="stAlertContentSuccess"] p, [data-testid="stAlertContentSuccess"] span, [data-testid="stAlertContentSuccess"] strong {
-  color: var(--arm-success-text) !important;
-}
-[data-testid="stAlertContentWarning"], [data-testid="stAlertContentWarning"] p, [data-testid="stAlertContentWarning"] span, [data-testid="stAlertContentWarning"] strong {
-  color: var(--arm-warning-text) !important;
-}
-[data-testid="stAlertContentError"], [data-testid="stAlertContentError"] p, [data-testid="stAlertContentError"] span, [data-testid="stAlertContentError"] strong {
-  color: var(--arm-danger-text) !important;
-}
-
-/* Visible focus rings for accessibility */
+/* Visible focus rings for accessibility (2px #3B82F6 with offset) */
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
-  outline: 2px solid var(--arm-primary) !important;
+  outline: 2px solid #3B82F6 !important;
   outline-offset: 2px !important;
 }
 
-/* Respect prefers-reduced-motion: disable all animations */
+/* Respect prefers-reduced-motion: disable all transitions and animations */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -169,41 +167,49 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   }
 }
 
-/* Page fade-in (200ms ease-out on initial mount, container bound to 1280px) */
-[data-testid="stAppViewBlockContainer"] {
-  animation: armFadeIn 200ms ease-out;
-  padding-top: 1.5rem !important;
-  padding-bottom: 3rem !important;
-  max-width: 1280px !important;
-  margin: 0 auto;
+/* Clean white left sidebar */
+[data-testid="stSidebar"] {
+  background-color: #FFFFFF !important;
+  border-right: 1px solid var(--arm-border) !important;
+  box-shadow: none !important;
 }
 
-@keyframes armFadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+[data-testid="stSidebar"] * {
+  color: var(--arm-text);
 }
 
-/* Skeleton shimmer placeholder for loading states */
-@keyframes armShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.arm-skeleton {
-  background: linear-gradient(90deg, var(--arm-surface-alt) 25%, var(--arm-border) 50%, var(--arm-surface-alt) 75%);
-  background-size: 200% 100%;
-  animation: armShimmer 1.5s infinite;
+[data-testid="stSidebarNavLink"] {
   border-radius: var(--arm-radius-sm);
-  height: 20px;
-  margin: 8px 0;
+  transition: var(--arm-transition);
+  font-size: 14.5px;
+  padding: 6px 12px;
+}
+
+[data-testid="stSidebarNavLink"]:hover {
+  background-color: var(--arm-surface-alt) !important;
+}
+
+/* Inputs, Textareas, Selectboxes */
+input, textarea, select, [data-testid="stTextArea"] textarea, [data-testid="stTextInput"] input {
+  background-color: #FFFFFF !important;
+  color: var(--arm-text) !important;
+  border: 1px solid var(--arm-border) !important;
+  border-radius: var(--arm-radius-sm) !important;
+  font-size: 15px !important;
+  transition: var(--arm-transition);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #93C5FD !important;
+  box-shadow: 0 0 0 2px #DBEAFE !important;
 }
 
 /* Top Shell Status Bar */
 .arm-top-shell {
-  background: var(--arm-surface);
+  background: #FFFFFF;
   border: 1px solid var(--arm-border);
-  border-radius: var(--arm-radius-md);
-  padding: 10px 16px;
+  border-radius: 12px;
+  padding: 10px 18px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
@@ -217,9 +223,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .arm-top-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 0.95rem;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 15px;
   color: var(--arm-text);
   letter-spacing: -0.01em;
 }
@@ -228,8 +234,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: 0.82rem;
-  color: var(--arm-text-muted);
+  font-size: 13.5px;
+  color: var(--arm-text-secondary);
   flex-wrap: wrap;
 }
 
@@ -239,14 +245,14 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   gap: 6px;
 }
 
-/* Status Chips (Always Icon + Text, never color alone) */
+/* Status Chips (Always Light Fill + Dark Text + Icon + Label) */
 .arm-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   padding: 3px 10px;
   border-radius: var(--arm-radius-full);
-  font-size: 0.78rem;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -286,11 +292,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   color: var(--arm-neutral-text);
 }
 
-/* KPI Card */
+/* KPI Card: White, 1px border, 12px radius, no heavy shadow */
 .arm-kpi-card {
-  background: var(--arm-surface);
+  background: #FFFFFF;
   border: 1px solid var(--arm-border);
-  border-radius: var(--arm-radius-md);
+  border-radius: 12px;
   padding: 16px 20px;
   box-shadow: var(--arm-shadow-sm);
   transition: var(--arm-transition);
@@ -298,36 +304,35 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 }
 
 .arm-kpi-card:hover {
-  border-color: var(--arm-primary);
-  box-shadow: var(--arm-shadow-md);
+  border-color: var(--arm-border-strong);
 }
 
 .arm-kpi-label {
-  font-size: 0.80rem;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--arm-text-muted);
+  letter-spacing: 0.03em;
+  color: var(--arm-text-secondary);
   margin-bottom: 6px;
 }
 
 .arm-kpi-value {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 600;
   color: var(--arm-text);
-  line-height: 1.15;
-  font-feature-settings: "tnum" 1;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 
 .arm-kpi-delta {
-  font-size: 0.82rem;
+  font-size: 13.5px;
   font-weight: 500;
   margin-top: 6px;
 }
 
-/* Verdict Banners */
+/* Verdict Banners: Light tinted fill + Dark text + 12px radius */
 .arm-verdict-banner {
-  border-radius: var(--arm-radius-md);
+  border-radius: 12px;
   padding: 18px 24px;
   margin: 16px 0 24px 0;
   border-width: 1px;
@@ -355,35 +360,40 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 }
 
 .arm-verdict-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .arm-verdict-desc {
-  font-size: 0.90rem;
-  line-height: 1.45;
-  opacity: 0.95;
+  font-size: 14.5px;
+  line-height: 1.5;
 }
 
-/* Section Cards */
+/* Section Cards: White, 1px border, 12px radius */
 .arm-section-card {
-  background: var(--arm-surface);
+  background: #FFFFFF;
   border: 1px solid var(--arm-border);
-  border-radius: var(--arm-radius-md);
+  border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 24px;
   box-shadow: var(--arm-shadow-sm);
   transition: var(--arm-transition);
 }
 
+[data-testid="stVerticalBlockBorderWrapper"] {
+  border-radius: 12px !important;
+  border-color: var(--arm-border) !important;
+  background-color: #FFFFFF !important;
+}
+
 /* Monospace & Hashes */
 code, .arm-mono {
   font-family: var(--arm-font-mono);
-  font-size: 0.85em;
+  font-size: 13.5px !important;
   background: var(--arm-surface-alt) !important;
   color: var(--arm-text) !important;
   padding: 2px 6px;
@@ -395,7 +405,7 @@ code, .arm-mono {
 /* Custom copyable hash pill */
 .arm-hash-pill {
   font-family: var(--arm-font-mono);
-  font-size: 0.82rem;
+  font-size: 13.5px;
   background: var(--arm-surface-alt);
   border: 1px solid var(--arm-border);
   border-radius: var(--arm-radius-sm);
@@ -407,109 +417,136 @@ code, .arm-mono {
   font-variant-numeric: tabular-nums;
 }
 
-/* Error and empty state panels */
+/* Empty and Error states */
 .arm-empty-state {
   text-align: center;
-  padding: 48px 24px;
-  background: var(--arm-surface);
-  border: 1px dashed var(--arm-border);
-  border-radius: var(--arm-radius-md);
+  padding: 40px 24px;
+  background: #FFFFFF;
+  border: 1px dashed var(--arm-border-strong);
+  border-radius: 12px;
   margin: 16px 0;
 }
 
 .arm-empty-icon {
-  font-size: 2.2rem;
-  color: var(--arm-text-caption);
-  margin-bottom: 12px;
+  font-size: 32px;
+  color: var(--arm-text-secondary);
+  margin-bottom: 10px;
 }
 
 .arm-empty-title {
-  font-size: 1.05rem;
+  font-size: 16px;
   font-weight: 600;
   color: var(--arm-text);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .arm-empty-subtitle {
-  font-size: 0.88rem;
-  color: var(--arm-text-muted);
-  max-width: 520px;
+  font-size: 14px;
+  color: var(--arm-text-secondary);
+  max-width: 540px;
   margin: 0 auto;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 /* Error panel with fix instruction */
 .arm-error-panel {
   background: var(--arm-danger-bg);
   border: 1px solid var(--arm-danger-border);
-  border-radius: var(--arm-radius-md);
-  padding: 18px 22px;
+  border-radius: 12px;
+  padding: 16px 20px;
   margin: 16px 0;
   color: var(--arm-danger-text);
 }
 
 .arm-error-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .arm-error-fix {
-  font-size: 0.88rem;
+  font-size: 14px;
   margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid var(--arm-danger-border);
   color: var(--arm-text);
 }
 
-/* Table styling enhancement: sticky headers, no zebra stripes, right-aligned numbers */
+/* Table styling: sticky headers, 14px minimum font, tabular nums, right aligned */
 [data-testid="stDataFrame"] {
   border: 1px solid var(--arm-border);
-  border-radius: var(--arm-radius-md);
+  border-radius: 12px;
   overflow: hidden;
-  background: var(--arm-surface);
+  background: #FFFFFF;
 }
 
-/* Buttons polish with subtle transitions */
+table {
+  font-size: 14px !important;
+}
+
+thead th {
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: var(--arm-text) !important;
+  background-color: var(--arm-surface-alt) !important;
+  border-bottom: 1px solid var(--arm-border) !important;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+td {
+  font-size: 14px !important;
+  color: var(--arm-text) !important;
+  border-bottom: 1px solid var(--arm-border-subtle) !important;
+  line-height: 1.4 !important;
+}
+
+/* Primary Action Buttons: fill #DBEAFE, border #93C5FD, text #1E3A8A, hover #BFDBFE */
 button[kind="primary"], button[kind="primary"] p, button[kind="primary"] span {
-  background-color: var(--arm-primary) !important;
+  background-color: var(--arm-btn-primary-bg) !important;
   color: var(--arm-btn-primary-text) !important;
+  border: 1px solid var(--arm-btn-primary-border) !important;
   border-radius: var(--arm-radius-md) !important;
   font-weight: 600 !important;
-  border: 1px solid transparent !important;
+  font-size: 14.5px !important;
   transition: var(--arm-transition) !important;
-  min-height: 36px;
+  min-height: 38px;
   padding: 0 16px;
 }
 
 button[kind="primary"]:hover {
-  background-color: var(--arm-primary-hover) !important;
-  border-color: transparent !important;
+  background-color: var(--arm-btn-primary-hover-bg) !important;
+  border-color: #60A5FA !important;
 }
 
-button[kind="secondary"] {
-  background-color: var(--arm-surface) !important;
-  color: var(--arm-text) !important;
-  border: 1px solid var(--arm-border) !important;
+/* Secondary Action Buttons: fill #FFFFFF, border #CBD5E1, text #1E293B, hover #F1F5F9 */
+button[kind="secondary"], button[kind="secondary"] p, button[kind="secondary"] span {
+  background-color: var(--arm-btn-secondary-bg) !important;
+  color: var(--arm-btn-secondary-text) !important;
+  border: 1px solid var(--arm-btn-secondary-border) !important;
   border-radius: var(--arm-radius-md) !important;
+  font-weight: 500 !important;
+  font-size: 14.5px !important;
   transition: var(--arm-transition) !important;
-  min-height: 36px;
+  min-height: 38px;
   padding: 0 16px;
 }
 
 button[kind="secondary"]:hover {
-  border-color: var(--arm-primary) !important;
-  background-color: var(--arm-surface-alt) !important;
+  background-color: var(--arm-btn-secondary-hover-bg) !important;
+  border-color: var(--arm-text-secondary) !important;
 }
 
-/* Quiet secondary buttons */
+/* Quiet buttons for copy/view actions */
 .arm-btn-quiet {
   background: transparent !important;
   border: 1px solid transparent !important;
-  color: var(--arm-text-muted) !important;
+  color: var(--arm-text-secondary) !important;
+  font-size: 13.5px !important;
 }
 
 .arm-btn-quiet:hover {
@@ -517,26 +554,71 @@ button[kind="secondary"]:hover {
   color: var(--arm-text) !important;
 }
 
-/* Chart Source / Table Source Caption line */
+/* Source caption beneath charts and tables (at least 13px) */
 .arm-source-caption {
-  font-size: 0.78rem;
-  color: var(--arm-text-caption);
+  font-size: 13px !important;
+  color: var(--arm-text-secondary) !important;
   margin-top: 6px;
   margin-bottom: 16px;
-  line-height: 1.4;
+  line-height: 1.45;
   font-style: italic;
 }
 
-/* Stepper Bar for Panel Lab */
+/* Tabs: clean modern segmented navigation */
+[data-testid="stTabs"] {
+  margin-bottom: 16px;
+}
+
+[data-testid="stTabs"] [data-baseweb="tab-list"] {
+  gap: 8px;
+  background-color: var(--arm-surface-alt);
+  padding: 4px;
+  border-radius: var(--arm-radius-md);
+  border: 1px solid var(--arm-border);
+}
+
+[data-testid="stTabs"] [data-baseweb="tab"] {
+  border-radius: var(--arm-radius-sm);
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--arm-text-secondary);
+  border: 1px solid transparent;
+  transition: var(--arm-transition);
+}
+
+[data-testid="stTabs"] [aria-selected="true"] {
+  background-color: #FFFFFF !important;
+  color: var(--arm-text) !important;
+  font-weight: 600 !important;
+  border-color: var(--arm-border) !important;
+  box-shadow: var(--arm-shadow-sm) !important;
+}
+
+/* Streamlit Alerts */
+[data-testid="stAlertContentInfo"], [data-testid="stAlertContentInfo"] p, [data-testid="stAlertContentInfo"] span, [data-testid="stAlertContentInfo"] strong {
+  color: var(--arm-info-text) !important;
+}
+[data-testid="stAlertContentSuccess"], [data-testid="stAlertContentSuccess"] p, [data-testid="stAlertContentSuccess"] span, [data-testid="stAlertContentSuccess"] strong {
+  color: var(--arm-success-text) !important;
+}
+[data-testid="stAlertContentWarning"], [data-testid="stAlertContentWarning"] p, [data-testid="stAlertContentWarning"] span, [data-testid="stAlertContentWarning"] strong {
+  color: var(--arm-warning-text) !important;
+}
+[data-testid="stAlertContentError"], [data-testid="stAlertContentError"] p, [data-testid="stAlertContentError"] span, [data-testid="stAlertContentError"] strong {
+  color: var(--arm-danger-text) !important;
+}
+
+/* Stepper Bar for Multi-step workflows */
 .arm-stepper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 16px 0 24px 0;
   padding: 12px 20px;
-  background: var(--arm-surface);
+  background: #FFFFFF;
   border: 1px solid var(--arm-border);
-  border-radius: var(--arm-radius-md);
+  border-radius: 12px;
   box-shadow: var(--arm-shadow-sm);
 }
 
@@ -544,14 +626,14 @@ button[kind="secondary"]:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--arm-text-muted);
+  color: var(--arm-text-secondary);
 }
 
 .arm-step-active {
   color: var(--arm-primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .arm-step-number {
@@ -563,14 +645,14 @@ button[kind="secondary"]:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .arm-step-active .arm-step-number {
-  background: var(--arm-primary);
-  color: #FFFFFF;
-  border-color: var(--arm-primary);
+  background: var(--arm-btn-primary-bg);
+  color: var(--arm-btn-primary-text);
+  border-color: var(--arm-btn-primary-border);
 }
 
 .arm-step-divider {

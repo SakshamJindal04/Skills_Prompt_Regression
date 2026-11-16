@@ -1,154 +1,108 @@
-# RegGuard Natural Design System Style Guide
+# RegGuard Light-Only Modern Design System Specification
 
-**Document Version:** 1.0.0  
-**Target Environment:** Local-first Streamlit Dashboard  
-**Pinned Streamlit Version:** `streamlit==1.66.1`  
-**Accessibility Target:** WCAG 2.1 AA Compliance ($\ge 4.5:1$ Normal Text, $\ge 3.0:1$ Large Text & UI Components)
-
----
-
-## 1. Design Philosophy & Guardrails
-
-The RegGuard Natural Design System replaces high-saturation, generic enterprise blues with an organic, calm palette inspired by natural sage greens, slate blues, warm ochres, and terracottas.
-
-### Strict Core Principles
-1. **Local-First Delivery**: Zero runtime calls to external CDNs, Google Fonts, remote stylesheets, or third-party tracking scripts. All typography relies on local system font stacks; all icons are rendered using Streamlit's built-in Material Symbols (`:material/...`).
-2. **Deterministic Data Integrity**: Strict separation between presentation and business logic. Zero modifications to statistical evaluation formulas, gate policies, database models, or raw numerical measurements.
-3. **No Colour-Alone Indicators**: Every operational status (verdict, diff status, test result) must be dual-encoded with an explicit textual label and a distinct icon (`PROMOTE`, `BLOCK`, `REGRESSED`, `FIXED`, `INCONCLUSIVE`).
-4. **Transparent Data Sourcing**: Every chart, heatmap, and tabular data view must include an italic `.arm-source-caption` directly beneath it stating where the underlying data originates.
-5. **Graceful CSS Degradation**: Styling targets stable `.streamlit/config.toml` properties, container keys (`st-key-*`), and standard `data-testid` selectors. If a custom selector fails, the application degrades gracefully to default Streamlit styling without breaking layout.
+**Version:** 2.1 (Light-Only Modern Restyle)  
+**Target Environment:** Streamlit Enterprise Dashboard (`ui-light` branch)  
+**Streamlit Version Pinned:** `streamlit==1.66.1` (Python 3.12.14)  
+**Standard Compliance:** WCAG 2.1 AAA (>= 7.0:1 for Body Text), WCAG 2.1 AA (>= 4.5:1 for Actions & Status), Section 508
 
 ---
 
-## 2. Natural Color Palette & Design Tokens
+## 1. Design Philosophy & Architectural Principles
 
-### Token Definitions
+1. **Light-Only Modern Clarity:**
+   All backgrounds remain clean and light across operating-system modes. Dark mode code and media queries have been removed. `:root { color-scheme: light; }` and `.streamlit/config.toml` (`base = "light"`) guarantee that operating systems with dark mode enabled render identical, pristine light surfaces.
+2. **Text Clarity Above All:**
+   No low-contrast gray text anywhere. Primary body text achieves >= 13.0:1 contrast on all surfaces; secondary and caption text achieves >= 7.0:1 on card surfaces. Minimum font sizes are strictly enforced: body >= 16px, table text >= 14px, captions >= 13px. Prose width is capped at 75 characters (`max-width: 75ch`).
+3. **Local-First & Zero Runtime Network Dependencies:**
+   Zero external web fonts, zero CDN links, and zero telemetry. Native system font stacks and Streamlit bundled Material icons (`:material/...`) provide instant, offline-capable rendering.
+4. **Calm Action & Status Hierarchy:**
+   Action buttons use light tinted fills with crisp borders and deep high-contrast text rather than heavy saturated blocks. Primary action: `#DBEAFE` fill, `#93C5FD` border, `#1E3A8A` text. Status indicators are always dual-encoded with a Material icon and text label.
 
-| Token Name | Light Theme Hex | Dark Theme Hex | Semantic Usage |
+---
+
+## 2. Design Tokens & Palette
+
+### Color Tokens
+
+| Token Name | Hex Code | Role & Usage | Contrast vs Background |
 | :--- | :--- | :--- | :--- |
-| `--arm-bg` | `#FAF8F4` | `#151A17` | Canvas root background |
-| `--arm-surface` | `#FFFFFF` | `#1D2420` | Primary cards, table background |
-| `--arm-surface-alt` | `#F2EFE8` | `#252D28` | Secondary cards, table headers, code blocks |
-| `--arm-border` | `#E3DED3` | `#33403A` | Card borders, dividers, table gridlines |
-| `--arm-text` | `#1F2A24` | `#E8EDE6` | High-emphasis body text and headers |
-| `--arm-text-muted` | `#5B665F` | `#9AA79F` | Secondary labels, descriptions, captions |
-| `--arm-text-caption` | `#7A857E` | `#829088` | Small captions and metadata timestamps |
-| `--arm-primary` | `#3F6B57` | `#7DB596` | Primary buttons, active tabs, focus outlines |
-| `--arm-primary-hover` | `#335A49` | `#6CA485` | Primary button hover state |
-| `--arm-success-bg` | `#F0F7F2` | `#1C2A20` | Promotion banner background, pass chips |
-| `--arm-success-text` | `#447D54` | `#7DB596` | Success text (calibrated $\ge 4.5:1$ contrast) |
-| `--arm-danger-bg` | `#FDF2F0` | `#2C1D1B` | Block banner background, regression chips |
-| `--arm-danger-text` | `#B4483C` | `#E08A7E` | Regression text ($\ge 5.3:1$ contrast) |
-| `--arm-warning-bg` | `#FEF9EE` | `#2A2416` | Inconclusive banner background, alert chips |
-| `--arm-warning-text` | `#5D3C00` | `#E4B661` | Warning text (calibrated $\ge 5.2:1$ contrast) |
-| `--arm-info-bg` | `#F0F6F9` | `#1A252C` | Information panel background |
-| `--arm-info-text` | `#3E6E8C` | `#8DB7D2` | Information text ($\ge 5.5:1$ contrast) |
+| `--arm-bg` | `#F6F8FB` | Page Canvas Background | Base canvas |
+| `--arm-surface` | `#FFFFFF` | Card, Container, Sidebar Surface | Base surface |
+| `--arm-surface-alt` | `#F1F5F9` | Table Headers, Segmented Tabs, Mono Pills | 1.23:1 boundary |
+| `--arm-border` | `#E2E8F0` | Default Structural Card Border (1px) | 1.23:1 boundary |
+| `--arm-border-strong` | `#CBD5E1` | Input, Hover, and Empty State Borders | 1.54:1 boundary |
+| `--arm-text` | `#1E293B` | Primary Body Text, Headings, KPI Values | **14.63:1** (AAA) |
+| `--arm-text-secondary` | `#475569` | Subtitles, Captions, Metric Labels | **7.58:1** (AAA) |
+| `--arm-text-muted` | `#475569` | Meta timestamps, audit IDs, guidance | **7.58:1** (AAA) |
 
-### Plotly Colorway
-Unified sequence for all charts, error bands, and categorical series:
-```python
-COLORWAY = [
-    "#3F6B57",  # Sage Green (Primary Series)
-    "#3E6E8C",  # Slate Blue (Secondary Series)
-    "#B8862B",  # Muted Amber / Ochre
-    "#B4483C",  # Terracotta Red
-    "#7A6F99",  # Muted Heather Purple
-    "#8A8F7C",  # Warm Olive Gray
-]
-```
+### Action Button Tokens
 
----
+| Action Level | Fill Color | Border Color | Text Color | Hover Fill | Contrast |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Primary Action** | `#DBEAFE` | `#93C5FD` | `#1E3A8A` | `#BFDBFE` | **8.49:1** (AA) |
+| **Secondary Action** | `#FFFFFF` | `#CBD5E1` | `#1E293B` | `#F1F5F9` | **14.63:1** (AAA) |
+| **Quiet Secondary** | `transparent` | `transparent` | `#475569` | `#F1F5F9` | **7.58:1** (AAA) |
 
-## 3. Typography & Spacing Scale
+### Status Indicators (Dual-Encoded: Icon + Label)
 
-### Font Stacks
-- **Prose & User Interface**: `system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`
-- **Monospace (Code, Hashes, Traces)**: `ui-monospace, "Cascadia Mono", Consolas, monospace`
-- **Tabular Figures**: `font-variant-numeric: tabular-nums` enforced on all numbers, tables, and KPI metrics to eliminate visual jitter during real-time updates.
+| Status | Fill Color | Border Color | Text Color | Default Material Icon | Contrast Ratio |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **PROMOTE / FIXED** | `#DCFCE7` | `#86EFAC` | `#166534` | `:material/check_circle:` | **6.49:1** (AA) |
+| **BLOCK / REGRESSED** | `#FEE2E2` | `#FCA5A5` | `#991B1B` | `:material/block:` | **6.80:1** (AA) |
+| **WARNING / INCONCLUSIVE**| `#FEF3C7` | `#FCD34D` | `#92400E` | `:material/warning:` | **6.37:1** (AA) |
+| **INFO / ADVISORY** | `#E0F2FE` | `#7DD3FC` | `#075985` | `:material/info:` | **6.59:1** (AA) |
+| **NEUTRAL / UNCHANGED** | `#F1F5F9` | `#CBD5E1` | `#334155` | `:material/radio_button_unchecked:` | **9.45:1** (AAA) |
 
-### Type Scale
-- **Page Title (`h2`)**: `1.65rem` / `700` weight, line-height `1.3`
-- **Section Card Header**: `0.95rem` / `700` weight, line-height `1.4`
-- **Body Text**: `15px` (`0.95rem`) / `400` weight, line-height `1.5`
-- **KPI Value**: `1.75rem` / `700` weight, tabular-nums
-- **Captions & Metadata**: `0.78rem` / `400` weight, italicized for source citations
+### Geometry & Shadows
 
-### 8px Spacing Scale
-- `4px` (`--arm-space-xs`): Compact badge padding, icon gaps
-- `8px` (`--arm-space-sm`): Card padding internal, input element margins
-- `12px` (`--arm-space-md`): Standard component gutters
-- `16px` (`--arm-space-lg`): Section separation, container gutters
-- `24px` (`--arm-space-xl`): Distinct section card spacing
-- `32px` (`--arm-space-2xl`): Major page section breaks
-
-### Layout Width
-- Max content width: `1280px` centered with auto margins, ensuring balanced reading lines on ultra-wide monitors.
+- **Card Radius:** `12px` (`border-radius: 12px;`)
+- **Button / Input Radius:** `8px` (`border-radius: 8px;`)
+- **Pill Radius:** `9999px` (`border-radius: 9999px;`)
+- **Shadow Scale:** No heavier than `0 1px 2px rgba(15, 23, 42, 0.06)`
+- **Content Width:** Constrained to `1280px` centered on viewport.
 
 ---
 
-## 4. Reusable Component Library (`app/ui/components.py`)
+## 3. Typography Hierarchy
 
-All 17 pages import from `app.ui.components` to guarantee consistent styling:
+- **System Font Stack:** `system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`
+- **Monospace Stack:** `ui-monospace, "Cascadia Mono", Consolas, monospace`
+- **Numerical Alignment:** `font-variant-numeric: tabular-nums` globally enforced.
 
-### `top_bar()`
-Renders the top utility bar displaying:
-- Product Brand
-- Active Baseline Short Hash (`copyable_hash`)
-- Active Model and Pipeline Role
-- Ollama Online / Offline Chip
-- Database Status Chip (`MySQL` / `SQLite`)
-- Governance Policy Version
-- Last Gate Verdict and Timestamp (cached for 5s via `get_cached_system_status()`).
-
-### `page_header(title, subtitle)`
-Renders a sentence-case title and a one-line description establishing the page's functional purpose.
-
-### `kpi_card(label, value, delta=None, help_text=None)`
-Renders a KPI card with tabular-numeric value, optional colored delta, and tooltip. Maximum 4 to 5 cards per horizontal row.
-
-### `status_chip(kind, text)`
-Dual-encoded status badge combining an icon and a text label:
-- `promote` / `fixed`: `:material/check_circle:` + `PROMOTE` / `FIXED`
-- `block` / `regressed`: `:material/block:` / `:material/trending_down:` + `BLOCK` / `REGRESSED`
-- `warning` / `inconclusive`: `:material/warning:` / `:material/help_outline:` + `WARNING` / `INCONCLUSIVE`
-- `info`: `:material/info:` + `INFO`
-
-### `verdict_banner(verdict, summary, p_value=None, delta_pass_rate=None)`
-High-prominence banner used for gate decisions (Green for `PROMOTE`, Terracotta for `BLOCK`, Neutral for `INCONCLUSIVE`).
-
-### `section_card(title, subtitle=None)`
-Card container header demarcating logical subsections.
-
-### `source_caption(text)`
-Italic caption placed directly beneath tables and charts:
-```html
-<div class="arm-source-caption">Source: Local MySQL database 'scores' table...</div>
-```
-
-### `empty_state(message, subtitle=None, icon=":material/inbox:")`
-Empty state placeholder with actionable guidance.
-
-### `error_panel(message, how_to_fix=None)`
-Clear root-cause error panel with structured resolution instructions.
-
-### Modal Dialogs (`@st.dialog`)
-Enforced for all destructive, irreversible, or state-changing actions:
-- **Rollback Confirmation**: Mandates written incident justification and specifies the exact inverse Git commit being generated.
-- **Baseline Promotion**: Verifies approver identity and checks separation of duties (requester $\ne$ approver).
-- **Change Request Rejection**: Requires written rationale before closing request.
+| Element | Size | Weight | Line Height | Color | Reading Width |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Page Title** (`h1`) | 28 px | 600 | 1.25 | `#1E293B` | Full container |
+| **Section Title** (`h2`) | 20 px | 600 | 1.35 | `#1E293B` | Full container |
+| **Card Subtitle** (`h3`) | 17 px | 600 | 1.40 | `#1E293B` | Full container |
+| **Body Text** (`p`, `li`) | 16 px | 400 | 1.55 | `#1E293B` | Max 75 characters (`75ch`) |
+| **Table Cells** (`td`, `th`)| 14 px | 400 / 600 | 1.40 | `#1E293B` | Right-aligned numbers |
+| **Captions & Provenance** | 13.5 px | 400 (italic)| 1.45 | `#475569` | Max 75 characters |
+| **Monospace / Hashes** | 13.5 px | 500 | 1.30 | `#1E293B` | Tabular numbers |
 
 ---
 
-## 5. Motion, Transitions & Reduced Motion
+## 4. Plotly Chart Visualization Specification
 
-- **Subtle Transitions**: Hover, focus, and state changes apply `180ms ease-out` transitions on `border-color`, `background-color`, `box-shadow`, and `color`. Layout properties (`width`, `height`, `margin`, `padding`) are strictly forbidden from animating to eliminate flicker.
-- **Single Page-Load Fade**: Initial page content renders with a gentle 200ms opacity fade-in. Widget interactions and fragment reruns do not replay this animation.
-- **Reduced Motion Support**:
-  ```css
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-  ```
+Registered template: `regguard_light` (aliased to `regguard_natural` and `arm_enterprise`).
+- **Paper & Plot Canvas:** Pure white `#FFFFFF`.
+- **Gridlines:** Subtle `#E2E8F0` (1px width).
+- **Axis Text:** High-contrast dark `#334155` (10.35:1 contrast against white).
+- **Sequential Colorway (All >= 3.0:1 contrast against `#FFFFFF`):**
+  1. Series 1 (Blue): `#3B82F6` (3.68:1)
+  2. Series 2 (Emerald Green): `#059669` (3.77:1)
+  3. Series 3 (Dark Amber): `#D97706` (3.19:1)
+  4. Series 4 (Crimson Red): `#EF4444` (3.76:1)
+  5. Series 5 (Violet): `#8B5CF6` (4.23:1)
+  6. Series 6 (Slate): `#64748B` (4.76:1)
+- **Legends:** Horizontal top legend positioned at `y = 1.02, x = 1` to prevent visual collision with data curves.
+
+---
+
+## 5. Interaction & Motion Standards
+
+1. **Subtle Transitions:** 150 ms ease-out on hover, focus, buttons, tabs, expanders, and cards. Only applied to non-layout properties (`color`, `border-color`, `background-color`, `box-shadow`).
+2. **Keyboard Focus Ring:** 2 px solid `#3B82F6` with 2 px offset (`outline: 2px solid #3B82F6 !important; outline-offset: 2px !important;`).
+3. **Accessibility Override:** `@media (prefers-reduced-motion: reduce)` disables all animations and transitions to zero duration.
+4. **Progress & Modals:**
+   - Destructive actions (Rollback, Promote, Reject) use modal dialogs (`@st.dialog`).
+   - Long-running evaluations use `st.status` with live step text and real progress counters.

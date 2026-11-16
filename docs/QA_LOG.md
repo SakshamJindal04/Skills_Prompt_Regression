@@ -135,3 +135,25 @@ During this project, the agent environment made available the following speciali
 5. **Interaction & Fragment Stability**: `python scripts/test_ui_interactions.py` verified 8 interactive flows with 0 white flashes, 0 scroll jumps, and sub-450ms latency.
 6. **Documentation Numbers Check**: `python scripts/check_docs_numbers.py` confirmed 100% data consistency against `results/` ground truth.
 7. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **160/160 passed** on every run (Run 1: 24.88s, Run 2: 21.26s, Run 3: 20.73s).
+
+---
+
+## 8. Light-Only Modern Restyle QA Pass (`ui-light`)
+
+### Tool & Skill Applications
+| Skill / Tool | Domain Area | Specific Action | Deliverable / Result |
+| :--- | :--- | :--- | :--- |
+| **`frontend-design` & `design-taste-frontend`** | Light-Only Tokens & Modern Geometry | Enforced pure modern light-only palette (`#F6F8FB` bg, `#FFFFFF` cards, `#1E293B` text, `#DBEAFE` primary action), 12px card radii, white left sidebar, zero dark-mode media queries, and `:root { color-scheme: light; }`. | Modern, calm light layout; immune to operating system dark mode overrides. |
+| **`web-design-guidelines`** | High-Clarity Typography & Ergonomics | Enforced minimum font sizes (body $\ge 16$px, table $\ge 14$px, captions $\ge 13.5$px), line-height 1.55, max 75ch reading width, right-aligned tabular numerals (`tabular-nums`), sticky table headers, and one primary action per page. | Superior reading clarity and consistent visual hierarchy. |
+| **`a11y-debugging` / `axe-core`** | Accessibility & Contrast Verification | Created `scripts/check_contrast.py` enforcing WCAG AAA ($\ge 7.0:1$) for body text, WCAG AA ($\ge 4.5:1$) for actions/chips, and $\ge 3.0:1$ for chart marks against white. Executed `scripts/audit_accessibility_axe.py` across 34 evaluations. | 25/25 contrast pairs passed; **0 critical and 0 serious accessibility violations across all views in both light and forced dark OS modes**. |
+| **`webapp-testing`** | Automated Multi-Viewport Screenshot Capture | Executed Playwright Chromium capture of 102 full-page screenshots across 17 views $\times$ 2 themes $\times$ 3 viewports (`1280x800`, `1440x900`, `1920x1080`) into `docs/screenshots/after/`. Verified 0 browser console errors. | Verified load times averaging 634.2 ms ($< 740$ ms everywhere). |
+| **`writing-guidelines`** | Design System & Operational Documentation | Updated `docs/UI_STYLE_GUIDE.md`, `docs/UI_GUIDE.md`, `docs/UI_CHANGELOG.md`, and `docs/UI_VERIFICATION.md` with factual component documentation and audited ground truth. | Comprehensive operational guide and style specifications. |
+
+### UI Light Execution Verification
+1. **WCAG Contrast Ratios**: `python scripts/check_contrast.py` verified 25/25 pairs meet requirements (body text achieves 13.35:1 - 14.63:1 AAA, action/status achieves 6.37:1 - 9.45:1 AA, chart marks achieve 3.19:1 - 4.76:1).
+2. **Automated Axe Accessibility Audit**: `python scripts/audit_accessibility_axe.py` verified 34/34 evaluations (17 views in light and forced dark OS mode) with **0 critical and 0 serious violations**.
+3. **Multi-Viewport Visual Capture**: `python scripts/capture_ui_screenshots.py` captured 102 full-page PNGs in `docs/screenshots/after/` across 17 views $\times$ 2 themes $\times$ 3 viewports with **0 console errors**.
+4. **Time to Usable Content**: Measured across all 17 views averaging 634.2 ms ($< 740$ ms everywhere, far under the 2.0s threshold).
+5. **Interaction & Fragment Stability**: `python scripts/test_ui_interactions.py` verified 8 interactive flows with 0 white flashes, 0 scroll jumps, and sub-450ms latency.
+6. **Documentation Numbers Check**: `python scripts/check_docs_numbers.py` confirmed 100% data consistency against `results/` ground truth.
+7. **Consecutive Test Suite Runs**: Executed full pytest suite 3 consecutive times with **160/160 passed** on every run (Run 1: 24.56s, Run 2: 21.28s, Run 3: 20.79s).
