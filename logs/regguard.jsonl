@@ -17,3 +17,4 @@
 {"timestamp": "2026-11-16T14:12:26.801189+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
 {"timestamp": "2026-11-16T14:13:01.295539+00:00", "level": "INFO", "logger": "test_telemetry", "message": "Test event telemetry recorded", "run_id": "test_run_123", "test_id": "case_01", "caller": "test_tier2.py:238"}
 {"timestamp": "2026-11-16T14:16:13.567070+00:00", "level": "INFO", "logger": "api", "message": "HEAD /docs -> 200 (8.9ms)", "run_id": null, "test_id": null, "caller": "api.py:63"}
+{"timestamp": "2026-11-18T09:31:56.809197+00:00", "level": "INFO", "logger": "api", "message": "GET /health -> 200 (180.2ms)", "run_id": null, "test_id": null, "caller": "api.py:63"}

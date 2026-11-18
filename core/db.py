@@ -143,7 +143,7 @@ def init_db(engine=None):
             command.upgrade(alembic_cfg, "head")
         except Exception as exc:
             logger.warning(f"Alembic auto-upgrade encountered: {exc}. Ensuring tables via Base.metadata.")
-            Base.metadata.create_all(engine)
+        Base.metadata.create_all(engine)
     else:
         Base.metadata.create_all(engine)
 
@@ -155,5 +155,19 @@ def init_db(engine=None):
 
     missing_tables = expected_tables - existing_tables
     assert not missing_tables, f"Database schema mismatch! Missing tables in DB: {missing_tables}"
+
+    # Auto-migrate any missing columns on existing tables (SQLite/MySQL schema evolution)
+    for table in Base.metadata.sorted_tables:
+        if table.name in existing_tables:
+            db_cols = {c["name"] for c in inspector.get_columns(table.name)}
+            for col in table.columns:
+                if col.name not in db_cols:
+                    col_type = col.type.compile(engine.dialect)
+                    try:
+                        with engine.begin() as conn:
+                            conn.execute(text(f"ALTER TABLE {table.name} ADD COLUMN {col.name} {col_type}"))
+                        logger.info(f"Auto-migrated missing column '{col.name}' ({col_type}) to table '{table.name}'.")
+                    except Exception as e:
+                        logger.warning(f"Could not auto-add column {col.name} to {table.name}: {e}")
 
     logger.info("Database schema verified, Alembic migrations at head, and tables asserted.")
